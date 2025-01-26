@@ -10,9 +10,7 @@ import premiumModal from '../services/premiumModal.js';
  * @throws {Error} - Throws error if premium check fails
  */
 export async function requirePremium(featureId, action) {
-    // const hasAccess = await premiumService.checkFeatureAccess(featureId);
-    //commented out for testing
-    const hasAccess = true;
+    const hasAccess = await premiumService.checkFeatureAccess(featureId);
     if (!hasAccess) {
         premiumModal.show(featureId);   
         throw new Error('Premium feature not available');

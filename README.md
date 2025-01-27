@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daily Affirmations Chrome Extension
 
-## Getting Started
+Transform your new tab experience with daily affirmations, beautiful backgrounds, and mindfulness features.
 
-First, run the development server:
+![Daily Affirmations Interface](public/affirmations.png)
+
+## 🌟 Special Early Access
+
+Currently offering **FREE ACCESS** to all premium features during our early access period! Install now to get:
+- Custom affirmation library
+- Premium background themes
+- Cloud sync & backup
+- Smart daily reminders
+- Advanced focus mode
+- And more!
+
+## ✨ Key Features
+
+### Basic Features (Free)
+- 🎯 Daily curated affirmations
+- 🖼️ Basic nature backgrounds
+- ⏰ Weather & clock widgets
+- 🎯 Basic focus mode
+- 💾 Local storage
+
+![Basic Features](public/mindfulness-practice.jpg)
+
+### Premium Features (Currently Free)
+- 📝 Custom affirmations library
+- 🎨 Premium background themes
+- ☁️ Cloud sync & backup
+- 🔔 Smart daily reminders
+- 🎯 Advanced focus mode
+- 🎉 Early access to new features
+- 💬 Priority support
+
+![Premium Features](public/premium-feature.png)
+
+## 🎨 Feature Highlights
+
+| Feature | Description |
+|---------|-------------|
+| Custom Backgrounds | ![Custom Backgrounds](public/custom-background.png) Choose from our premium collection or upload your own |
+| Daily Reminders | ![Daily Reminders](public/daily-reminders.png) Never miss your daily affirmation practice |
+| Cloud Backup | ![Cloud Backup](public/backup_and_sync.png) Your data is always safe and synced |
+| Theme Customization | ![Theme Customization](public/theme_customization.png) Personalize your experience |
+
+## 🚀 Getting Started
+
+### Installation
+
+1. **For Users:**
+   - Visit our [Chrome Web Store page](https://chrome.google.com/webstore)
+   - Click "Add to Chrome"
+   - Open a new tab to start your mindfulness journey
+
+2. **For Developers:**
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/daily-affirmations.git
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see the landing page.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file in the root directory:
 
-## Learn More
+```env
+RESEND_API_KEY=your_resend_api_key_here
+# Additional environment variables will be added for payment integration
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:** Next.js 14, React, TypeScript
+- **Styling:** Tailwind CSS
+- **Email Service:** Resend
+- **State Management:** Custom state manager
+- **Chrome Extension:** Vanilla JavaScript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Project Structure
 
-## Deploy on Vercel
+```
+├── app/                  # Next.js application
+│   ├── components/       # React components
+│   ├── api/             # API routes
+│   └── pages/           # Page components
+├── chrome-extension/     # Extension source
+│   ├── js/              # JavaScript modules
+│   ├── css/             # Styles
+│   └── manifest.json    # Extension manifest
+└── public/              # Static assets
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔄 Development Workflow
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Make changes to the codebase
+2. Run tests: `npm test`
+3. Build extension: `npm run build:extension`
+4. Load unpacked extension in Chrome for testing
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔮 Roadmap
+
+- [ ] Integration with LemonSqueezy for payments
+- [ ] Mobile companion app
+- [ ] Social sharing features
+- [ ] Advanced analytics dashboard
+- [ ] AI-powered affirmation suggestions
+
+## 📞 Support
+
+Need help? Contact us at support@daily-affirmation.today
+
+---
+
+Built with ❤️ for mindfulness and productivity

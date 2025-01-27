@@ -83,32 +83,31 @@ class PremiumService {
                 features: Object.keys(this.features)
             }
         };
+
+        this.initialize();
     }
 
     async initialize() {
-        try {
-            // Load initial settings if not present
-            const settings = stateManager.getSettings();
-            if (!settings.hasOwnProperty('trialUsed')) {
-                await stateManager.updateSettings({
-                    trialUsed: false,
-                    subscriptionStatus: SUBSCRIPTION_STATUS.FREE
-                });
-            }
+        // Temporarily enable all premium features
+        this.isPremium = true;
+        this.isTrialActive = false;
+        this.trialEndDate = null;
+        await this.setupEventListeners();
+    }
 
-            // Load subscription status
-            await this.loadSubscriptionStatus();
+    async isPremiumUser() {
+        // Temporarily return true for all users
+        return true;
+    }
 
-            // Initialize premium features if available
-            if (this.isPremiumUser()) {
-                await this.initializePremiumFeatures();
-            }
+    async checkFeatureAccess(featureId) {
+        // Temporarily grant access to all features
+        return true;
+    }
 
-            // Setup premium feature listeners
-            this.setupEventListeners();
-        } catch (error) {
-            console.error('Failed to initialize premium service:', error);
-        }
+    async requirePremium(featureId) {
+        // Temporarily allow all features
+        return true;
     }
 
     setupEventListeners() {
@@ -141,13 +140,6 @@ class PremiumService {
         });
     }
 
-    isPremiumUser() {
-      
-        // Check actual subscription status
-        const status = stateManager.getSettings().subscriptionStatus;
-        return status === SUBSCRIPTION_STATUS.PRO || status === SUBSCRIPTION_STATUS.TRIAL;
-    }
-
     isTrialUser() {
        
         // Check actual trial status
@@ -170,80 +162,18 @@ class PremiumService {
     }
 
     async startFreeTrial() {
-        try {
-            // Check if already premium or in trial
-            if (this.isPremiumUser()) {
-                throw new PremiumError('Already a premium user', 'ALREADY_PREMIUM');
-            }
-
-            const settings = stateManager.getSettings();
-
-            console.log('settings', settings);
-            // Initialize trial status if not present
-            if (!settings.hasOwnProperty('trialUsed')) {
-                await stateManager.updateSettings({ trialUsed: false });
-            }
-
-            if (settings.trialUsed) {
-                throw new PremiumError('Trial already used', 'TRIAL_USED');
-            }
-
-            // Set trial status first
-            await stateManager.updateSettings({
-                subscriptionStatus: SUBSCRIPTION_STATUS.TRIAL,
-                trialStartDate: new Date().toISOString(),
-                trialUsed: true
-            });
-
-            // Initialize premium features
-            await this.initializePremiumFeatures();
-
-            // Update UI
-            this.updatePremiumUI(true);
-
-            // Show success notification
-            showNotification('Trial Started', 'Welcome to your 7-day free trial!');
-
-            return { success: true };
-        } catch (error) {
-            // Show specific error messages
-            if (error instanceof PremiumError) {
-                if (error.code === 'ALREADY_PREMIUM') {
-                    showNotification('Trial Error', 'You are already a premium user');
-                } else if (error.code === 'TRIAL_USED') {
-                    showNotification('Trial Error', 'You have already used your free trial');
-                }
-            } else {
-                showNotification('Error', 'Failed to start trial. Please try again.');
-                console.error('Trial start error:', error);
-            }
-            throw error;
-        }
+        // Temporarily auto-enable premium without trial
+        this.isPremium = true;
+        this.isTrialActive = false;
+        await this.initialize();
+        return true;
     }
 
     async upgradeToPro() {
-        try {
-            // Implement payment processing here
-            // For now, just update the status
-            await stateManager.updateSettings({
-                subscriptionStatus: SUBSCRIPTION_STATUS.PRO,
-                subscriptionDate: new Date().toISOString()
-            });
-
-            // Initialize premium features
-            await this.initializePremiumFeatures();
-
-            // Update UI
-            this.updatePremiumUI(true);
-
-            return { success: true };
-        } catch (error) {
-            throw new PremiumError(
-                'Failed to upgrade to pro',
-                'UPGRADE_ERROR',
-                { originalError: error }
-            );
-        }
+        // Temporarily auto-enable premium
+        this.isPremium = true;
+        await this.initialize();
+        return true;
     }
 
     updatePremiumUI(isPremium) {
@@ -297,40 +227,6 @@ class PremiumService {
             };
             return acc;
         }, {});
-    }
-
-    async checkFeatureAccess(featureKey) {
-        try {
-            const feature = this.features[featureKey];
-            if (!feature) {
-                throw new PremiumError(
-                    'Feature not found',
-                    'FEATURE_NOT_FOUND'
-                );
-            }
-
-            const isPremium = this.isPremiumUser();
-            if (!isPremium && feature.tier !== 'free') {
-                throw new PremiumError(
-                    'Premium feature not available',
-                    'PREMIUM_REQUIRED'
-                );
-            }
-
-            return true;
-        } catch (error) {
-            if (error instanceof PremiumError) {
-                if (error.code === 'PREMIUM_REQUIRED') {
-                    return false;
-                }
-                throw error;
-            }
-            throw new PremiumError(
-                'Failed to check feature access',
-                'ACCESS_CHECK_ERROR',
-                { originalError: error }
-            );
-        }
     }
 
     getTrialDaysLeft() {

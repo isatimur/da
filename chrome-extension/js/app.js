@@ -29,7 +29,7 @@ async function getApiKeys() {
         }
 
         // If no cached keys, fetch from your secure backend
-        const response = await fetch('http://localhost:3000/api/get-api-keys', {
+        const response = await fetch('https://www.daily-affirmation.today/api/get-api-keys', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

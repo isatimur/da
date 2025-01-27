@@ -31,7 +31,9 @@
     "host_permissions": [
         "http://localhost:3000/*",
         "https://api.unsplash.com/*",
-        "https://api.openweathermap.org/*"
+        "https://api.openweathermap.org/*",
+        "https://daily-affirmation.today/*",
+        "https://www.daily-affirmation.today/*"
     ],
     "background": {
         "service_worker": "js/background-worker.js"

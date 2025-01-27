@@ -382,7 +382,6 @@ class App {
         // Settings controls
         const showWeatherCheckbox = document.getElementById('showWeather');
         const showClockCheckbox = document.getElementById('showClock');
-        const enableNotificationsCheckbox = document.getElementById('enableNotifications');
         const backgroundThemeSelect = document.getElementById('backgroundTheme');
         const cardStyleSelect = document.getElementById('cardStyle');
         const fontStyleSelect = document.getElementById('fontStyle');
@@ -392,7 +391,6 @@ class App {
         const settings = stateManager.getSettings();
         if (showWeatherCheckbox) showWeatherCheckbox.checked = settings.showWeather;
         if (showClockCheckbox) showClockCheckbox.checked = settings.showClock;
-        if (enableNotificationsCheckbox) enableNotificationsCheckbox.checked = settings.enableNotifications;
         if (backgroundThemeSelect) backgroundThemeSelect.value = settings.backgroundTheme;
         if (cardStyleSelect) cardStyleSelect.value = settings.cardStyle;
         if (fontStyleSelect) fontStyleSelect.value = settings.fontStyle;
@@ -416,10 +414,6 @@ class App {
             if (timeWidget) {
                 timeWidget.style.display = e.target.checked ? 'block' : 'none';
             }
-        });
-
-        enableNotificationsCheckbox?.addEventListener('change', (e) => {
-            stateManager.updateSettings({ enableNotifications: e.target.checked });
         });
 
         backgroundThemeSelect?.addEventListener('change', async (e) => {

@@ -28,7 +28,6 @@ class ReminderSettings {
             <div class="reminder-settings-content menu-panel glass">
                 <div class="reminder-header">
                     <h3>Daily Reminders</h3>
-                    <span class="premium-tag">PRO</span>
                     <button class="close-button material-icons-round">close</button>
                 </div>
                 
@@ -36,14 +35,13 @@ class ReminderSettings {
                     <div class="reminder-enable">
                         <label class="switch">
                             <input type="checkbox" id="enableReminder">
-                            <span class="slider round"></span>
+                            <span class="slider"></span>
                         </label>
                         <span>Enable Daily Reminders</span>
                     </div>
 
                     <div class="reminder-test">
                         <button class="test-reminder-btn" id="testReminderBtn">
-                            <i class="material-icons-round">notifications_active</i>
                             Test Notification
                         </button>
                     </div>
@@ -95,7 +93,7 @@ class ReminderSettings {
                 opacity: 0;
                 visibility: hidden;
                 transition: opacity 0.3s, visibility 0.3s;
-                backdrop-filter: blur(5px);
+                backdrop-filter: blur(8px);
             }
 
             .reminder-settings.visible {
@@ -106,8 +104,8 @@ class ReminderSettings {
             .reminder-settings-content {
                 width: 90%;
                 max-width: 500px;
-                padding: 24px;
-                border-radius: 12px;
+                padding: 32px;
+                border-radius: 16px;
                 max-height: 90vh;
                 overflow-y: auto;
                 background: rgba(23, 23, 23, 0.95);
@@ -118,7 +116,7 @@ class ReminderSettings {
             .reminder-header {
                 display: flex;
                 align-items: center;
-                margin-bottom: 24px;
+                margin-bottom: 32px;
                 padding-bottom: 16px;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
@@ -126,8 +124,9 @@ class ReminderSettings {
             .reminder-header h3 {
                 margin: 0;
                 flex-grow: 1;
-                font-size: 1.2rem;
-                font-weight: 500;
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #fff;
             }
 
             .reminder-header .close-button {
@@ -137,142 +136,31 @@ class ReminderSettings {
                 padding: 8px;
                 color: var(--color-text-primary);
                 opacity: 0.7;
-                transition: opacity 0.2s;
+                transition: all 0.2s;
+                border-radius: 50%;
             }
 
             .reminder-header .close-button:hover {
                 opacity: 1;
+                background: rgba(255, 255, 255, 0.1);
             }
 
             .reminder-body > div {
-                margin-bottom: 24px;
+                margin-bottom: 32px;
             }
 
             .reminder-enable {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 16px;
             }
 
-            .weekday-toggles {
-                display: flex;
-                gap: 8px;
-                margin-top: 8px;
-                flex-wrap: wrap;
-            }
-
-            .weekday-btn {
-                background: none;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                color: var(--color-text-primary);
-                padding: 8px 12px;
-                border-radius: 20px;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: all 0.2s;
-            }
-
-            .weekday-btn.active {
-                background: var(--color-text-primary);
-                color: var(--color-background);
-                opacity: 1;
-                border-color: var(--color-text-primary);
-            }
-
-            .time-list {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                margin: 12px 0;
-            }
-
-            .time-item {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                background: rgba(255, 255, 255, 0.05);
-                padding: 8px;
-                border-radius: 8px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-            .time-item input[type="time"] {
-                background: none;
-                border: none;
-                color: var(--color-text-primary);
-                padding: 8px;
-                border-radius: 6px;
-                flex-grow: 1;
-            }
-
-            .time-item input[type="time"]::-webkit-calendar-picker-indicator {
-                filter: invert(1);
-            }
-
-            .time-item .remove-time {
-                background: none;
-                border: none;
-                color: var(--color-text-primary);
-                cursor: pointer;
-                opacity: 0.7;
-                transition: opacity 0.2s;
-                padding: 4px;
-            }
-
-            .time-item .remove-time:hover {
-                opacity: 1;
-                color: #ff4444;
-            }
-
-            .add-time-btn {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                background: none;
-                border: 1px dashed rgba(255, 255, 255, 0.2);
-                color: var(--color-text-primary);
-                padding: 8px 16px;
-                border-radius: 6px;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: all 0.2s;
-                width: 100%;
-                justify-content: center;
-            }
-
-            .add-time-btn:hover {
-                opacity: 1;
-                border-color: var(--color-text-primary);
-            }
-
-            #reminderMessage {
-                width: 100%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                color: var(--color-text-primary);
-                padding: 12px;
-                border-radius: 6px;
-                margin-top: 8px;
-                font-size: 14px;
-            }
-
-            #reminderMessage:focus {
-                outline: none;
-                border-color: var(--color-text-primary);
-            }
-
-            .reminder-settings label {
-                display: block;
-                margin-bottom: 8px;
-                opacity: 0.8;
-                font-size: 14px;
-            }
-
+            /* Modern Switch Style */
             .switch {
                 position: relative;
                 display: inline-block;
-                width: 50px;
-                height: 24px;
+                width: 52px;
+                height: 28px;
             }
 
             .switch input {
@@ -288,35 +176,165 @@ class ReminderSettings {
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background-color: rgba(255, 255, 255, 0.2);
-                transition: .4s;
+                background-color: rgba(255, 255, 255, 0.1);
+                transition: .3s;
+                border-radius: 34px;
             }
 
             .slider:before {
                 position: absolute;
                 content: "";
-                height: 16px;
-                width: 16px;
+                height: 20px;
+                width: 20px;
                 left: 4px;
                 bottom: 4px;
                 background-color: white;
-                transition: .4s;
+                transition: .3s;
+                border-radius: 50%;
             }
 
             input:checked + .slider {
-                background-color: var(--color-text-primary);
+                background-color: #10B981;
             }
 
             input:checked + .slider:before {
-                transform: translateX(26px);
+                transform: translateX(24px);
             }
 
-            .slider.round {
-                border-radius: 34px;
+            /* Test Notification Button */
+            .test-reminder-btn {
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--color-text-primary);
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-size: 0.9rem;
             }
 
-            .slider.round:before {
-                border-radius: 50%;
+            .test-reminder-btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+                border-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .weekday-toggles {
+                display: flex;
+                gap: 8px;
+                margin-top: 12px;
+                flex-wrap: wrap;
+            }
+
+            .weekday-btn {
+                background: rgba(255, 255, 255, 0.08);
+                border: none;
+                color: var(--color-text-primary);
+                padding: 10px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-size: 0.9rem;
+            }
+
+            .weekday-btn.active {
+                background: #10B981;
+                color: white;
+            }
+
+            .weekday-btn:hover:not(.active) {
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .time-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin: 16px 0;
+            }
+
+            .time-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: rgba(255, 255, 255, 0.08);
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .time-item input[type="time"] {
+                background: none;
+                border: none;
+                color: var(--color-text-primary);
+                padding: 8px;
+                border-radius: 6px;
+                flex-grow: 1;
+                font-size: 0.95rem;
+            }
+
+            .time-item input[type="time"]::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+            }
+
+            .time-item .remove-time {
+                background: none;
+                border: none;
+                color: var(--color-text-primary);
+                cursor: pointer;
+                opacity: 0.7;
+                transition: all 0.2s;
+                padding: 8px;
+                border-radius: 6px;
+            }
+
+            .time-item .remove-time:hover {
+                opacity: 1;
+                color: #EF4444;
+                background: rgba(239, 68, 68, 0.1);
+            }
+
+            .add-time-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.08);
+                border: none;
+                color: var(--color-text-primary);
+                padding: 12px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+                width: 100%;
+                justify-content: center;
+                font-size: 0.95rem;
+            }
+
+            .add-time-btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            #reminderMessage {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: var(--color-text-primary);
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                transition: all 0.2s;
+            }
+
+            #reminderMessage:focus {
+                outline: none;
+                border-color: #10B981;
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.9rem;
             }
         `;
 

@@ -29,14 +29,14 @@ const testimonials = [
         avatar: "/testimonials/avatar3.png"
     }
 ];
-
 const pricingPlans = [
     {
         name: "Basic",
         price: "0",
+        interval: "forever",
         features: [
             "Daily curated affirmations",
-            "Basic nature backgrounds",
+            "Basic nature backgrounds", 
             "Weather & clock widgets",
             "Focus mode (basic)",
             "Local storage"
@@ -45,8 +45,9 @@ const pricingPlans = [
         popular: false
     },
     {
-        name: "Pro (Early Access)",
+        name: "Pro (Early Access)", 
         price: "0",
+        interval: "month",
         features: [
             "Everything in Basic, plus:",
             "Custom affirmations library",
@@ -67,17 +68,22 @@ const features = [
     {
         title: 'Focus Mode',
         description: 'Transform your new tab into a distraction-free sanctuary with our Focus Mode. Perfect for mindful moments and deep work sessions.',
-        image: '/features/focus-mode.png'
+        image: '/palm-leaf.png'
     },
     {
         title: 'Custom Affirmations',
         description: 'Create and save your own personal affirmations. Make your daily inspiration truly yours with our customization features.',
-        image: '/features/custom-affirmations.png'
+        image: '/custom-affirmations.png'
     },
     {
-        title: 'Cloud Sync',
-        description: 'Never lose your favorite affirmations. Sync across devices and keep your mindful moments with you wherever you go.',
-        image: '/features/cloud-sync.png'
+        title: 'Custom Backgrounds',
+        description: 'Choose from our curated collection or upload your own backgrounds. Save your favorites and create the perfect ambiance for your mindful moments.',
+        image: '/custom-backgrounds.png'
+    },
+    {
+        title: 'Daily Reminders',
+        description: 'Never miss a moment of mindfulness with customizable daily reminders. Set your preferred times and get gentle notifications to pause and reflect.',
+        image: '/daily-reminder.png'
     }
 ];
 
@@ -88,6 +94,7 @@ export default function DailyAffirmationsPage() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const [message, setMessage] = useState('');
+    const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -305,7 +312,7 @@ export default function DailyAffirmationsPage() {
                                         <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                                         <div className="mb-2">
                                             <span className="text-4xl font-bold">${plan.price}</span>
-                                            {plan.interval && (
+                                            {plan?.interval && (
                                                 <span className="text-neutral-400 ml-1">/{plan.interval}</span>
                                             )}
                                         </div>
@@ -322,7 +329,7 @@ export default function DailyAffirmationsPage() {
                                     </div>
                                     <div className="mt-8">
                                         <Button
-                                            variant={plan.popular ? "primary" : "default"}
+                                            variant={plan.popular ? "link" : "default"}
                                             size="lg"
                                             className="w-full justify-center font-medium"
                                             asChild
@@ -362,7 +369,7 @@ export default function DailyAffirmationsPage() {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="relative h-[400px]">
+                                <div className="relative h-[400px] cursor-pointer" onClick={() => setFullscreenImage(features[currentFeature].image)}>
                                     <Image
                                         src={features[currentFeature].image}
                                         alt={features[currentFeature].title}
@@ -461,6 +468,21 @@ export default function DailyAffirmationsPage() {
                     </div>
                 </section>
             </main>
+            {fullscreenImage && (
+                <div 
+                    className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center cursor-pointer"
+                    onClick={() => setFullscreenImage(null)}
+                >
+                    <Image
+                        src={fullscreenImage}
+                        alt="Feature preview"
+                        width={1200}
+                        height={800}
+                        className="max-w-[90vw] max-h-[90vh] object-contain"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                </div>
+            )}
         </>
     );
 }

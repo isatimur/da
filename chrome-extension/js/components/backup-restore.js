@@ -97,13 +97,13 @@ class BackupRestoreDialog {
     }
 
     show() {
-        this.dialog?.classList.add('visible');
+        this.dialog?.classList.add('show');
         this.updateLastBackupTime();
         this.updateCloudSyncStatus();
     }
 
     hide() {
-        this.dialog?.classList.remove('visible');
+        this.dialog?.classList.remove('show');
     }
 
     async updateLastBackupTime() {

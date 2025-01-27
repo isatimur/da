@@ -15,9 +15,10 @@ class InfoDialogs {
             const action = button.getAttribute('title')?.toLowerCase();
             if (action) {
                 button.addEventListener('click', () => {
-                    const dialogId = `${action}Dialog`;
+                    const dialogId = `${action.replace('send ', '')}Dialog`;
                     const dialog = document.getElementById(dialogId);
                     if (dialog) {
+                        dialog.classList.add('visible');
                         dialog.classList.add('show');
                     }
                 });
@@ -26,146 +27,91 @@ class InfoDialogs {
     }
 
     createDialogs() {
-        // Help Dialog
+        // Create Help dialog
         this.createDialog('help', {
-            title: 'Help & Tips',
+            title: 'Help',
             content: `
-                <div class="dialog-section">
-                    <h4>Getting Started</h4>
-                    <div class="help-list">
-                        <div class="help-item">
-                            <i class="material-icons-round">tab</i>
-                            <div>
-                                <strong>New Tab</strong>
-                                <p>Each new tab shows a fresh daily affirmation with a beautiful background</p>
-                            </div>
-                        </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">refresh</i>
-                            <div>
-                                <strong>Refresh Affirmation</strong>
-                                <p>Click the refresh button to see a different affirmation anytime</p>
-                            </div>
-                        </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">center_focus_strong</i>
-                            <div>
-                                <strong>Focus Mode</strong>
-                                <p>Toggle focus mode to hide UI elements and focus on your affirmation</p>
-                            </div>
-                        </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">settings</i>
-                            <div>
-                                <strong>Customize</strong>
-                                <p>Personalize your experience with themes, fonts, and display options</p>
-                            </div>
+                <div class="help-list">
+                    <div class="help-item">
+                        <i class="material-icons-round">new_releases</i>
+                        <div>
+                            <strong>Getting Started</strong>
+                            <p>New affirmations appear every time you open a new tab. Click the refresh button to see a new one.</p>
                         </div>
                     </div>
-                </div>
-                <div class="dialog-section">
-                    <h4>Pro Features</h4>
-                    <div class="help-list">
-                        <div class="help-item">
-                            <i class="material-icons-round">favorite</i>
-                            <div>
-                                <strong>Favorites</strong>
-                                <p>Save and organize your most meaningful affirmations</p>
-                            </div>
+                    <div class="help-item">
+                        <i class="material-icons-round">favorite</i>
+                        <div>
+                            <strong>Favorites</strong>
+                            <p>Click the heart icon to save affirmations you love. Access them anytime from the menu.</p>
                         </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">edit</i>
-                            <div>
-                                <strong>Custom Affirmations</strong>
-                                <p>Create and manage your personal collection of affirmations</p>
-                            </div>
-                        </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">notifications</i>
-                            <div>
-                                <strong>Reminders</strong>
-                                <p>Set custom times to receive your daily affirmation notifications</p>
-                            </div>
-                        </div>
-                        <div class="help-item">
-                            <i class="material-icons-round">cloud_sync</i>
-                            <div>
-                                <strong>Sync & Backup</strong>
-                                <p>Keep your affirmations and settings synced across all devices</p>
-                            </div>
+                    </div>
+                    <div class="help-item">
+                        <i class="material-icons-round">edit</i>
+                        <div>
+                            <strong>Custom Affirmations</strong>
+                            <p>Create and manage your own affirmations in the Custom Affirmations section.</p>
                         </div>
                     </div>
                 </div>
             `
         });
 
-        // Feedback Dialog
+        // Create Feedback dialog
         this.createDialog('feedback', {
             title: 'Send Feedback',
             content: `
-                <div class="dialog-section">
-                    <div class="feedback-intro">
-                        <i class="material-icons-round">chat</i>
-                        <div>
-                            <h4>We'd Love to Hear from You!</h4>
-                            <p>Your feedback helps us improve Daily Affirmations for everyone.</p>
-                        </div>
+                <div class="feedback-intro">
+                    <i class="material-icons-round">chat</i>
+                    <div>
+                        <h4>We'd love to hear from you!</h4>
+                        <p>Your feedback helps us improve Daily Affirmations for everyone.</p>
                     </div>
-                    <form class="feedback-form">
-                        <select class="dialog-input" required>
-                            <option value="">What type of feedback do you have?</option>
-                            <option value="suggestion">Feature Suggestion</option>
-                            <option value="bug">Report an Issue</option>
-                            <option value="content">Affirmation Content</option>
-                            <option value="other">Other Feedback</option>
-                        </select>
-                        <textarea class="dialog-input" required 
-                            placeholder="Tell us what's on your mind... We read every message!" 
-                            rows="4"></textarea>
-                        <button type="submit" class="dialog-button">
-                            <i class="material-icons-round">send</i>
-                            Send Feedback
-                        </button>
-                    </form>
                 </div>
+                <form class="feedback-form">
+                    <select class="dialog-input" name="type" required>
+                        <option value="" disabled selected>Select feedback type</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="bug">Bug Report</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input type="email" class="dialog-input" name="email" placeholder="Your email (optional)">
+                    <textarea class="dialog-input" name="message" rows="4" placeholder="Tell us what you think..." required></textarea>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="subscribe">
+                        Keep me updated on new features
+                    </label>
+                    <button type="submit" class="dialog-button primary">
+                        <i class="material-icons-round">send</i>
+                        Send Feedback
+                    </button>
+                </form>
             `
         });
 
-        // About Dialog
+        // Create About dialog
         this.createDialog('about', {
             title: 'About Daily Affirmations',
             content: `
-                <div class="dialog-section">
-                    <div class="about-header">
-                        <img src="images/icon-128.png" alt="Daily Affirmations" />
-                        <div>
-                            <h4>Daily Affirmations</h4>
-                            <span class="version">Version 1.0.0</span>
-                        </div>
-                    </div>
-                    <p class="about-description">
-                        Transform your mindset with daily positive affirmations. Our mission is to help you start each day with intention, positivity, and mindfulness.
-                    </p>
+                <div class="about-header">
+                    <h4>Version 1.0.0</h4>
+                    <p>Transform your mindset with daily positive affirmations.</p>
                 </div>
-                <div class="dialog-section">
-                    <h4>Features</h4>
-                    <ul class="about-features">
-                        <li>✨ Beautiful backgrounds from Unsplash</li>
-                        <li>🎯 Personalized daily affirmations</li>
-                        <li>🌤️ Local weather integration</li>
-                        <li>💫 Focus mode for mindfulness</li>
-                        <li>🔄 Cross-device synchronization</li>
+                <div class="about-features">
+                    <ul>
+                        <li><i class="material-icons-round">auto_awesome</i> Daily curated affirmations</li>
+                        <li><i class="material-icons-round">favorite</i> Save your favorites</li>
+                        <li><i class="material-icons-round">edit</i> Create custom affirmations</li>
+                        <li><i class="material-icons-round">backup</i> Cloud backup & sync</li>
                     </ul>
                 </div>
-                <div class="dialog-section">
-                    <div class="about-footer">
-                        <div class="about-links">
-                            <a href="https://daily-affirmations.today/privacy" target="_blank">Privacy Policy</a>
-                            <span class="separator">•</span>
-                            <a href="https://daily-affirmations.today/terms" target="_blank">Terms of Service</a>
-                        </div>
-                        <p class="copyright">Made with ❤️ by Daily Apps</p>
+                <div class="about-footer">
+                    <div class="about-links">
+                        <a href="/privacy" target="_blank">Privacy Policy</a>
+                        <span class="separator">•</span>
+                        <a href="/terms" target="_blank">Terms of Service</a>
                     </div>
+                    <p class="copyright">© 2024 Daily Affirmations. All rights reserved.</p>
                 </div>
             `
         });
@@ -192,10 +138,14 @@ class InfoDialogs {
 
         // Add event listeners
         const closeButton = dialog.querySelector('.close-button');
-        closeButton?.addEventListener('click', () => dialog.classList.remove('show'));
+        closeButton?.addEventListener('click', () => {
+            dialog.classList.remove('visible');
+            dialog.classList.remove('show');
+        });
 
         dialog.addEventListener('click', (e) => {
             if (e.target === dialog) {
+                dialog.classList.remove('visible');
                 dialog.classList.remove('show');
             }
         });
@@ -203,13 +153,53 @@ class InfoDialogs {
         // Handle feedback form submission
         if (id === 'feedback') {
             const form = dialog.querySelector('.feedback-form');
-            form?.addEventListener('submit', (e) => {
+            form?.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(form);
-                console.log('Feedback submitted:', Object.fromEntries(formData));
-                dialog.classList.remove('show');
-                this.showNotification('Thank you!', 'Your feedback has been received.');
-                form.reset();
+                const data = Object.fromEntries(formData);
+                
+                // Get submit button reference before try block
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                try {
+                    // Show loading state
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="material-icons-round">hourglass_top</i> Sending...';
+                    
+                    // Send feedback to API
+                    const response = await fetch('https://daily-affirmation.today/api/feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: data.type,
+                            email: data.email || undefined,
+                            message: data.message,
+                            subscribe: data.subscribe === 'on',
+                            source: 'chrome_extension',
+                            version: chrome.runtime.getManifest().version
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to send feedback');
+                    }
+                    
+                    // Success
+                    dialog.classList.remove('visible');
+                    dialog.classList.remove('show');
+                    this.showNotification('Thank you!', 'Your feedback has been received. We appreciate your input!');
+                    form.reset();
+                } catch (error) {
+                    console.error('Failed to submit feedback:', error);
+                    this.showNotification('Error', 'Failed to send feedback. Please try again.');
+                } finally {
+                    // Reset button state
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalText;
+                }
             });
         }
 

@@ -151,7 +151,7 @@ export default function DailyAffirmationsPage() {
                         </p>
                         <div className="flex items-center justify-center gap-4">
                             <a
-                                href="https://chrome.google.com/webstore"
+                                href="https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-brand text-neutral-950 font-semibold hover:opacity-90 transition-opacity"
@@ -166,7 +166,7 @@ export default function DailyAffirmationsPage() {
                         </div>
                     </div>
                 </section>
-
+                
                 {/* Features Showcase */}
                 <section id="features" className="py-20 px-4">
                     <div className="container mx-auto">

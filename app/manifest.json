@@ -1,6 +1,8 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Daily Affirmations",
+  "short_name": "Daily Affirm",
+  "description": "Transform your new tab with daily inspiration and mindful moments",
+  "start_url": "https://daily-affirmation.today",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -13,9 +15,37 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone"
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation": "any",
+  "categories": ["productivity", "lifestyle", "mindfulness"],
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "label": "Daily Affirmations Home Screen"
+    }
+  ],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "chrome_web_store",
+      "url": "https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle",
+      "id": "nhhicimcipdgjckacooendaikhjhenle"
+    }
+  ]
 }

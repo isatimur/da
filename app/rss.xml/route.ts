@@ -23,7 +23,6 @@ export async function GET() {
           <pubDate>${new Date(post.date).toUTCString()}</pubDate>
           <dc:creator><![CDATA[Daily Affirmations Team]]></dc:creator>
           <category><![CDATA[${post.category}]]></category>
-          ${post.tags?.map(tag => `<category><![CDATA[${tag}]]></category>`).join('') || ''}
         </item>
       `).join('')}
   </channel>

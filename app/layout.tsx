@@ -69,7 +69,7 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
                 "name": "Daily Affirmations",
-                "applicationCategory": "BrowserExtension",
+                "applicationCategory": ["BrowserExtension", "LifestyleApplication"],
                 "operatingSystem": "Chrome",
                 "offers": {
                   "@type": "Offer",
@@ -96,7 +96,6 @@ export default function RootLayout({
                     "url": "https://daily-affirmation.today/logo.png"
                   }
                 },
-                "applicationCategory": "LifestyleApplication",
                 "downloadUrl": "https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle",
                 "featureList": [
                   "Daily curated affirmations",

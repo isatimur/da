@@ -1047,6 +1047,323 @@ body.focus-mode .time-widget {
     margin: 0;
 }
 
+/* Notes Widget */
+.notes-widget {
+    position: absolute;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+    width: 300px;
+    height: 400px;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    /* Glass effect is already applied by the .glass class */
+}
+
+.notes-widget h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+    text-align: center;
+}
+
+#notes-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-right: var(--space-xs); /* For scrollbar */
+}
+
+.note-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.note-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.note-item .note-text {
+    flex-grow: 1;
+    margin-right: var(--space-sm);
+}
+
+.note-item .delete-note-button {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-item .delete-note-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ef4444; /* Red for delete */
+}
+
+.add-note-section {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: auto; /* Pushes to the bottom */
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--glass-border);
+}
+
+#new-note-input {
+    flex-grow: 1;
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
+    font-size: 0.9375rem;
+}
+
+#new-note-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#add-note-button {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#add-note-button:hover {
+    background: var(--accent-color-dark);
+}
+
+/* To-Do List Widget */
+.todo-widget {
+    position: absolute;
+    bottom: var(--space-lg); /* Adjust as needed, might conflict with notes */
+    left: var(--space-lg); /* Adjust to be beside notes or elsewhere */
+    width: 300px;
+    height: 400px;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    /* Glass effect is already applied by the .glass class */
+}
+
+.todo-widget h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-primary);
+    text-align: center;
+}
+
+#todo-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding-right: var(--space-xs); /* For scrollbar */
+}
+
+.task-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.task-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.task-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color); /* Style the checkmark color */
+    cursor: pointer;
+}
+
+.task-item .task-text {
+    flex-grow: 1;
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.task-item .task-text.completed {
+    text-decoration: line-through;
+    color: var(--color-text-secondary);
+}
+
+.task-item .delete-task-button {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-item .delete-task-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ef4444; /* Red for delete */
+}
+
+.add-task-section {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: auto; /* Pushes to the bottom */
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--glass-border);
+}
+
+#new-task-input {
+    flex-grow: 1;
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary);
+    font-size: 0.9375rem;
+}
+
+#new-task-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#add-task-button {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#add-task-button:hover {
+    background: var(--accent-color-dark);
+}
+
+/* Pomodoro Timer Widget */
+.pomodoro-widget {
+    position: absolute;
+    /* Example positioning: top-right of other widgets, adjust as needed */
+    top: calc(var(--space-lg) + 400px + var(--space-lg)); /* Below notes/todo if they are 400px high */
+    right: var(--space-lg);
+    width: 280px; /* Slightly smaller width */
+    height: auto; /* Auto height based on content */
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    gap: var(--space-md);
+    /* Glass effect is already applied by the .glass class */
+}
+
+.pomodoro-widget h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: var(--space-xs); /* Reduced margin */
+}
+
+#pomodoro-display {
+    font-size: 3rem; /* Large timer text */
+    font-weight: 300;
+    color: var(--color-text-primary);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace; /* Monospaced font for timer */
+}
+
+#pomodoro-status {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: var(--space-sm);
+}
+
+.pomodoro-controls {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center; /* Center buttons */
+    width: 100%;
+}
+
+.pomodoro-controls button {
+    flex-grow: 1; /* Allow buttons to share space */
+    padding: var(--space-sm) var(--space-xs); /* Adjusted padding */
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--accent-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    font-size: 0.875rem; /* Slightly smaller font for buttons */
+}
+
+.pomodoro-controls button:hover {
+    background: var(--accent-color-dark);
+}
+
+.pomodoro-controls button:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Specific button styling if needed, e.g., for pause/reset */
+#pomodoro-pause {
+    background: #f59e0b; /* Amber color for pause */
+}
+#pomodoro-pause:hover {
+    background: #d97706; /* Darker amber */
+}
+
+#pomodoro-reset {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--color-text-primary);
+}
+#pomodoro-reset:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
 .menu-group li {
     display: flex;
     align-items: center;

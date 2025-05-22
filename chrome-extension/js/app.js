@@ -14,6 +14,9 @@ import { requirePremium } from './utils/premium.js';
 import favoritesManager from './components/favorites-manager.js';
 import savedBackgroundsManager from './components/saved-backgrounds.js';
 import backupRestoreDialog from './components/backup-restore.js';
+import { initNotesWidget } from './components/notes.js';
+import { initTodoWidget } from './components/todo.js';
+import { initPomodoroWidget } from './components/pomodoro.js';
 
 // API Keys management
 async function getApiKeys() {
@@ -600,7 +603,12 @@ class App {
 
 // Create and initialize app when DOM is loaded
 const app = new App();
-document.addEventListener('DOMContentLoaded', () => app.initialize());
+document.addEventListener('DOMContentLoaded', () => {
+    app.initialize();
+    initNotesWidget(); // Initialize the notes widget
+    initTodoWidget(); // Initialize the to-do widget
+    initPomodoroWidget(); // Initialize the Pomodoro widget
+});
 
 // Cleanup before page unload
 window.addEventListener('beforeunload', () => {

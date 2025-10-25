@@ -1,0 +1,22 @@
+{
+  "buildTime": "2025-10-25T22:19:25.422Z",
+  "version": "1.0.0",
+  "files": {
+    "css": [
+      "bundle.css",
+      "bundle.min.css"
+    ],
+    "js": [
+      "app.js",
+      "init.js"
+    ],
+    "images": [
+      "icon-128.png",
+      "icon-16.png",
+      "icon-32.png",
+      "icon-48.png",
+      "icon.png",
+      "points.svg"
+    ]
+  }
+}

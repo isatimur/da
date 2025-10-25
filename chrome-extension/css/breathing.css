@@ -1,0 +1,1548 @@
+/**
+ * Breathing Experience CSS Styles
+ * Modal styling, animations, and responsive design
+ */
+
+/* Breathing Modal */
+.breathing-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.breathing-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.breathing-modal-content {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 0;
+    max-width: 95vw;
+    max-height: 90vh;
+    min-width: 400px;
+    min-height: 500px;
+    width: 600px;
+    height: auto;
+    color: var(--color-text-primary);
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Custom Scrollbar */
+.breathing-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.breathing-modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.breathing-modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.breathing-modal-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar */
+.breathing-modal-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+}
+
+/* Disable text selection for all elements inside modal */
+.breathing-modal * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Allow text selection for input fields and textareas */
+.breathing-modal input,
+.breathing-modal textarea,
+.breathing-modal select {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+}
+
+/* Modal Header */
+.breathing-modal-header {
+    padding: 1.5rem 2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.breathing-modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.breathing-close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.breathing-close-btn:hover {
+    background: var(--glass-bg-hover);
+    color: var(--color-text-primary);
+    transform: scale(1.1);
+}
+
+/* Breathing Circle Animation */
+.breathing-circle-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: radial-gradient(circle at center, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
+    min-height: 280px;
+}
+
+.breathing-circle-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.breathing-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 40px rgba(79, 70, 229, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-circle::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    animation: breathe-glow 4s ease-in-out infinite;
+}
+
+.breathing-circle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+    transform: translate(-50%, -50%);
+    animation: breathe-pulse 2s ease-in-out infinite;
+}
+
+/* Phase-specific colors */
+.breathing-circle.inhale {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    box-shadow: 
+        0 20px 40px rgba(59, 130, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-circle.hold {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 
+        0 20px 40px rgba(139, 92, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-circle.exhale {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 
+        0 20px 40px rgba(16, 185, 129, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-circle.hold_after_exhale {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 
+        0 20px 40px rgba(245, 158, 11, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Breathing phase text */
+.breathing-phase-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    position: relative;
+}
+
+.breathing-instruction {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    max-width: 200px;
+    text-align: center;
+    line-height: 1.4;
+    z-index: 2;
+    position: relative;
+}
+
+/* Session Controls */
+.breathing-controls-wrapper {
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 24px 24px;
+    flex-shrink: 0;
+}
+
+.breathing-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.breathing-control-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 1rem 1.75rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    min-height: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.breathing-control-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.breathing-control-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.breathing-control-btn:hover::before {
+    left: 100%;
+}
+
+.breathing-control-btn:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.breathing-control-btn.primary {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: white;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    font-weight: 800;
+}
+
+.breathing-control-btn.primary:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.breathing-control-btn.danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: white;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+    font-weight: 800;
+}
+
+.breathing-control-btn.danger:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.4);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.breathing-control-btn.secondary {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    color: var(--color-text-primary);
+    font-weight: 700;
+}
+
+.breathing-control-btn.secondary:hover {
+    background: var(--glass-bg-hover);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-primary);
+}
+
+/* Session Setup */
+.breathing-setup {
+    padding: 2.5rem 2rem;
+    background: var(--glass-bg);
+    border-top: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 0 0 24px 24px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.breathing-setup h3 {
+    margin-bottom: 2.5rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-align: center;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.breathing-pattern-selector {
+    margin-bottom: 2.5rem;
+}
+
+.breathing-pattern-selector label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.breathing-pattern-selector select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: left;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+}
+
+.breathing-pattern-selector select:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.breathing-pattern-selector select:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.breathing-pattern-selector select option {
+    background: #1a1a1a;
+    color: white;
+    padding: 0.5rem;
+}
+
+.breathing-duration-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+}
+
+.breathing-duration-selector label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+.duration-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 0.75rem 1.25rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.duration-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.duration-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.duration-btn:hover::before {
+    left: 100%;
+}
+
+.duration-btn.active {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-color: rgba(79, 70, 229, 0.3);
+    color: white;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+    transform: translateY(-2px);
+}
+
+.duration-btn.active:hover {
+    background: linear-gradient(135deg, #4338ca, #6d28d9);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+/* Session Progress */
+.breathing-progress {
+    padding: 1.5rem 2rem;
+    background: var(--glass-bg);
+    border-top: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+}
+
+.breathing-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.breathing-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    border-radius: 3px;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+}
+
+.breathing-session-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.breathing-session-info span {
+    background: var(--glass-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Breathing Reports */
+.breathing-reports {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(5px);
+    max-height: 200px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.breathing-reports-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breathing-reports-title::before {
+    content: '📊';
+    font-size: 1rem;
+}
+
+.breathing-report-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.breathing-report-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(2px);
+}
+
+.breathing-report-item:last-child {
+    margin-bottom: 0;
+}
+
+.breathing-report-phase {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.breathing-report-phase.inhale {
+    color: #3b82f6;
+}
+
+.breathing-report-phase.hold {
+    color: #8b5cf6;
+}
+
+.breathing-report-phase.exhale {
+    color: #10b981;
+}
+
+.breathing-report-phase.hold_after_exhale {
+    color: #f59e0b;
+}
+
+.breathing-report-phase-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.7;
+}
+
+.breathing-report-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.breathing-report-duration {
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.breathing-report-timestamp {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+/* Custom scrollbar for reports */
+.breathing-reports::-webkit-scrollbar {
+    width: 6px;
+}
+
+.breathing-reports::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 3px;
+}
+
+.breathing-reports::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.breathing-reports::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Firefox scrollbar for reports */
+.breathing-reports {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.03);
+}
+
+/* Session Summary */
+.breathing-summary {
+    text-align: center;
+    padding: 1rem;
+}
+
+.breathing-summary h3 {
+    margin-bottom: 1rem;
+    color: #22c55e;
+}
+
+.breathing-summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.summary-stat {
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.summary-stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #22c55e;
+    margin-bottom: 0.25rem;
+}
+
+.summary-stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Close Button */
+.breathing-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.breathing-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Floating Breathing Button */
+.breathing-floating-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    transition: all 0.3s ease;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.breathing-floating-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+.breathing-floating-btn:active {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes breathe-glow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes breathe-pulse {
+    0%, 100% {
+        opacity: 0.05;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.1;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+@keyframes breathe-expand {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes breathe-contract {
+    0% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes breathe-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Breathing circle animations */
+.breathing-circle.breathing-active {
+    animation: breathe-glow 4s ease-in-out infinite;
+}
+
+.breathing-circle.breathing-inhale {
+    animation: breathe-expand 4s ease-in-out infinite;
+}
+
+.breathing-circle.breathing-exhale {
+    animation: breathe-contract 4s ease-in-out infinite;
+}
+
+.breathing-circle.breathing-hold {
+    animation: breathe-pulse 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .breathing-modal-content {
+        width: 95vw;
+        max-height: 85vh;
+        min-width: 350px;
+        min-height: 450px;
+        height: auto;
+    }
+    
+    .breathing-circle-container {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .breathing-circle {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .breathing-phase-text {
+        font-size: 1.5rem;
+    }
+    
+    .breathing-instruction {
+        font-size: 0.8rem;
+        max-width: 160px;
+    }
+    
+    .breathing-controls {
+        gap: 1.5rem;
+    }
+    
+    .breathing-control-btn {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+        min-height: 45px;
+    }
+    
+    .breathing-duration-selector {
+        gap: 0.5rem;
+    }
+    
+    .duration-btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+    
+    .breathing-setup,
+    .breathing-controls-wrapper,
+    .breathing-progress {
+        padding: 1.5rem;
+    }
+    
+    .breathing-floating-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .breathing-modal-content {
+        width: 98vw;
+        max-height: 90vh;
+        min-width: 300px;
+        min-height: 400px;
+        height: auto;
+        padding: 0.5rem;
+    }
+    
+    .breathing-circle-container {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .breathing-circle {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .breathing-phase-text {
+        font-size: 1.2rem;
+    }
+    
+    .breathing-instruction {
+        font-size: 0.75rem;
+        max-width: 120px;
+    }
+    
+    .breathing-control-btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+        min-height: 40px;
+    }
+    
+    .duration-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        min-height: 35px;
+    }
+    
+    .breathing-setup,
+    .breathing-controls-wrapper,
+    .breathing-progress {
+        padding: 1rem;
+    }
+    
+    .breathing-duration-selector {
+        gap: 0.25rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Accessibility */
+.breathing-modal:focus-within {
+    outline: none;
+}
+
+.breathing-control-btn:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+}
+
+.duration-btn:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+}
+
+.breathing-floating-btn:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .breathing-modal-content {
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid white;
+    }
+    
+    .breathing-circle {
+        border: 2px solid white;
+    }
+    
+    .breathing-control-btn {
+        border: 2px solid white;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .breathing-circle,
+    .breathing-circle::before {
+        animation: none;
+    }
+    
+    .breathing-circle.breathing-inhale,
+    .breathing-circle.breathing-exhale,
+    .breathing-circle.breathing-hold {
+        animation: none;
+    }
+    
+    .breathing-modal,
+    .breathing-control-btn,
+    .breathing-floating-btn {
+        transition: none;
+    }
+}
+
+/* Breathing Analytics Styles */
+.breathing-analytics {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.breathing-analytics.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.breathing-analytics-content {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 800px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.breathing-analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.breathing-analytics-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.breathing-analytics-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.breathing-analytics-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.breathing-analytics-nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.breathing-analytics-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.breathing-analytics-tab:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.breathing-analytics-tab.active {
+    color: #22c55e;
+    border-bottom-color: #22c55e;
+}
+
+.breathing-analytics-tab-content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Stats Grid */
+.breathing-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.breathing-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.breathing-stat-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.breathing-stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #22c55e;
+    margin-bottom: 0.5rem;
+}
+
+.breathing-stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Streak Section */
+.breathing-streak-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.breathing-streak-section h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.streak-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.streak-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #22c55e;
+}
+
+.streak-label {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* Recent Sessions */
+.breathing-session-list {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.breathing-session-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease;
+}
+
+.breathing-session-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.breathing-session-item:last-child {
+    border-bottom: none;
+}
+
+.breathing-session-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.breathing-session-pattern {
+    font-weight: 500;
+    color: #22c55e;
+}
+
+.breathing-session-date {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.breathing-session-duration {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.sessions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.session-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.session-pattern {
+    font-weight: 500;
+    flex: 1;
+}
+
+.session-details {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    flex: 2;
+}
+
+.session-status {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.session-status.completed {
+    background: #22c55e;
+    color: white;
+}
+
+.session-status.incomplete {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.no-sessions {
+    text-align: center;
+    opacity: 0.6;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Charts */
+.chart-header {
+    margin-bottom: 1rem;
+}
+
+.chart-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.chart-bars {
+    display: flex;
+    align-items: end;
+    gap: 0.5rem;
+    height: 200px;
+    padding: 1rem 0;
+}
+
+.chart-bar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.chart-bar {
+    width: 100%;
+    background: linear-gradient(to top, #22c55e, #16a34a);
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.chart-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+.chart-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #22c55e;
+}
+
+/* Summary Stats */
+.breathing-weekly-summary,
+.breathing-monthly-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.summary-stat {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #22c55e;
+    margin-bottom: 0.25rem;
+}
+
+.summary-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Patterns */
+.patterns-header {
+    margin-bottom: 1rem;
+}
+
+.patterns-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.patterns-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pattern-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pattern-name {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.pattern-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+.pattern-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.pattern-stat .stat-label {
+    opacity: 0.8;
+}
+
+.pattern-stat .stat-value {
+    font-weight: 500;
+    color: #22c55e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .breathing-analytics-content {
+        width: 95vw;
+        padding: 1.5rem;
+    }
+    
+    .breathing-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .breathing-analytics-nav {
+        flex-wrap: wrap;
+    }
+    
+    .breathing-analytics-tab {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .chart-bars {
+        height: 150px;
+    }
+    
+    .session-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .session-details {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .breathing-analytics-content {
+        padding: 1rem;
+    }
+    
+    .breathing-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .streak-number {
+        font-size: 2rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .chart-bars {
+        height: 120px;
+    }
+}
+
+/* Language Switcher */
+.language-switcher {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.language-switcher-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+}
+
+.language-switcher-select {
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-height: 50px;
+    text-align: center;
+}
+
+.language-switcher-select:hover {
+    background: var(--glass-bg-hover);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.language-switcher-select:focus {
+    outline: none;
+    border-color: rgba(79, 70, 229, 0.5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.language-switcher-select option {
+    background: var(--glass-bg);
+    color: var(--color-text-primary);
+    padding: 0.5rem;
+}

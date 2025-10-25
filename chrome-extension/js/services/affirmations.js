@@ -3,6 +3,8 @@ import stateManager from '../modules/state.js';
 import { withErrorBoundary } from '../utils/common.js';
 import { requirePremium } from '../utils/premium.js';
 import { defaultAffirmations } from '../data/affirmations.js';
+import logger from '../utils/logger.js';
+import errorBoundary from '../utils/errorBoundary.js';
 
 class AffirmationError extends Error {
     constructor(message, code, details = {}) {
@@ -16,6 +18,105 @@ class AffirmationError extends Error {
 class AffirmationsService {
     constructor() {
         this.defaultAffirmations = defaultAffirmations;
+        this.isOnline = navigator.onLine;
+        this.cachedAffirmations = null;
+        this.lastFetchTime = null;
+        this.cacheTimeout = 24 * 60 * 60 * 1000; // 24 hours
+        
+        this.setupOnlineStatusListener();
+        this.initializeOfflineSupport();
+    }
+
+    /**
+     * Setup online/offline status listener
+     */
+    setupOnlineStatusListener() {
+        window.addEventListener('online', () => {
+            this.isOnline = true;
+            logger.info('Connection restored - online mode');
+            this.clearCache(); // Clear cache when back online
+        });
+
+        window.addEventListener('offline', () => {
+            this.isOnline = false;
+            logger.info('Connection lost - offline mode');
+        });
+    }
+
+    /**
+     * Initialize offline support
+     */
+    async initializeOfflineSupport() {
+        try {
+            // Cache affirmations for offline use
+            await this.cacheAffirmations();
+            logger.info('Offline support initialized');
+        } catch (error) {
+            logger.error('Failed to initialize offline support', { error: error.message });
+        }
+    }
+
+    /**
+     * Cache affirmations for offline use
+     */
+    async cacheAffirmations() {
+        try {
+            const affirmations = this.getAllAffirmations();
+            this.cachedAffirmations = affirmations;
+            this.lastFetchTime = Date.now();
+            
+            // Store in chrome storage for persistence
+            await chrome.storage.local.set({
+                cachedAffirmations: affirmations,
+                lastAffirmationCache: Date.now()
+            });
+            
+            logger.debug('Affirmations cached for offline use', { count: affirmations.length });
+        } catch (error) {
+            logger.error('Failed to cache affirmations', { error: error.message });
+        }
+    }
+
+    /**
+     * Load cached affirmations from storage
+     */
+    async loadCachedAffirmations() {
+        try {
+            const { cachedAffirmations, lastAffirmationCache } = await chrome.storage.local.get([
+                'cachedAffirmations', 
+                'lastAffirmationCache'
+            ]);
+            
+            if (cachedAffirmations && lastAffirmationCache) {
+                this.cachedAffirmations = cachedAffirmations;
+                this.lastFetchTime = lastAffirmationCache;
+                logger.debug('Cached affirmations loaded from storage');
+                return true;
+            }
+            
+            return false;
+        } catch (error) {
+            logger.error('Failed to load cached affirmations', { error: error.message });
+            return false;
+        }
+    }
+
+    /**
+     * Check if cache is valid
+     */
+    isCacheValid() {
+        if (!this.lastFetchTime) return false;
+        return Date.now() - this.lastFetchTime < this.cacheTimeout;
+    }
+
+    /**
+     * Clear cached affirmations
+     */
+    clearCache() {
+        this.cachedAffirmations = null;
+        this.lastFetchTime = null;
+        chrome.storage.local.remove(['cachedAffirmations', 'lastAffirmationCache']);
+        logger.debug('Affirmation cache cleared');
     }
 
     // Get all affirmations including custom ones
@@ -25,10 +126,78 @@ class AffirmationsService {
         return [...this.defaultAffirmations, ...customAffirmations];
     }
 
-    // Get random affirmation
-    getRandomAffirmation() {
-        const affirmations = this.getAllAffirmations();
-        return affirmations[Math.floor(Math.random() * affirmations.length)];
+    // Get random affirmation with offline support
+    async getRandomAffirmation() {
+        try {
+            // Try to get fresh affirmations if online
+            if (this.isOnline) {
+                const affirmations = this.getAllAffirmations();
+                if (affirmations.length > 0) {
+                    // Update cache
+                    await this.cacheAffirmations();
+                    return this.selectRandomAffirmation(affirmations);
+                }
+            }
+
+            // Fallback to cached affirmations
+            if (this.cachedAffirmations && this.cachedAffirmations.length > 0) {
+                logger.debug('Using cached affirmations (offline mode)');
+                return this.selectRandomAffirmation(this.cachedAffirmations);
+            }
+
+            // Load from storage if not in memory
+            const loaded = await this.loadCachedAffirmations();
+            if (loaded && this.cachedAffirmations && this.cachedAffirmations.length > 0) {
+                logger.debug('Using stored affirmations (offline mode)');
+                return this.selectRandomAffirmation(this.cachedAffirmations);
+            }
+
+            // Final fallback to default affirmations
+            logger.warn('Using default affirmations as final fallback');
+            return this.selectRandomAffirmation(this.defaultAffirmations);
+
+        } catch (error) {
+            logger.error('Error getting random affirmation', { error: error.message });
+            // Ultimate fallback
+            return this.defaultAffirmations[0] || "I am capable of achieving my goals.";
+        }
+    }
+
+    /**
+     * Select a random affirmation from a list
+     * @param {Array} affirmations - Array of affirmations
+     * @returns {string} Random affirmation
+     */
+    selectRandomAffirmation(affirmations) {
+        if (!affirmations || affirmations.length === 0) {
+            return "I am capable of achieving my goals.";
+        }
+        
+        const randomIndex = Math.floor(Math.random() * affirmations.length);
+        return affirmations[randomIndex];
+    }
+
+    /**
+     * Get affirmation with smart caching
+     * @param {boolean} forceRefresh - Force refresh from source
+     * @returns {Promise<string>} Affirmation text
+     */
+    async getAffirmation(forceRefresh = false) {
+        // If offline or cache is valid and not forcing refresh, use cache
+        if (!forceRefresh && (!this.isOnline || this.isCacheValid())) {
+            if (this.cachedAffirmations && this.cachedAffirmations.length > 0) {
+                return this.selectRandomAffirmation(this.cachedAffirmations);
+            }
+        }
+
+        // Try to get fresh affirmation
+        try {
+            const affirmation = await this.getRandomAffirmation();
+            return affirmation;
+        } catch (error) {
+            logger.error('Failed to get affirmation', { error: error.message });
+            return this.selectRandomAffirmation(this.defaultAffirmations);
+        }
     }
 
     // Add custom affirmation (premium feature)
@@ -288,7 +457,7 @@ class AffirmationsService {
     // Main update function with error boundary
     update = withErrorBoundary(
         async () => {
-            const affirmation = this.getRandomAffirmation();
+            const affirmation = await this.getRandomAffirmation();
             this.updateDisplay(affirmation);
         },
         () => {

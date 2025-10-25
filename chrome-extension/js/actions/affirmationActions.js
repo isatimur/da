@@ -15,13 +15,30 @@ export function setupAffirmationActions() {
     // Toggle actions visibility
     menuButton.addEventListener('click', (e) => {
         e.stopPropagation();
-        actionsContainer.classList.toggle('show');
+        const isVisible = actionsContainer.classList.contains('show');
+        
+        if (isVisible) {
+            // Hide menu
+            actionsContainer.classList.remove('show');
+            actionsContainer.setAttribute('aria-hidden', 'true');
+            actionsContainer.setAttribute('inert', '');
+            menuButton.setAttribute('aria-expanded', 'false');
+        } else {
+            // Show menu
+            actionsContainer.classList.add('show');
+            actionsContainer.removeAttribute('aria-hidden');
+            actionsContainer.removeAttribute('inert');
+            menuButton.setAttribute('aria-expanded', 'true');
+        }
     });
 
     // Close actions when clicking outside
     document.addEventListener('click', (e) => {
         if (!actionsContainer.contains(e.target) && !menuButton.contains(e.target)) {
             actionsContainer.classList.remove('show');
+            actionsContainer.setAttribute('aria-hidden', 'true');
+            actionsContainer.setAttribute('inert', '');
+            menuButton.setAttribute('aria-expanded', 'false');
         }
     });
 
@@ -112,6 +129,9 @@ export function setupAffirmationActions() {
 
         // Close actions after performing action
         actionsContainer.classList.remove('show');
+        actionsContainer.setAttribute('aria-hidden', 'true');
+        actionsContainer.setAttribute('inert', '');
+        menuButton.setAttribute('aria-expanded', 'false');
     });
 
     // Initialize favorite button state

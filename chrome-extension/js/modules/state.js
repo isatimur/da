@@ -40,6 +40,30 @@ const defaultSettings = {
         viewHistory: [],
         mostViewed: [],
         leastViewed: []
+    },
+    breathing: {
+        defaultPattern: 'box',
+        defaultDuration: 5,
+        autoStart: false,
+        soundEnabled: false,
+        theme: 'default',
+        showAnalytics: true,
+        sessionHistory: [],
+        streakData: {
+            current: 0,
+            longest: 0,
+            lastSessionDate: null
+        },
+        statistics: {
+            totalSessions: 0,
+            totalMinutes: 0,
+            totalCycles: 0,
+            averageSessionDuration: 0,
+            completionRate: 0,
+            favoritePattern: null,
+            sessionsThisWeek: 0,
+            sessionsThisMonth: 0
+        }
     }
 };
 
@@ -261,6 +285,132 @@ class StateManager {
     // Get current settings
     getSettings() {
         return { ...this.currentSettings };
+    }
+
+    // Breathing-specific methods
+    async updateBreathingSettings(updates) {
+        try {
+            const newBreathingSettings = {
+                ...this.currentSettings.breathing,
+                ...updates
+            };
+            
+            await this.updateSettings({
+                breathing: newBreathingSettings
+            });
+            
+            this.notifyListeners('breathingSettingsUpdated', newBreathingSettings);
+        } catch (error) {
+            throw new StateError(
+                'Failed to update breathing settings',
+                'BREATHING_UPDATE_ERROR',
+                { originalError: error }
+            );
+        }
+    }
+
+    getBreathingSettings() {
+        return { ...this.currentSettings.breathing };
+    }
+
+    async saveBreathingSession(sessionData) {
+        try {
+            const breathingSettings = this.getBreathingSettings();
+            const updatedHistory = [sessionData, ...breathingSettings.sessionHistory];
+            
+            // Keep only last 100 sessions
+            const trimmedHistory = updatedHistory.slice(0, 100);
+            
+            await this.updateBreathingSettings({
+                sessionHistory: trimmedHistory
+            });
+            
+            this.notifyListeners('breathingSessionSaved', sessionData);
+        } catch (error) {
+            throw new StateError(
+                'Failed to save breathing session',
+                'BREATHING_SESSION_SAVE_ERROR',
+                { originalError: error }
+            );
+        }
+    }
+
+    getBreathingSessionHistory(limit = 50) {
+        const breathingSettings = this.getBreathingSettings();
+        return breathingSettings.sessionHistory.slice(0, limit);
+    }
+
+    async updateBreathingStreak(streakData) {
+        try {
+            await this.updateBreathingSettings({
+                streakData: streakData
+            });
+            
+            this.notifyListeners('breathingStreakUpdated', streakData);
+        } catch (error) {
+            throw new StateError(
+                'Failed to update breathing streak',
+                'BREATHING_STREAK_UPDATE_ERROR',
+                { originalError: error }
+            );
+        }
+    }
+
+    getBreathingStreak() {
+        const breathingSettings = this.getBreathingSettings();
+        return { ...breathingSettings.streakData };
+    }
+
+    async updateBreathingStatistics(statistics) {
+        try {
+            await this.updateBreathingSettings({
+                statistics: statistics
+            });
+            
+            this.notifyListeners('breathingStatisticsUpdated', statistics);
+        } catch (error) {
+            throw new StateError(
+                'Failed to update breathing statistics',
+                'BREATHING_STATS_UPDATE_ERROR',
+                { originalError: error }
+            );
+        }
+    }
+
+    getBreathingStatistics() {
+        const breathingSettings = this.getBreathingSettings();
+        return { ...breathingSettings.statistics };
+    }
+
+    async clearBreathingData() {
+        try {
+            await this.updateBreathingSettings({
+                sessionHistory: [],
+                streakData: {
+                    current: 0,
+                    longest: 0,
+                    lastSessionDate: null
+                },
+                statistics: {
+                    totalSessions: 0,
+                    totalMinutes: 0,
+                    totalCycles: 0,
+                    averageSessionDuration: 0,
+                    completionRate: 0,
+                    favoritePattern: null,
+                    sessionsThisWeek: 0,
+                    sessionsThisMonth: 0
+                }
+            });
+            
+            this.notifyListeners('breathingDataCleared');
+        } catch (error) {
+            throw new StateError(
+                'Failed to clear breathing data',
+                'BREATHING_CLEAR_ERROR',
+                { originalError: error }
+            );
+        }
     }
 }
 

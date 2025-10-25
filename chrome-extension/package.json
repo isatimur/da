@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Chrome extension for Daily Affirmations",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "build:css": "node -e \"require('./build.js').bundleCSS()\"",
+    "build:minify": "node -e \"require('./build.js').minifyCSS()\"",
+    "dev": "node build.js && echo 'Development build complete'",
+    "prod": "NODE_ENV=production node build.js"
   },
   "devDependencies": {
     "crypto": "^1.0.1"

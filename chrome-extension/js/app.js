@@ -14,6 +14,12 @@ import { requirePremium } from './utils/premium.js';
 import favoritesManager from './components/favorites-manager.js';
 import savedBackgroundsManager from './components/saved-backgrounds.js';
 import backupRestoreDialog from './components/backup-restore.js';
+import loadingManager from './utils/loading.js';
+import keyboardShortcuts from './utils/keyboard.js';
+import logger from './utils/logger.js';
+import i18n from './utils/i18n.js';
+import breathingModal from './components/breathingModal.js';
+import breathingSettings from './components/breathing-settings.js';
 
 // API Keys management
 async function getApiKeys() {
@@ -68,6 +74,9 @@ class App {
 
     // Initialize all services
     async initializeServices() {
+        logger.info('Starting service initialization');
+        const timer = logger.time('Service Initialization');
+        
         const serviceStatus = {
             state: false,
             weather: false,
@@ -76,7 +85,8 @@ class App {
             affirmations: false,
             customAffirmations: false,
             dailyReminder: false,
-            backup: false
+            backup: false,
+            breathing: false
         };
 
         try {
@@ -146,6 +156,14 @@ class App {
                     .catch(error => {
                         console.error('Backup service initialization failed:', error);
                         return false;
+                    }),
+
+                // Initialize breathing settings
+                breathingSettings.init()
+                    .then(() => serviceStatus.breathing = true)
+                    .catch(error => {
+                        console.error('Breathing settings initialization failed:', error);
+                        return false;
                     })
             ]);
 
@@ -185,8 +203,11 @@ class App {
                 throw new Error('Critical service (state) failed to initialize');
             }
 
+            timer();
+            logger.info('Service initialization completed', serviceStatus);
+
         } catch (error) {
-            console.error('Service initialization failed:', error);
+            logger.error('Service initialization failed', { error: error.message, serviceStatus });
             this.handleInitializationError(error);
             throw error;
         }
@@ -201,6 +222,7 @@ class App {
             this.setupEventListeners();
             this.setupPanelInteractions();
             setupAffirmationActions();
+            this.setupKeyboardShortcuts();
         } catch (error) {
             console.error('UI initialization failed:', error);
             this.handleInitializationError(error);
@@ -365,6 +387,16 @@ class App {
                 }
             });
         }
+
+        // Breathing exercise button
+        document.getElementById('breathingButton')?.addEventListener('click', () => {
+            breathingModal.show();
+        });
+
+        // Breathing exercise menu item
+        document.getElementById('breathingExerciseButton')?.addEventListener('click', () => {
+            breathingModal.show();
+        });
     }
 
     // Setup panel interactions
@@ -479,6 +511,76 @@ class App {
                 menuPanel.classList.add('hidden');
             }
         });
+    }
+
+    // Setup keyboard shortcuts
+    setupKeyboardShortcuts() {
+        // Space - New affirmation
+        keyboardShortcuts.register(' ', () => {
+            const refreshButton = document.querySelector('[data-action="refresh"]');
+            if (refreshButton) {
+                refreshButton.click();
+            }
+        }, { 
+            description: 'Get new affirmation',
+            preventDefault: true 
+        });
+
+        // S - Settings
+        keyboardShortcuts.register('s', () => {
+            const settingsButton = document.getElementById('settingsButton');
+            if (settingsButton) {
+                settingsButton.click();
+            }
+        }, { 
+            description: 'Open settings' 
+        });
+
+        // M - Menu
+        keyboardShortcuts.register('m', () => {
+            const menuButton = document.getElementById('menuButton');
+            if (menuButton) {
+                menuButton.click();
+            }
+        }, { 
+            description: 'Open menu' 
+        });
+
+        // B - Breathing exercise
+        keyboardShortcuts.register('b', () => {
+            breathingModal.show();
+        }, { 
+            description: 'Start breathing exercise' 
+        });
+
+        // F - Focus mode
+        keyboardShortcuts.register('f', () => {
+            this.toggleFocusMode();
+        }, { 
+            description: 'Toggle focus mode' 
+        });
+
+        // C - Copy affirmation
+        keyboardShortcuts.register('c', () => {
+            const copyButton = document.querySelector('[data-action="copy"]');
+            if (copyButton) {
+                copyButton.click();
+            }
+        }, { 
+            description: 'Copy affirmation' 
+        });
+
+        // Escape - Close dialogs
+        keyboardShortcuts.register('Escape', () => {
+            const dialogs = document.querySelectorAll('.dialog-base:not(.hidden), .premium-modal:not(.hidden)');
+            dialogs.forEach(dialog => {
+                dialog.classList.add('hidden');
+            });
+        }, { 
+            description: 'Close dialogs' 
+        });
+
+        console.log('Keyboard shortcuts registered');
     }
 
     // Apply theme settings

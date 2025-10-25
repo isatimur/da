@@ -1,173 +1,310 @@
-import { showNotification } from '../utils/common.js';
-import backupService from '../services/backup.js';
+/**
+ * Backup and Restore functionality
+ * Handles backup and restore operations for user data
+ */
 
-class BackupRestoreDialog {
+import logger from '../utils/logger.js';
+import loadingManager from '../utils/loading.js';
+
+class BackupRestore {
     constructor() {
-        this.dialog = document.getElementById('backupDialog');
-        this.closeButton = this.dialog?.querySelector('.close-button');
-        this.downloadButton = this.dialog?.querySelector('.backup-button.primary');
-        this.restoreButton = this.dialog?.querySelector('.backup-button.secondary');
-        this.lastBackupTime = this.dialog?.querySelector('.last-backup-time');
-        this.statusBox = this.dialog?.querySelector('.status-box');
-        this.cloudSyncStatus = this.dialog?.querySelector('.cloud-sync-status');
+        this.init();
+    }
+
+    init() {
+        logger.info('BackupRestore initialized');
+        this.setupEventListeners();
     }
 
     async initialize() {
-        if (!this.dialog) {
-            console.error('Backup dialog not found');
-            return;
+        logger.info('BackupRestore initialize called');
+        try {
+            // Check if backup dialog exists
+            const backupDialog = document.getElementById('backupDialog');
+            if (!backupDialog) {
+                logger.debug('Backup dialog not found - this is normal for new installations');
+                return Promise.resolve();
+            }
+            
+            // Initialize backup/restore functionality
+            this.setupEventListeners();
+            return Promise.resolve();
+        } catch (error) {
+            logger.error('Error initializing backup restore', { error: error.message });
+            return Promise.resolve();
         }
-        
-        this.setupEventListeners();
-        await this.updateLastBackupTime();
-        await this.updateCloudSyncStatus();
-
-        // Update cloud sync status periodically
-        setInterval(() => this.updateCloudSyncStatus(), 30000); // Every 30 seconds
     }
 
     setupEventListeners() {
-        if (!this.dialog) return;
+        // Download backup button
+        const downloadButton = document.querySelector('.backup-button.primary');
+        if (downloadButton) {
+            downloadButton.addEventListener('click', () => {
+                this.handleDownloadBackup();
+            });
+        }
 
-        // Close button
-        this.closeButton?.addEventListener('click', () => this.hide());
+        // Restore backup button
+        const restoreButton = document.querySelector('.backup-button.secondary');
+        if (restoreButton) {
+            restoreButton.addEventListener('click', () => {
+                this.handleRestoreBackup();
+            });
+        }
 
-        // Click outside to close
-        this.dialog.addEventListener('click', (e) => {
-            if (e.target === this.dialog) {
-                this.hide();
-            }
-        });
+        logger.debug('Backup restore event listeners setup');
+    }
 
-        // Download backup
-        this.downloadButton?.addEventListener('click', async () => {
-            try {
-                await backupService.exportBackup();
-                showNotification('Success', 'Backup created successfully');
-                await this.updateLastBackupTime();
-                this.updateStatus('success', 'Last backup completed successfully');
-            } catch (error) {
-                console.error('Failed to create backup:', error);
-                showNotification('Error', 'Failed to create backup');
-                this.updateStatus('error', 'Backup failed');
-            }
-        });
+    async handleDownloadBackup() {
+        try {
+            logger.info('Starting backup download');
+            const loaderId = loadingManager.showLoading(
+                document.querySelector('#backupDialog .dialog-content'),
+                'Creating backup...',
+                true
+            );
 
-        // Restore backup
-        this.restoreButton?.addEventListener('click', () => {
+            const backup = await this.createBackup();
+            await this.downloadBackup(backup);
+            
+            loadingManager.hideLoading(loaderId);
+            loadingManager.showSuccess('Backup downloaded successfully!');
+            
+            logger.info('Backup download completed');
+        } catch (error) {
+            logger.error('Backup download failed', { error: error.message });
+            loadingManager.showError('Failed to create backup: ' + error.message);
+        }
+    }
+
+    async handleRestoreBackup() {
+        try {
+            logger.info('Starting backup restore');
+            
+            // Create file input
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
+            input.style.display = 'none';
             
-            input.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
+            input.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
                 if (!file) return;
 
                 try {
-                    await backupService.importBackup(file);
-                    showNotification('Success', 'Backup restored successfully');
-                    this.updateStatus('success', 'Backup restored successfully');
+                    const loaderId = loadingManager.showLoading(
+                        document.querySelector('#backupDialog .dialog-content'),
+                        'Restoring backup...',
+                        true
+                    );
+
+                    await this.uploadBackup(file);
                     
-                    // Sync changes to cloud
-                    await backupService.syncToCloud();
-                    await this.updateCloudSyncStatus();
+                    loadingManager.hideLoading(loaderId);
+                    loadingManager.showSuccess('Backup restored successfully!');
                     
-                    window.location.reload(); // Reload to apply changes
+                    // Reload the page to apply restored settings
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                    
+                    logger.info('Backup restore completed');
                 } catch (error) {
-                    console.error('Failed to restore backup:', error);
-                    showNotification('Error', 'Failed to restore backup');
-                    this.updateStatus('error', 'Restore failed');
+                    logger.error('Backup restore failed', { error: error.message });
+                    loadingManager.showError('Failed to restore backup: ' + error.message);
                 }
             });
 
+            document.body.appendChild(input);
             input.click();
-        });
+            document.body.removeChild(input);
+            
+        } catch (error) {
+            logger.error('Backup restore setup failed', { error: error.message });
+            loadingManager.showError('Failed to setup backup restore: ' + error.message);
+        }
+    }
 
-        // Manual cloud sync
-        this.cloudSyncStatus?.addEventListener('click', async () => {
-            try {
-                await backupService.syncToCloud();
-                await this.updateCloudSyncStatus();
-                showNotification('Success', 'Manual sync completed');
-            } catch (error) {
-                console.error('Failed to sync:', error);
-                showNotification('Error', 'Failed to sync with cloud');
+    async createBackup() {
+        try {
+            logger.debug('Creating backup data');
+            const data = await chrome.storage.local.get();
+            
+            // Filter out sensitive data
+            const filteredData = this.filterSensitiveData(data);
+            
+            const backup = {
+                timestamp: new Date().toISOString(),
+                version: '1.0',
+                extensionVersion: chrome.runtime.getManifest().version,
+                data: filteredData,
+                metadata: {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language
+                }
+            };
+            
+            logger.info('Backup created successfully', { 
+                dataSize: JSON.stringify(backup).length,
+                itemCount: Object.keys(filteredData).length 
+            });
+            
+            return backup;
+        } catch (error) {
+            logger.error('Error creating backup', { error: error.message });
+            throw error;
+        }
+    }
+
+    filterSensitiveData(data) {
+        const sensitiveKeys = ['apiKey', 'token', 'password', 'secret'];
+        const filtered = {};
+        
+        Object.entries(data).forEach(([key, value]) => {
+            const isSensitive = sensitiveKeys.some(sensitive => 
+                key.toLowerCase().includes(sensitive.toLowerCase())
+            );
+            
+            if (!isSensitive) {
+                filtered[key] = value;
             }
         });
+        
+        return filtered;
+    }
+
+    async restoreBackup(backupData) {
+        try {
+            logger.debug('Starting backup restore');
+            
+            if (!backupData || !backupData.data) {
+                throw new Error('Invalid backup data');
+            }
+            
+            // Validate backup version compatibility
+            if (backupData.version && backupData.version !== '1.0') {
+                logger.warn('Backup version mismatch', { 
+                    backupVersion: backupData.version,
+                    currentVersion: '1.0' 
+                });
+            }
+            
+            // Clear existing data
+            await chrome.storage.local.clear();
+            
+            // Restore data
+            await chrome.storage.local.set(backupData.data);
+            
+            logger.info('Backup restored successfully', { 
+                itemCount: Object.keys(backupData.data).length,
+                backupTimestamp: backupData.timestamp 
+            });
+            
+            return true;
+        } catch (error) {
+            logger.error('Error restoring backup', { error: error.message });
+            throw error;
+        }
+    }
+
+    async downloadBackup(backup) {
+        try {
+            const blob = new Blob([JSON.stringify(backup, null, 2)], {
+                type: 'application/json'
+            });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `daily-affirmations-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.style.display = 'none';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            logger.debug('Backup file downloaded');
+        } catch (error) {
+            logger.error('Error downloading backup', { error: error.message });
+            throw error;
+        }
+    }
+
+    async uploadBackup(file) {
+        try {
+            logger.debug('Processing uploaded backup file');
+            
+            const text = await file.text();
+            const backupData = JSON.parse(text);
+            
+            // Validate backup structure
+            if (!this.validateBackup(backupData)) {
+                throw new Error('Invalid backup file format');
+            }
+            
+            await this.restoreBackup(backupData);
+            return true;
+        } catch (error) {
+            logger.error('Error uploading backup', { error: error.message });
+            throw error;
+        }
+    }
+
+    validateBackup(backupData) {
+        const requiredFields = ['timestamp', 'version', 'data'];
+        return requiredFields.every(field => backupData.hasOwnProperty(field));
+    }
+
+    async getBackupInfo() {
+        try {
+            const data = await chrome.storage.local.get();
+            const filteredData = this.filterSensitiveData(data);
+            
+            return {
+                itemCount: Object.keys(filteredData).length,
+                dataSize: JSON.stringify(filteredData).length,
+                lastModified: new Date().toISOString()
+            };
+        } catch (error) {
+            logger.error('Error getting backup info', { error: error.message });
+            throw error;
+        }
     }
 
     show() {
-        this.dialog?.classList.add('show');
-        this.updateLastBackupTime();
-        this.updateCloudSyncStatus();
+        logger.debug('BackupRestore show called');
+        const backupDialog = document.getElementById('backupDialog');
+        if (backupDialog) {
+            backupDialog.classList.remove('hidden');
+            this.updateBackupInfo();
+        }
     }
 
     hide() {
-        this.dialog?.classList.remove('show');
+        logger.debug('BackupRestore hide called');
+        const backupDialog = document.getElementById('backupDialog');
+        if (backupDialog) {
+            backupDialog.classList.add('hidden');
+        }
     }
 
-    async updateLastBackupTime() {
-        if (!this.lastBackupTime) return;
-
+    async updateBackupInfo() {
         try {
-            const history = await backupService.getBackupHistory();
-            const lastBackup = history[0]?.timestamp;
+            const info = await this.getBackupInfo();
+            const lastBackupTime = document.querySelector('.last-backup-time');
             
-            if (lastBackup) {
-                const date = new Date(lastBackup);
-                this.lastBackupTime.textContent = `Last backup: Today at ${date.toLocaleTimeString([], { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                })}`;
-            } else {
-                this.lastBackupTime.textContent = 'No backups yet';
+            if (lastBackupTime) {
+                lastBackupTime.textContent = `Last backup: ${info.lastModified}`;
             }
         } catch (error) {
-            console.error('Failed to update last backup time:', error);
-            this.lastBackupTime.textContent = 'Last backup: Unknown';
-        }
-    }
-
-    async updateCloudSyncStatus() {
-        if (!this.cloudSyncStatus) return;
-
-        const lastSync = backupService.getLastSyncTime();
-        if (lastSync) {
-            const timeAgo = this.getTimeAgo(lastSync);
-            this.cloudSyncStatus.innerHTML = `
-                <i class="material-icons-round">cloud_done</i>
-                <p>Last synced ${timeAgo}</p>
-            `;
-            this.cloudSyncStatus.title = 'Click to sync now';
-            this.cloudSyncStatus.style.cursor = 'pointer';
-        } else {
-            this.cloudSyncStatus.innerHTML = `
-                <i class="material-icons-round">cloud_sync</i>
-                <p>Click to start cloud sync</p>
-            `;
-            this.cloudSyncStatus.style.cursor = 'pointer';
-        }
-    }
-
-    getTimeAgo(date) {
-        const seconds = Math.floor((new Date() - date) / 1000);
-        
-        if (seconds < 60) return 'just now';
-        if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-        if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-        return `${Math.floor(seconds / 86400)} days ago`;
-    }
-
-    updateStatus(type, message) {
-        if (!this.statusBox) return;
-        
-        this.statusBox.className = `status-box ${type}`;
-        const messageElement = this.statusBox.querySelector('p');
-        if (messageElement) {
-            messageElement.textContent = message;
+            logger.error('Error updating backup info', { error: error.message });
         }
     }
 }
 
-const backupRestoreDialog = new BackupRestoreDialog();
-export default backupRestoreDialog; 
+// Initialize backup restore functionality
+const backupRestore = new BackupRestore();
+
+export default backupRestore;

@@ -1,6 +1,6 @@
 // Service Worker Registration and Offline Status Handler
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('js/sw.js')
+    navigator.serviceWorker.register('js/background-worker.js')
         .then(registration => {
             console.log('ServiceWorker registered:', registration);
         })

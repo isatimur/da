@@ -8,11 +8,16 @@
     <!-- Local Fonts -->
     <link rel="stylesheet" href="css/fonts.css" />
 
-    <!-- Styles -->
+    <!-- Bundled Styles (use bundle.min.css in production) -->
+    <link rel="stylesheet" href="css/bundle.min.css" />
+    
+    <!-- Individual styles for development (comment out in production) -->
+    <!--
     <link rel="stylesheet" href="css/premium.css" />
     <link rel="stylesheet" href="css/info-dialogs.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/shepherd.css" />
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,6 +34,9 @@
     <meta name="theme-color" content="#22c55e" />
   </head>
   <body class="font-fallback">
+    <!-- Skip to content link for screen readers -->
+    <a href="#affirmation" class="skip-link">Skip to main content</a>
+    
     <div class="fullscreen-container">
       <div id="background-overlay"></div>
 
@@ -36,23 +44,26 @@
       <button
         id="settingsButton"
         class="settings-button glass"
-        aria-label="Settings"
+        aria-label="Open settings panel"
+        aria-expanded="false"
+        aria-controls="settingsPanel"
+        title="Settings (S)"
       >
-        <i class="material-icons-round">settings</i>
+        <i class="material-icons-round" aria-hidden="true">settings</i>
       </button>
 
       <!-- Settings panel -->
-      <div id="settingsPanel" class="settings-panel glass hidden">
-        <h3>Settings</h3>
+      <div id="settingsPanel" class="settings-panel glass hidden" role="dialog" aria-labelledby="settings-title" aria-hidden="true">
+        <h3 id="settings-title">Settings</h3>
         <div class="settings-group">
           <h4>Display</h4>
           <label class="setting-item">
             <span>Show Weather</span>
-            <input type="checkbox" id="showWeather" checked />
+            <input type="checkbox" id="showWeather" checked aria-describedby="weather-description" />
           </label>
           <label class="setting-item">
             <span>Show Clock</span>
-            <input type="checkbox" id="showClock" checked />
+            <input type="checkbox" id="showClock" checked aria-describedby="clock-description" />
           </label>
         </div>
 
@@ -86,6 +97,47 @@
           <label class="setting-item">
             <span>Text Color</span>
             <input type="color" id="textColor" value="#FFFFFF" />
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <h4>Breathing Exercise</h4>
+          <label class="setting-item">
+            <span>Default Pattern</span>
+            <select id="breathingDefaultPattern">
+              <option value="box">Box Breathing</option>
+              <option value="4-7-8">4-7-8 Breathing</option>
+              <option value="triangle">Triangle Breathing</option>
+              <option value="relaxing">Relaxing Breath</option>
+              <option value="energizing">Energizing Breath</option>
+              <option value="mindful">Mindful Breathing</option>
+            </select>
+          </label>
+          <label class="setting-item">
+            <span>Default Duration</span>
+            <select id="breathingDefaultDuration">
+              <option value="1">1 minute</option>
+              <option value="3">3 minutes</option>
+              <option value="5" selected>5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+            </select>
+          </label>
+          <label class="setting-item">
+            <span>Auto-start on new tab</span>
+            <input type="checkbox" id="breathingAutoStart" aria-describedby="breathing-auto-description" />
+          </label>
+          <label class="setting-item">
+            <span>Show analytics</span>
+            <input type="checkbox" id="breathingShowAnalytics" checked aria-describedby="breathing-analytics-description" />
+          </label>
+          <label class="setting-item">
+            <span>Breathing theme</span>
+            <select id="breathingTheme">
+              <option value="default">Default</option>
+              <option value="calm">Calm</option>
+              <option value="energizing">Energizing</option>
+            </select>
           </label>
         </div>
 
@@ -135,39 +187,51 @@
       <button
         id="focusModeButton"
         class="focus-mode-button glass"
-        title="Toggle Focus Mode"
+        title="Toggle Focus Mode (F)"
+        aria-label="Toggle focus mode"
+        aria-pressed="false"
       >
-        <i class="material-icons-round focus-icon">center_focus_weak</i>
-        <i class="material-icons-round unfocus-icon">center_focus_strong</i>
+        <i class="material-icons-round focus-icon" aria-hidden="true">center_focus_weak</i>
+        <i class="material-icons-round unfocus-icon" aria-hidden="true">center_focus_strong</i>
+      </button>
+
+      <!-- Breathing exercise button -->
+      <button
+        id="breathingButton"
+        class="breathing-floating-btn"
+        aria-label="Start breathing exercise"
+        title="Breathing Exercise (B)"
+      >
+        <i class="material-icons-round" aria-hidden="true">air</i>
       </button>
 
       <!-- Affirmation card -->
-      <div class="affirmation-card glass">
-        <p class="affirmation-text" id="affirmation">
+      <div class="affirmation-card glass" role="main" aria-live="polite">
+        <p class="affirmation-text" id="affirmation" aria-label="Daily affirmation">
           Loading your daily affirmation...
         </p>
-        <button class="affirmation-menu-button" aria-label="Affirmation menu">
-          <i class="material-icons-round">more_vert</i>
+        <button class="affirmation-menu-button" aria-label="Affirmation actions menu" aria-expanded="false" aria-controls="affirmation-actions">
+          <i class="material-icons-round" aria-hidden="true">more_vert</i>
         </button>
-        <div class="affirmation-actions">
-          <button class="action-button" data-action="refresh">
-            <i class="material-icons-round">refresh</i>
+        <div class="affirmation-actions" id="affirmation-actions" role="menu" aria-hidden="true" inert>
+          <button class="action-button" data-action="refresh" role="menuitem" title="Get new affirmation (Space)">
+            <i class="material-icons-round" aria-hidden="true">refresh</i>
             <span>New Affirmation</span>
           </button>
-          <button class="action-button" data-action="copy">
-            <i class="material-icons-round">content_copy</i>
+          <button class="action-button" data-action="copy" role="menuitem" title="Copy affirmation (C)">
+            <i class="material-icons-round" aria-hidden="true">content_copy</i>
             <span>Copy</span>
           </button>
-          <button class="action-button" data-action="favorite">
-            <i class="material-icons-round">favorite_border</i>
+          <button class="action-button" data-action="favorite" role="menuitem">
+            <i class="material-icons-round" aria-hidden="true">favorite_border</i>
             <span>Add to Favorites</span>
           </button>
-          <button class="action-button" data-action="manage-favorites">
-            <i class="material-icons-round">bookmarks</i>
+          <button class="action-button" data-action="manage-favorites" role="menuitem">
+            <i class="material-icons-round" aria-hidden="true">bookmarks</i>
             <span>Manage Favorites</span>
           </button>
-          <button class="action-button" data-action="share">
-            <i class="material-icons-round">share</i>
+          <button class="action-button" data-action="share" role="menuitem">
+            <i class="material-icons-round" aria-hidden="true">share</i>
             <span>Share</span>
           </button>
         </div>
@@ -191,14 +255,14 @@
       </div>
 
       <!-- Menu button -->
-      <button id="menuButton" class="menu-button glass">
-        <i class="material-icons-round">menu</i>
+      <button id="menuButton" class="menu-button glass" aria-label="Open main menu" aria-expanded="false" aria-controls="menuPanel" title="Menu (M)">
+        <i class="material-icons-round" aria-hidden="true">menu</i>
       </button>
 
       <!-- Menu panel -->
-      <div id="menuPanel" class="menu-panel glass hidden">
+      <div id="menuPanel" class="menu-panel glass hidden" role="dialog" aria-labelledby="menu-title" aria-hidden="true">
         <div class="menu-header">
-          <h3>Daily Affirmation</h3>
+          <h3 id="menu-title">Daily Affirmation</h3>
           <span class="premium-badge">Free</span>
         </div>
 
@@ -217,6 +281,10 @@
             <li id="backgroundsButton">
               <i class="material-icons-round">photo_library</i>
               Saved Backgrounds
+            </li>
+            <li id="breathingExerciseButton">
+              <i class="material-icons-round">air</i>
+              Breathing Exercise
             </li>
           </ul>
         </div>
@@ -433,6 +501,7 @@
     <!-- Scripts -->
     <script type="module" src="js/shepherd.min.js"></script>
     <script type="module" src="js/init.js"></script>
+    <script type="module" src="js/utils/i18n.js"></script>
     <script type="module" src="js/app.js"></script>
     <script type="module" src="js/components/info-dialogs.js"></script>
     <script type="module" src="js/components/backup.js"></script>

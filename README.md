@@ -1,6 +1,6 @@
 # Daily Affirmations Chrome Extension
 
-Transform your new tab experience with daily affirmations, beautiful backgrounds, and mindfulness features.
+Transform your new tab experience with daily affirmations, beautiful backgrounds, breathing exercises, and mindfulness features.
 
 ![Daily Affirmations Interface](public/affirmations.png)
 
@@ -22,6 +22,7 @@ Currently offering **FREE ACCESS** to all premium features during our early acce
 - ⏰ Weather & clock widgets
 - 🎯 Basic focus mode
 - 💾 Local storage
+- 🫁 Basic breathing exercises
 
 ![Basic Features](public/mindfulness-practice.jpg)
 
@@ -31,6 +32,7 @@ Currently offering **FREE ACCESS** to all premium features during our early acce
 - ☁️ Cloud sync & backup
 - 🔔 Smart daily reminders
 - 🎯 Advanced focus mode
+- 🫁 Advanced breathing exercises with reports & sounds
 - 🎉 Early access to new features
 - 💬 Priority support
 
@@ -44,6 +46,25 @@ Currently offering **FREE ACCESS** to all premium features during our early acce
 | Daily Reminders | ![Daily Reminders](public/daily-reminders.png) Never miss your daily affirmation practice |
 | Cloud Backup | ![Cloud Backup](public/backup_and_sync.png) Your data is always safe and synced |
 | Theme Customization | ![Theme Customization](public/theme_customization.png) Personalize your experience |
+| Breathing Exercises | 🫁 Guided breathing exercises with real-time reports and soothing sounds |
+
+## 🫁 Breathing Exercises
+
+Our latest feature includes comprehensive breathing exercises designed to help you relax and focus:
+
+### Features
+- **Multiple Breathing Patterns**: Choose from relaxing, energizing, and focus patterns
+- **Real-time Reports**: Track each breathing phase (inhale, exhale, hold) with detailed analytics
+- **Sound Effects**: Immersive audio feedback with customizable volume
+- **Session Management**: Save and track your breathing practice sessions
+- **Responsive Design**: Works perfectly on all screen sizes
+- **Glassmorphism UI**: Modern, beautiful interface with smooth animations
+
+### Supported Patterns
+- **Relaxing Breath**: 4-4-4 pattern for stress relief
+- **Energizing Breath**: 2-1-2 pattern for energy boost
+- **Focus Breath**: 4-7-8 pattern for concentration
+- **Custom Patterns**: Create your own breathing sequences
 
 ## 🚀 Getting Started
 
@@ -121,6 +142,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔮 Roadmap
 
+- [x] Breathing exercises with real-time reports
+- [x] Sound effects for breathing exercises
+- [x] Enhanced UI with glassmorphism design
+- [x] Responsive design improvements
 - [ ] Integration with LemonSqueezy for payments
 - [ ] Mobile companion app
 - [ ] Social sharing features

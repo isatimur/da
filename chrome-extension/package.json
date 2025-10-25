@@ -1,7 +1,7 @@
 {
   "name": "daily-affirmations-extension",
-  "version": "1.0.0",
-  "description": "Chrome extension for Daily Affirmations",
+  "version": "1.1.0",
+  "description": "Chrome extension for Daily Affirmations with Breathing Exercises",
   "scripts": {
     "build": "node build.js",
     "build:css": "node -e \"require('./build.js').bundleCSS()\"",

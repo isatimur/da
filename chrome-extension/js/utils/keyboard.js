@@ -44,6 +44,29 @@ class KeyboardShortcuts {
     handleKeyDown(event) {
         if (!this.isEnabled) return;
 
+        // Don't trigger shortcuts if user is typing in input fields
+        const activeElement = document.activeElement;
+        const isInputActive = activeElement && (
+            activeElement.tagName === 'INPUT' ||
+            activeElement.tagName === 'TEXTAREA' ||
+            activeElement.tagName === 'SELECT' ||
+            activeElement.isContentEditable ||
+            activeElement.getAttribute('contenteditable') === 'true'
+        );
+
+        // Block shortcuts if typing in input (except for Escape to close)
+        if (isInputActive && event.key !== 'Escape') {
+            return;
+        }
+
+        // Also check if a modal/dialog is open (except for Escape key)
+        const hasOpenModal = event.key !== 'Escape' && document.querySelector('.dialog-base:not(.hidden).show, .premium-modal:not(.hidden), .modal-open');
+
+        // Block shortcuts if modal is open (except Escape to close)
+        if (hasOpenModal && event.key !== 'Escape') {
+            return;
+        }
+
         const key = event.key.toLowerCase();
         const shortcut = this.shortcuts.get(key);
 

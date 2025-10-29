@@ -1,6 +1,7 @@
 // Favorite Affirmations Component
 import affirmationsService from '../services/affirmations.js';
 import { showNotification } from '../utils/common.js';
+import i18n from '../utils/i18n.js';
 
 class FavoriteAffirmations {
     constructor() {
@@ -48,10 +49,10 @@ class FavoriteAffirmations {
                     </div>
                 </div>
                 <div class="favorite-actions">
-                    <button class="action-icon" data-action="remove" title="Remove from favorites">
+                    <button class="action-icon" data-action="remove" title="${i18n.t('common.removeFromSaved')}">
                         <i class="material-icons-round">close</i>
                     </button>
-                    <button class="action-icon" data-action="use" title="Use this affirmation">
+                    <button class="action-icon" data-action="use" title="${i18n.t('dialogs.useAffirmation')}">
                         <i class="material-icons-round">refresh</i>
                     </button>
                 </div>
@@ -84,9 +85,9 @@ class FavoriteAffirmations {
             this.container.innerHTML = `
                 <div class="premium-required">
                     <i class="material-icons-round">star</i>
-                    <h3>Premium Feature</h3>
-                    <p>Upgrade to Pro to save your favorite affirmations</p>
-                    <button class="upgrade-button">Upgrade to Pro</button>
+                    <h3>${i18n.t('premium.title')}</h3>
+                    <p>${i18n.t('premium.upgrade')}</p>
+                    <button class="upgrade-button">${i18n.t('premium.upgrade')}</button>
                 </div>
             `;
         }
@@ -110,12 +111,12 @@ class FavoriteAffirmations {
                     case 'remove':
                         await affirmationsService.removeFromFavorites(text);
                         await this.loadFavorites();
-                        showNotification('Removed', 'Affirmation removed from favorites');
+                        showNotification(i18n.t('common.success'), i18n.t('notifications.favoritesRemoved'));
                         break;
 
                     case 'use':
                         affirmationsService.updateDisplay(text);
-                        showNotification('Updated', 'Using selected affirmation');
+                        showNotification(i18n.t('common.success'), i18n.t('common.success'));
                         break;
                 }
             } catch (error) {

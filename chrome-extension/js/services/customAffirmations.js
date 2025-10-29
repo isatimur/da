@@ -2,6 +2,7 @@
 import stateManager from '../modules/state.js';
 import { showNotification } from '../utils/common.js';
 import { requirePremium, setupPremiumUI } from '../utils/premium.js';
+import i18n from '../utils/i18n.js';
 
 class CustomAffirmationsService {
     constructor() {
@@ -109,7 +110,7 @@ class CustomAffirmationsService {
 
         await stateManager.updateSettings({ customCollections: collections });
         this.renderAffirmations();
-        showNotification('Affirmation Added', 'Your affirmation has been saved');
+        showNotification(i18n.t('notifications.affirmationAdded'), i18n.t('notifications.affirmationSaved'));
     }
 
     // Delete affirmation
@@ -128,8 +129,7 @@ class CustomAffirmationsService {
         this.renderAffirmations();
 
         if (affirmation) {
-            showNotification('Custom Affirmation Deleted',
-                'Affirmation removed from custom collection only. If you added it to favorites, it will remain in your favorites list.');
+            showNotification(i18n.t('common.success'), i18n.t('notifications.affirmationDeleted'));
         }
     }
 
@@ -150,7 +150,7 @@ class CustomAffirmationsService {
         if (affirmations.length === 0) {
             listContainer.innerHTML = `
                 <div class="empty-state">
-                    <p>No affirmations in this collection yet.</p>
+                    <p>${i18n.t('common.noAffirmationsInCollection')}</p>
                 </div>
             `;
             return;
@@ -160,10 +160,10 @@ class CustomAffirmationsService {
             <div class="affirmation-item" data-id="${aff.id}">
                 <div class="affirmation-text">${aff.text}</div>
                 <div class="affirmation-actions">
-                    <button class="action-icon" data-action="use" title="Use this affirmation">
+                    <button class="action-icon" data-action="use" title="${i18n.t('dialogs.useAffirmation')}">
                         <i class="material-icons-round">play_arrow</i>
                     </button>
-                    <button class="action-icon" data-action="delete" title="Remove from custom affirmations only">
+                    <button class="action-icon" data-action="delete" title="${i18n.t('dialogs.deleteAffirmation')}">
                         <i class="material-icons-round">delete</i>
                     </button>
                 </div>
@@ -183,7 +183,7 @@ class CustomAffirmationsService {
                     if (affirmation) {
                         document.getElementById('affirmation').textContent = affirmation.text;
                         this.hideDialog();
-                        showNotification('Affirmation Set', 'Your custom affirmation is now displayed');
+                        showNotification(i18n.t('common.success'), i18n.t('notifications.affirmationSet'));
                     }
                 }
             });

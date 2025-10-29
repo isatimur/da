@@ -28,7 +28,9 @@ function bundleCSS() {
         'info-dialogs.css',
         'saved-backgrounds.css',
         'shepherd.css',
-        'breathing.css'
+        'breathing.css',
+        'todo.css',
+        'onboarding.css'
     ];
     
     let bundledCSS = '';

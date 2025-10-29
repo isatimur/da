@@ -3,19 +3,23 @@ import { showNotification } from '../utils/common.js';
 import { requirePremium } from '../utils/premium.js';
 import dailyReminderService from '../services/dailyReminder.js';
 import stateManager from '../modules/state.js';
+import i18n from '../utils/i18n.js';
 
 class ReminderSettings {
     constructor() {
         this.initialized = false;
         this.container = null;
-        this.weekdays = [
-            { id: 'mon', label: 'Mon' },
-            { id: 'tue', label: 'Tue' },
-            { id: 'wed', label: 'Wed' },
-            { id: 'thu', label: 'Thu' },
-            { id: 'fri', label: 'Fri' },
-            { id: 'sat', label: 'Sat' },
-            { id: 'sun', label: 'Sun' }
+    }
+
+    getWeekdays() {
+        return [
+            { id: 'mon', label: i18n.t('reminders.mon') },
+            { id: 'tue', label: i18n.t('reminders.tue') },
+            { id: 'wed', label: i18n.t('reminders.wed') },
+            { id: 'thu', label: i18n.t('reminders.thu') },
+            { id: 'fri', label: i18n.t('reminders.fri') },
+            { id: 'sat', label: i18n.t('reminders.sat') },
+            { id: 'sun', label: i18n.t('reminders.sun') }
         ];
     }
 
@@ -24,10 +28,13 @@ class ReminderSettings {
 
         this.container = document.createElement('div');
         this.container.className = 'reminder-settings hidden';
+        
+        const weekdays = this.getWeekdays();
+        
         this.container.innerHTML = `
             <div class="reminder-settings-content menu-panel glass">
                 <div class="reminder-header">
-                    <h3>Daily Reminders</h3>
+                    <h3>${i18n.t('reminders.title')}</h3>
                     <button class="close-button material-icons-round">close</button>
                 </div>
                 
@@ -37,19 +44,19 @@ class ReminderSettings {
                             <input type="checkbox" id="enableReminder">
                             <span class="slider"></span>
                         </label>
-                        <span>Enable Daily Reminders</span>
+                        <span>${i18n.t('reminders.enable')}</span>
                     </div>
 
                     <div class="reminder-test">
                         <button class="test-reminder-btn" id="testReminderBtn">
-                            Test Notification
+                            ${i18n.t('reminders.testNotification')}
                         </button>
                     </div>
 
                     <div class="reminder-days">
-                        <label>Repeat on</label>
+                        <label>${i18n.t('reminders.repeatOn')}</label>
                         <div class="weekday-toggles">
-                            ${this.weekdays.map(day => `
+                            ${weekdays.map(day => `
                                 <button class="weekday-btn" data-day="${day.id}">
                                     ${day.label}
                                 </button>
@@ -58,18 +65,18 @@ class ReminderSettings {
                     </div>
 
                     <div class="reminder-times">
-                        <label>Reminder Times</label>
+                        <label>${i18n.t('reminders.reminderTimes')}</label>
                         <div class="time-list" id="timeList"></div>
                         <button class="add-time-btn">
                             <span class="material-icons-round">add</span>
-                            Add Time
+                            ${i18n.t('reminders.addTime')}
                         </button>
                     </div>
 
                     <div class="reminder-message">
-                        <label>Custom Message</label>
+                        <label>${i18n.t('reminders.customMessage')}</label>
                         <input type="text" id="reminderMessage" 
-                               placeholder="Time for your daily affirmation!"
+                               placeholder="${i18n.t('reminders.customMessagePlaceholder')}"
                                maxlength="100">
                     </div>
                 </div>
@@ -380,7 +387,8 @@ class ReminderSettings {
 
         // Set other settings
         const days = reminder.days || [];
-        this.weekdays.forEach(day => {
+        const weekdays = this.getWeekdays();
+        weekdays.forEach(day => {
             const btn = this.container.querySelector(`[data-day="${day.id}"]`);
             if (btn) {
                 btn.classList.toggle('active', days.includes(day.id));
@@ -395,7 +403,7 @@ class ReminderSettings {
         });
 
         // Set message
-        document.getElementById('reminderMessage').value = reminder.message || 'Time for your daily affirmation!';
+        document.getElementById('reminderMessage').value = reminder.message || i18n.t('reminders.customMessagePlaceholder');
     }
 
     async checkNotificationPermission() {
@@ -433,12 +441,12 @@ class ReminderSettings {
             console.log('Notification Test Results:', permissionStatus);
 
             if (!permissionStatus.notificationAPI) {
-                showNotification('Error', 'Notifications are not supported in this browser');
+                showNotification(i18n.t('common.error'), i18n.t('reminders.notSupported'));
                 return;
             }
 
             if (!permissionStatus.chromePermission) {
-                showNotification('Error', 'Chrome extension needs notification permission');
+                showNotification(i18n.t('common.error'), i18n.t('reminders.needsPermission'));
                 return;
             }
 
@@ -446,7 +454,7 @@ class ReminderSettings {
                 // Try requesting permission
                 const permission = await Notification.requestPermission();
                 if (permission !== 'granted') {
-                    showNotification('Error', 'Please enable notifications in your system settings');
+                    showNotification(i18n.t('common.error'), i18n.t('reminders.enableInSettings'));
                     return;
                 }
             }
@@ -455,12 +463,12 @@ class ReminderSettings {
             await chrome.notifications.create('test_notification', {
                 type: 'basic',
                 iconUrl: chrome.runtime.getURL('images/icon-128.png'),
-                title: 'Test Notification',
-                message: 'Notifications are working! Upgrade to Pro to get daily affirmation reminders 🎉',
+                title: i18n.t('reminders.testNotificationTitle'),
+                message: i18n.t('reminders.testNotificationMessage'),
                 priority: 2
             });
             
-            showNotification('Success', 'Test notification sent! Check your notification center.');
+            showNotification(i18n.t('common.success'), i18n.t('reminders.testNotificationSent'));
             
         } catch (error) {
             console.error('Notification test failed:', error);

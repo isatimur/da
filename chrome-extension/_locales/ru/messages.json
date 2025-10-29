@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Ежедневные Аффирмации",
+    "description": "Название расширения"
+  },
+  "extensionDescription": {
+    "message": "Преобразуйте новую вкладку в ежедневный источник вдохновения с персонализированными аффирмациями, красивыми фонами и осознанными напоминаниями.",
+    "description": "Описание расширения"
+  },
+  "settingsTitle": {
+    "message": "Настройки",
+    "description": "Заголовок панели настроек"
+  },
+  "languageLabel": {
+    "message": "Язык / Language",
+    "description": "Метка выбора языка"
+  },
+  "showWeatherLabel": {
+    "message": "Показать погоду",
+    "description": "Показать виджет погоды"
+  },
+  "showClockLabel": {
+    "message": "Показать часы",
+    "description": "Показать виджет часов"
+  },
+  "backgroundThemeLabel": {
+    "message": "Тема фона",
+    "description": "Выбор темы фона"
+  },
+  "cardStyleLabel": {
+    "message": "Стиль карточек",
+    "description": "Стиль карточек"
+  },
+  "fontStyleLabel": {
+    "message": "Стиль шрифта",
+    "description": "Стиль шрифта"
+  },
+  "textColorLabel": {
+    "message": "Цвет текста",
+    "description": "Цвет текста"
+  },
+  "resetDefaults": {
+    "message": "Сбросить настройки",
+    "description": "Кнопка сброса настроек"
+  }
+}

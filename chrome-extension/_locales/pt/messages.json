@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Afirmações Diárias",
+    "description": "Nome da extensão"
+  },
+  "extensionDescription": {
+    "message": "Transforme sua nova aba em uma fonte diária de inspiração com afirmações personalizadas, belos planos de fundo e lembretes conscientes.",
+    "description": "Descrição da extensão"
+  },
+  "settingsTitle": {
+    "message": "Configurações",
+    "description": "Título do painel de configurações"
+  },
+  "languageLabel": {
+    "message": "Idioma / Language",
+    "description": "Rótulo de seleção de idioma"
+  },
+  "showWeatherLabel": {
+    "message": "Mostrar Clima",
+    "description": "Mostrar widget do clima"
+  },
+  "showClockLabel": {
+    "message": "Mostrar Relógio",
+    "description": "Mostrar widget do relógio"
+  },
+  "backgroundThemeLabel": {
+    "message": "Tema de Fundo",
+    "description": "Seleção do tema de fundo"
+  },
+  "cardStyleLabel": {
+    "message": "Estilo do Cartão",
+    "description": "Seleção do estilo do cartão"
+  },
+  "fontStyleLabel": {
+    "message": "Estilo da Fonte",
+    "description": "Seleção do estilo da fonte"
+  },
+  "textColorLabel": {
+    "message": "Cor do Texto",
+    "description": "Seleção da cor do texto"
+  },
+  "resetDefaults": {
+    "message": "Restaurar Padrões",
+    "description": "Botão de redefinir configurações"
+  }
+}

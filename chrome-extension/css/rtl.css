@@ -1,0 +1,317 @@
+/**
+ * RTL (Right-to-Left) Language Support
+ * Styles for Arabic and other RTL languages
+ */
+
+/* General RTL styles */
+body.rtl,
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+/* Widget repositioning */
+body.rtl .weather-widget {
+    left: auto;
+    right: var(--space-lg);
+}
+
+/* Time widget stays centered - no change needed */
+body.rtl .time-widget {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    direction: rtl;
+}
+
+/* Settings button - move to top-right */
+body.rtl .settings-button {
+    left: auto !important;
+    right: var(--space-lg) !important;
+}
+
+/* Menu button - move to top-left */
+body.rtl .menu-button {
+    right: auto !important;
+    left: var(--space-lg) !important;
+}
+
+/* Focus mode button - move to bottom-left */
+body.rtl .focus-mode-button {
+    left: var(--space-lg) !important;
+    right: auto !important;
+}
+
+/* Breathing button - stays in same position (bottom-right) */
+body.rtl .breathing-button {
+    left: auto !important;
+    right: 2rem !important;
+}
+
+/* Settings panel and dialogs */
+body.rtl .settings-panel {
+    left: auto !important;
+    right: var(--space-lg) !important;
+}
+
+body.rtl .menu-panel {
+    left: var(--space-lg) !important;
+    right: auto !important;
+}
+
+body.rtl .dialog-content {
+    left: auto;
+    right: 0;
+    margin-right: auto;
+    margin-left: 0;
+}
+
+/* Close buttons */
+body.rtl .close-button {
+    left: auto;
+    right: 0;
+}
+
+/* Weather widget content */
+body.rtl .weather-details {
+    direction: rtl;
+}
+
+body.rtl .weather-detail {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/* Menu items */
+body.rtl .menu-group ul li {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .menu-group ul li i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+body.rtl .premium-tag {
+    margin-left: 8px;
+    margin-right: auto;
+}
+
+/* Action buttons in affirmations */
+body.rtl .affirmation-actions {
+    flex-direction: row-reverse;
+}
+
+body.rtl .action-button {
+    flex-direction: row-reverse;
+}
+
+body.rtl .action-button i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Breathing controls */
+body.rtl .breathing-modal-content {
+    direction: rtl;
+}
+
+body.rtl .breathing-pattern-selector,
+body.rtl .breathing-duration-selector {
+    direction: rtl;
+}
+
+/* Photo credit */
+body.rtl .photo-credit {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .photo-credit button {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+/* Settings groups */
+body.rtl .settings-group {
+    direction: rtl;
+}
+
+body.rtl .setting-item {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .setting-item span {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+body.rtl input[type="checkbox"],
+body.rtl input[type="color"] {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+body.rtl select {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Menu footer */
+body.rtl .menu-footer {
+    flex-direction: row-reverse;
+}
+
+body.rtl .menu-footer-btn {
+    flex-direction: row-reverse;
+}
+
+body.rtl .menu-footer-btn i {
+    margin-left: 6px;
+    margin-right: 0;
+}
+
+/* Breathing progress indicator */
+body.rtl .breathing-progress-indicator {
+    direction: rtl;
+}
+
+/* Custom affirmations dialog */
+body.rtl .collections-tabs {
+    flex-direction: row-reverse;
+}
+
+body.rtl .tab-button {
+    margin-right: 8px;
+    margin-left: 0;
+}
+
+body.rtl .tab-button:last-child {
+    margin-right: 0;
+}
+
+/* Affirmations list */
+body.rtl .affirmation-item {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .affirmation-actions .action-icon {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Premium modal */
+body.rtl .features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+body.rtl .pricing-section {
+    flex-direction: row-reverse;
+}
+
+body.rtl .plan {
+    margin-right: 20px;
+    margin-left: 0;
+}
+
+body.rtl .plan:last-child {
+    margin-right: 0;
+}
+
+body.rtl .best-value-tag {
+    right: 0;
+    left: auto;
+}
+
+/* Backup dialog */
+body.rtl .backup-section {
+    direction: rtl;
+    text-align: right;
+}
+
+body.rtl .info-box {
+    direction: rtl;
+}
+
+body.rtl .info-box i {
+    margin-left: 12px;
+    margin-right: 0;
+}
+
+body.rtl .backup-button-group {
+    flex-direction: row-reverse;
+}
+
+body.rtl .backup-button {
+    margin-right: 12px;
+    margin-left: 0;
+}
+
+body.rtl .backup-button:last-child {
+    margin-right: 0;
+}
+
+body.rtl .backup-button i {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Saved backgrounds */
+body.rtl .backgrounds-grid {
+    direction: rtl;
+}
+
+body.rtl .background-item .background-overlay {
+    direction: rtl;
+}
+
+body.rtl .background-item .background-actions {
+    right: auto;
+    left: 8px;
+}
+
+/* Skip link */
+body.rtl .skip-link {
+    left: auto;
+    right: -9999px;
+}
+
+body.rtl .skip-link:focus {
+    right: 20px;
+    left: auto;
+}
+
+/* Time widget */
+body.rtl .time-widget {
+    direction: rtl;
+}
+
+/* Drag handles */
+body.rtl .widget-handle {
+    left: auto;
+    right: 8px;
+}
+
+/* RTL animations */
+body.rtl [dir="rtl"] {
+    animation-direction: reverse;
+}
+
+/* Ensure Arabic text is properly rendered */
+body.rtl {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+/* Arabic specific font improvements */
+html[lang="ar"] body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-feature-settings: 'liga' off;
+}
+
+/* Ensure proper text rendering in Arabic */
+html[lang="ar"] {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+

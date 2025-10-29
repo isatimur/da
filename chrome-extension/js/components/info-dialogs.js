@@ -1,12 +1,26 @@
 // Info Dialogs Component
+import i18n from '../utils/i18n.js';
+
 class InfoDialogs {
     constructor() {
+        this.dialogs = new Map();
         this.initialize();
     }
 
     initialize() {
         this.setupEventListeners();
         this.createDialogs();
+        this.setupLanguageChangeListener();
+    }
+
+    setupLanguageChangeListener() {
+        document.addEventListener('languageChanged', () => {
+            this.updateTranslations();
+        });
+    }
+
+    updateTranslations() {
+        this.createDialogs(); // Recreate dialogs with new translations
     }
 
     setupEventListeners() {
@@ -27,30 +41,37 @@ class InfoDialogs {
     }
 
     createDialogs() {
+        // Remove old dialogs
+        document.querySelectorAll('[id$="Dialog"]').forEach(d => {
+            if (['helpDialog', 'feedbackDialog', 'aboutDialog'].includes(d.id)) {
+                d.remove();
+            }
+        });
+
         // Create Help dialog
         this.createDialog('help', {
-            title: 'Help',
+            title: i18n.t('help.title'),
             content: `
                 <div class="help-list">
                     <div class="help-item">
                         <i class="material-icons-round">new_releases</i>
                         <div>
-                            <strong>Getting Started</strong>
-                            <p>New affirmations appear every time you open a new tab. Click the refresh button to see a new one.</p>
+                            <strong>${i18n.t('help.gettingStarted')}</strong>
+                            <p>${i18n.t('help.gettingStartedDesc')}</p>
                         </div>
                     </div>
                     <div class="help-item">
                         <i class="material-icons-round">favorite</i>
                         <div>
-                            <strong>Favorites</strong>
-                            <p>Click the heart icon to save affirmations you love. Access them anytime from the menu.</p>
+                            <strong>${i18n.t('help.favorites')}</strong>
+                            <p>${i18n.t('help.favoritesDesc')}</p>
                         </div>
                     </div>
                     <div class="help-item">
                         <i class="material-icons-round">edit</i>
                         <div>
-                            <strong>Custom Affirmations</strong>
-                            <p>Create and manage your own affirmations in the Custom Affirmations section.</p>
+                            <strong>${i18n.t('help.customAffirmations')}</strong>
+                            <p>${i18n.t('help.customAffirmationsDesc')}</p>
                         </div>
                     </div>
                 </div>
@@ -59,31 +80,31 @@ class InfoDialogs {
 
         // Create Feedback dialog
         this.createDialog('feedback', {
-            title: 'Send Feedback',
+            title: i18n.t('feedback.title'),
             content: `
                 <div class="feedback-intro">
                     <i class="material-icons-round">chat</i>
                     <div>
-                        <h4>We'd love to hear from you!</h4>
-                        <p>Your feedback helps us improve Daily Affirmations for everyone.</p>
+                        <h4>${i18n.t('feedback.intro')}</h4>
+                        <p>${i18n.t('feedback.description')}</p>
                     </div>
                 </div>
                 <form class="feedback-form">
                     <select class="dialog-input" name="type" required>
-                        <option value="" disabled selected>Select feedback type</option>
-                        <option value="suggestion">Suggestion</option>
-                        <option value="bug">Bug Report</option>
-                        <option value="other">Other</option>
+                        <option value="" disabled selected>${i18n.t('feedback.selectFeedbackType')}</option>
+                        <option value="suggestion">${i18n.t('feedback.suggestion')}</option>
+                        <option value="bug">${i18n.t('feedback.bugReport')}</option>
+                        <option value="other">${i18n.t('feedback.other')}</option>
                     </select>
-                    <input type="email" class="dialog-input" name="email" placeholder="Your email (optional)">
-                    <textarea class="dialog-input" name="message" rows="4" placeholder="Tell us what you think..." required></textarea>
+                    <input type="email" class="dialog-input" name="email" placeholder="${i18n.t('feedback.yourEmail')}">
+                    <textarea class="dialog-input" name="message" rows="4" placeholder="${i18n.t('feedback.tellUs')}" required></textarea>
                     <label class="checkbox-label">
                         <input type="checkbox" name="subscribe">
-                        Keep me updated on new features
+                        ${i18n.t('feedback.keepMeUpdated')}
                     </label>
                     <button type="submit" class="dialog-button primary">
                         <i class="material-icons-round">send</i>
-                        Send Feedback
+                        ${i18n.t('feedback.sendFeedback')}
                     </button>
                 </form>
             `
@@ -91,27 +112,27 @@ class InfoDialogs {
 
         // Create About dialog
         this.createDialog('about', {
-            title: 'About Daily Affirmations',
+            title: i18n.t('about.title'),
             content: `
                 <div class="about-header">
-                    <h4>Version 1.0.0</h4>
-                    <p>Transform your mindset with daily positive affirmations.</p>
+                    <h4>${i18n.t('about.version')} 1.0.0</h4>
+                    <p>${i18n.t('about.description')}</p>
                 </div>
                 <div class="about-features">
                     <ul>
-                        <li><i class="material-icons-round">auto_awesome</i> Daily curated affirmations</li>
-                        <li><i class="material-icons-round">favorite</i> Save your favorites</li>
-                        <li><i class="material-icons-round">edit</i> Create custom affirmations</li>
-                        <li><i class="material-icons-round">backup</i> Cloud backup & sync</li>
+                        <li><i class="material-icons-round">auto_awesome</i> ${i18n.t('about.dailyCuratedAffirmations')}</li>
+                        <li><i class="material-icons-round">favorite</i> ${i18n.t('about.saveFavorites')}</li>
+                        <li><i class="material-icons-round">edit</i> ${i18n.t('about.createCustom')}</li>
+                        <li><i class="material-icons-round">backup</i> ${i18n.t('about.cloudBackup')}</li>
                     </ul>
                 </div>
                 <div class="about-footer">
                     <div class="about-links">
-                        <a href="/privacy" target="_blank">Privacy Policy</a>
-                        <span class="separator">•</span>
-                        <a href="/terms" target="_blank">Terms of Service</a>
+                        <a href="/privacy" target="_blank">${i18n.t('about.privacyPolicy')}</a>
+                        <span class="separator">${i18n.t('about.separator')}</span>
+                        <a href="/terms" target="_blank">${i18n.t('about.termsOfService')}</a>
                     </div>
-                    <p class="copyright">© 2024 Daily Affirmations. All rights reserved.</p>
+                    <p class="copyright">${i18n.t('about.copyright')}</p>
                 </div>
             `
         });
@@ -165,7 +186,7 @@ class InfoDialogs {
                 try {
                     // Show loading state
                     submitButton.disabled = true;
-                    submitButton.innerHTML = '<i class="material-icons-round">hourglass_top</i> Sending...';
+                    submitButton.innerHTML = `<i class="material-icons-round">hourglass_top</i> ${i18n.t('feedback.sending')}`;
                     
                     // Send feedback to API
                     const response = await fetch('https://daily-affirmation.today/api/feedback', {
@@ -190,11 +211,11 @@ class InfoDialogs {
                     // Success
                     dialog.classList.remove('visible');
                     dialog.classList.remove('show');
-                    this.showNotification('Thank you!', 'Your feedback has been received. We appreciate your input!');
+                    this.showNotification(i18n.t('feedback.thankYou'), i18n.t('feedback.thankYouDesc'));
                     form.reset();
                 } catch (error) {
                     console.error('Failed to submit feedback:', error);
-                    this.showNotification('Error', 'Failed to send feedback. Please try again.');
+                    this.showNotification(i18n.t('feedback.error'), i18n.t('feedback.errorDesc'));
                 } finally {
                     // Reset button state
                     submitButton.disabled = false;

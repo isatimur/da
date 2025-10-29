@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "每日肯定",
+    "description": "扩展名称"
+  },
+  "extensionDescription": {
+    "message": "将您的新标签页转变为每日灵感来源，包括个性化肯定、美丽背景和正念提醒。",
+    "description": "扩展描述"
+  },
+  "settingsTitle": {
+    "message": "设置",
+    "description": "设置面板标题"
+  },
+  "languageLabel": {
+    "message": "语言 / Language",
+    "description": "语言选择标签"
+  },
+  "showWeatherLabel": {
+    "message": "显示天气",
+    "description": "显示天气小部件标签"
+  },
+  "showClockLabel": {
+    "message": "显示时钟",
+    "description": "显示时钟小部件标签"
+  },
+  "backgroundThemeLabel": {
+    "message": "背景主题",
+    "description": "背景主题选择标签"
+  },
+  "cardStyleLabel": {
+    "message": "卡片样式",
+    "description": "卡片样式选择标签"
+  },
+  "fontStyleLabel": {
+    "message": "字体样式",
+    "description": "字体样式选择标签"
+  },
+  "textColorLabel": {
+    "message": "文本颜色",
+    "description": "文本颜色选择标签"
+  },
+  "resetDefaults": {
+    "message": "重置为默认",
+    "description": "重置设置按钮"
+  }
+}

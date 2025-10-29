@@ -3,6 +3,7 @@ import backgroundService from '../services/background.js';
 import { showNotification } from '../utils/common.js';
 import { requirePremium } from '../utils/premium.js';
 import stateManager from '../modules/state.js';
+import i18n from '../utils/i18n.js';
 
 class SavedBackgroundsManager {
     constructor() {
@@ -13,6 +14,29 @@ class SavedBackgroundsManager {
     initialize() {
         this.createDialog();
         this.setupEventListeners();
+        this.setupLanguageChangeListener();
+    }
+
+    setupLanguageChangeListener() {
+        document.addEventListener('languageChanged', () => {
+            this.updateDialogTranslations();
+        });
+    }
+
+    updateDialogTranslations() {
+        if (!this.dialog) return;
+        
+        // Update title
+        const title = this.dialog.querySelector('h2');
+        if (title) title.textContent = i18n.t('dialogs.savedBackgrounds');
+        
+        // Update button texts
+        const addButton = this.dialog.querySelector('.add-background-button');
+        if (addButton) {
+            addButton.querySelector('i').nextSibling.textContent = ' ' + i18n.t('dialogs.addCustomBackground');
+        }
+        
+        // Update other text elements will be handled in loadBackgrounds()
     }
 
     createDialog() {
@@ -21,28 +45,28 @@ class SavedBackgroundsManager {
         this.dialog.innerHTML = `
             <div class="dialog-content glass">
                 <div class="dialog-header">
-                    <h2>Saved Backgrounds</h2>
+                    <h2>${i18n.t('dialogs.savedBackgrounds')}</h2>
                     <div class="header-actions">
                         ${backgroundService.isFixedBackground() ? `
-                            <button class="unselect-button" title="Return to random backgrounds">
+                            <button class="unselect-button" title="${i18n.t('common.returnToRandom')}">
                                 <i class="material-icons-round">shuffle</i>
-                                Random Mode
+                                ${i18n.t('common.randomMode')}
                             </button>
                         ` : ''}
-                        <button class="close-button" title="Close dialog">
+                        <button class="close-button" title="${i18n.t('accessibility.closeDialog')}">
                             <i class="material-icons-round">close</i>
                         </button>
                     </div>
                 </div>
                 <div class="backgrounds-content">
                     <div class="backgrounds-actions">
-                        <button class="add-background-button" title="Add a custom background image">
+                        <button class="add-background-button" title="${i18n.t('dialogs.addCustomBackground')}">
                             <i class="material-icons-round">add_photo_alternate</i>
-                            Add Custom Background
+                            ${i18n.t('dialogs.addCustomBackground')}
                         </button>
                         <div class="backgrounds-info">
                             <span class="mode-indicator">
-                                ${backgroundService.isFixedBackground() ? 'Fixed Background' : 'Random Backgrounds'}
+                                ${backgroundService.isFixedBackground() ? i18n.t('common.fixedBackground') : i18n.t('common.randomBackgrounds')}
                             </span>
                             <span class="count"></span>
                         </div>
@@ -51,8 +75,8 @@ class SavedBackgroundsManager {
                 </div>
                 <div class="backgrounds-empty-state">
                     <i class="material-icons-round">wallpaper</i>
-                    <p>No saved backgrounds yet</p>
-                    <p class="subtitle">Save backgrounds from Unsplash or add your own custom images</p>
+                    <p>${i18n.t('common.noSavedBackgrounds')}</p>
+                    <p class="subtitle">${i18n.t('common.saveFromUnsplash')}</p>
                 </div>
             </div>
         `;

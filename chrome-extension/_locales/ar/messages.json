@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "التوكيدات اليومية",
+    "description": "اسم الامتداد"
+  },
+  "extensionDescription": {
+    "message": "حول علامة التبويب الجديدة إلى مصدر يومي للإلهام مع التوكيدات المخصصة والخلفيات الجميلة والتذكيرات الواعية.",
+    "description": "وصف الامتداد"
+  },
+  "settingsTitle": {
+    "message": "الإعدادات",
+    "description": "عنوان لوحة الإعدادات"
+  },
+  "languageLabel": {
+    "message": "اللغة / Language",
+    "description": "تسمية اختيار اللغة"
+  },
+  "showWeatherLabel": {
+    "message": "إظهار الطقس",
+    "description": "تسمية عرض الطقس"
+  },
+  "showClockLabel": {
+    "message": "إظهار الساعة",
+    "description": "تسمية عرض الساعة"
+  },
+  "backgroundThemeLabel": {
+    "message": "موضوع الخلفية",
+    "description": "تسمية اختيار موضوع الخلفية"
+  },
+  "cardStyleLabel": {
+    "message": "نمط البطاقة",
+    "description": "تسمية اختيار نمط البطاقة"
+  },
+  "fontStyleLabel": {
+    "message": "نمط الخط",
+    "description": "تسمية اختيار نمط الخط"
+  },
+  "textColorLabel": {
+    "message": "لون النص",
+    "description": "تسمية اختيار لون النص"
+  },
+  "resetDefaults": {
+    "message": "إعادة الضبط الافتراضية",
+    "description": "زر إعادة ضبط الإعدادات"
+  }
+}

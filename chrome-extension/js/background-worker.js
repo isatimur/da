@@ -1,7 +1,7 @@
 // Enhanced Background Service Worker with Caching
-const CACHE_NAME = 'daily-affirmations-v1';
-const STATIC_CACHE_NAME = 'daily-affirmations-static-v1';
-const DYNAMIC_CACHE_NAME = 'daily-affirmations-dynamic-v1';
+const CACHE_NAME = 'daily-affirmations-v1.2.3';
+const STATIC_CACHE_NAME = 'daily-affirmations-static-v1.2.3';
+const DYNAMIC_CACHE_NAME = 'daily-affirmations-dynamic-v1.2.3';
 
 // Static assets to cache (only external URLs, not chrome-extension://)
 const STATIC_ASSETS = [
@@ -168,21 +168,21 @@ async function handleAPIRequest(request) {
             }
         }
         
-        // Fetch from network
-        const networkResponse = await fetch(request, {
-            method: request.method,
-            headers: {
-                'Content-Type': 'application/json',
-                ...request.headers
-            },
-            mode: 'cors'
-        });
+        // Fetch from network without mutating request headers
+        const networkResponse = await fetch(request.clone());
         
         // Cache successful responses
         if (networkResponse.ok) {
-            const responseToCache = networkResponse.clone();
-            responseToCache.headers.set('sw-cache-date', new Date().toISOString());
-            
+            // Create a new Response with augmented headers since Response headers are immutable
+            const responseClone = networkResponse.clone();
+            const cacheHeaders = new Headers(responseClone.headers);
+            cacheHeaders.set('sw-cache-date', new Date().toISOString());
+            const responseToCache = new Response(await responseClone.blob(), {
+                status: responseClone.status,
+                statusText: responseClone.statusText,
+                headers: cacheHeaders
+            });
+
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
             cache.put(request, responseToCache);
         }

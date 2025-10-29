@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Daily Affirmations",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Transform your new tab into a daily source of inspiration with personalized affirmations, beautiful backgrounds, and mindful reminders. Now with full multi-language support (English, Russian, Chinese, Arabic, Portuguese, Hindi).",
+    "description": "Extension description"
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Settings panel title"
+  },
+  "languageLabel": {
+    "message": "Language / Язык",
+    "description": "Language selection label"
+  },
+  "showWeatherLabel": {
+    "message": "Show Weather",
+    "description": "Show weather widget label"
+  },
+  "showClockLabel": {
+    "message": "Show Clock",
+    "description": "Show clock widget label"
+  },
+  "backgroundThemeLabel": {
+    "message": "Background Theme",
+    "description": "Background theme selection label"
+  },
+  "cardStyleLabel": {
+    "message": "Card Style",
+    "description": "Card style selection label"
+  },
+  "fontStyleLabel": {
+    "message": "Font Style",
+    "description": "Font style selection label"
+  },
+  "textColorLabel": {
+    "message": "Text Color",
+    "description": "Text color selection label"
+  },
+  "resetDefaults": {
+    "message": "Reset to Defaults",
+    "description": "Reset settings button"
+  }
+}

@@ -11,6 +11,7 @@ const SUBSCRIPTION_STATUS = {
 const defaultSettings = {
     showWeather: true,
     showClock: true,
+    showTop5Tasks: true,
     backgroundTheme: 'nature',
     cardStyle: 'glass',
     weatherWidgetPosition: { top: '20px', left: 'auto', right: '20px' },
@@ -112,25 +113,31 @@ class StateManager {
     // Load state with error handling
     async loadState() {
         try {
-            const result = await new Promise(resolve => {
-                chrome.storage.sync.get(['settings', 'version', 'customBackgroundIds'], resolve);
+            // Load critical settings from sync storage
+            const syncResult = await new Promise(resolve => {
+                chrome.storage.sync.get(['settings', 'version'], resolve);
             });
 
-            let state = result.settings || defaultSettings;
-            const version = result.version || '1.0.0';
-            const backgroundIds = result.customBackgroundIds || [];
+            let state = syncResult.settings || defaultSettings;
+            const version = syncResult.version || '1.0.0';
 
-            // Load custom backgrounds if they exist
-            if (backgroundIds.length > 0) {
-                const customBackgrounds = [];
-                for (const id of backgroundIds) {
-                    const result = await chrome.storage.local.get(`background_${id}`);
-                    if (result[`background_${id}`]) {
-                        customBackgrounds.push(result[`background_${id}`]);
-                    }
-                }
-                state.customBackgrounds = customBackgrounds;
-            }
+            // Load large data from local storage
+            const localResult = await chrome.storage.local.get([
+                'customBackgrounds',
+                'customAffirmations',
+                'customCollections',
+                'favorites',
+                'statistics',
+                'breathing'
+            ]);
+
+            // Merge local storage data into state
+            if (localResult.customBackgrounds) state.customBackgrounds = localResult.customBackgrounds;
+            if (localResult.customAffirmations) state.customAffirmations = localResult.customAffirmations;
+            if (localResult.customCollections) state.customCollections = localResult.customCollections;
+            if (localResult.favorites) state.favorites = localResult.favorites;
+            if (localResult.statistics) state.statistics = localResult.statistics;
+            if (localResult.breathing) state.breathing = localResult.breathing;
 
             // Validate and repair state
             state = this.validateState(state);
@@ -152,10 +159,18 @@ class StateManager {
         try {
             const validatedState = this.validateState(state);
             
-            // Split large data items into separate storage
-            const { customBackgrounds, ...mainState } = validatedState;
+            // Split large data items into local storage
+            const { 
+                customBackgrounds, 
+                customAffirmations,
+                customCollections,
+                favorites,
+                statistics,
+                breathing,
+                ...mainState 
+            } = validatedState;
             
-            // Save main state
+            // Save critical settings to sync storage
             await new Promise(resolve => {
                 chrome.storage.sync.set({
                     settings: mainState,
@@ -163,20 +178,15 @@ class StateManager {
                 }, resolve);
             });
 
-            // Save custom backgrounds separately if they exist
-            if (customBackgrounds && customBackgrounds.length > 0) {
-                // Save each background separately to avoid quota issues
-                for (let i = 0; i < customBackgrounds.length; i++) {
-                    const bg = customBackgrounds[i];
-                    await chrome.storage.local.set({
-                        [`background_${bg.id}`]: bg
-                    });
-                }
-                // Save the list of background IDs
-                await chrome.storage.sync.set({
-                    customBackgroundIds: customBackgrounds.map(bg => bg.id)
-                });
-            }
+            // Save large data to local storage
+            await chrome.storage.local.set({
+                customBackgrounds: customBackgrounds || [],
+                customAffirmations: customAffirmations || [],
+                customCollections: customCollections || {},
+                favorites: favorites || { affirmations: [], backgrounds: [] },
+                statistics: statistics || {},
+                breathing: breathing || {}
+            });
 
             this.currentSettings = validatedState;
             this.notifyListeners();
@@ -252,15 +262,85 @@ class StateManager {
         }
     }
 
-    // Update specific settings
-    async updateSettings(updates) {
+    // Debounce timer for batched updates
+    saveTimeout = null;
+    
+    // Force save without debouncing (for critical data like tasks)
+    async forceSaveSettings(updates) {
         try {
-            const newState = {
+            // Don't save tasks to sync - they go to local storage only
+            if (updates.todos !== undefined) {
+                // Tasks are saved separately in todoService
+                logger.info('Tasks are saved to local storage, skipping sync storage');
+                return;
+            }
+            
+            // Update current settings immediately
+            this.currentSettings = {
                 ...this.currentSettings,
                 ...updates
             };
-            await this.saveState(newState);
+            
+            // Notify listeners immediately
+            this.notifyListeners();
+            
+            // Save immediately without debouncing
+            await this.saveState(this.currentSettings);
         } catch (error) {
+            logger.error('Failed to force save settings', { error: error.message });
+            // For quota errors, don't fail the app
+            if (error.message && error.message.includes('MAX_WRITE_OPERATIONS')) {
+                console.warn('Storage quota exceeded');
+                return;
+            }
+            throw error;
+        }
+    }
+    
+    // Update specific settings with debouncing to avoid quota errors
+    async updateSettings(updates) {
+        try {
+            // Clear any pending save
+            if (this.saveTimeout) {
+                clearTimeout(this.saveTimeout);
+            }
+            
+            // Update current settings immediately
+            this.currentSettings = {
+                ...this.currentSettings,
+                ...updates
+            };
+            
+            // Notify listeners immediately
+            this.notifyListeners();
+            
+            // Debounce the actual save to disk
+            return new Promise((resolve, reject) => {
+                this.saveTimeout = setTimeout(async () => {
+                    try {
+                        await this.saveState(this.currentSettings);
+                        resolve();
+                    } catch (error) {
+                        // If it's a quota error, don't throw, just log
+                        if (error.message && error.message.includes('MAX_WRITE_OPERATIONS')) {
+                            console.warn('Storage quota exceeded, skipping save');
+                            resolve(); // Still resolve to not break app flow
+                        } else {
+                            reject(new StateError(
+                                'Failed to update settings',
+                                'UPDATE_ERROR',
+                                { originalError: error }
+                            ));
+                        }
+                    }
+                }, 300); // Wait 300ms to batch multiple updates
+            });
+        } catch (error) {
+            // For quota errors, don't fail the app
+            if (error.message && error.message.includes('MAX_WRITE_OPERATIONS')) {
+                console.warn('Storage quota exceeded');
+                return; // Return silently
+            }
             throw new StateError(
                 'Failed to update settings',
                 'UPDATE_ERROR',

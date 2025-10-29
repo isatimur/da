@@ -7,9 +7,10 @@ import logger from './logger.js';
 
 class I18nManager {
     constructor() {
-        this.currentLanguage = 'ru'; // Default to Russian
+        this.currentLanguage = 'en'; // Default to English
         this.translations = {};
         this.fallbackLanguage = 'en';
+        this.rtlLanguages = ['ar', 'he', 'fa', 'ur']; // Right-to-left languages
         
         this.init();
     }
@@ -55,18 +56,31 @@ class I18nManager {
         const langCode = browserLang.split('-')[0].toLowerCase();
         
         // Supported languages
-        const supportedLanguages = ['ru', 'en'];
+        const supportedLanguages = ['en', 'ru', 'zh', 'ar', 'pt', 'hi'];
         
         if (supportedLanguages.includes(langCode)) {
             return langCode;
         }
         
-        // Default to Russian for Slavic languages, English for others
-        const slavicLanguages = ['ru', 'uk', 'be', 'bg', 'mk', 'sr', 'hr', 'sk', 'cs', 'pl'];
-        if (slavicLanguages.includes(langCode)) {
-            return 'ru';
+        // Map similar languages to supported ones
+        const languageMapping = {
+            // Slavic languages -> Russian
+            'uk': 'ru', 'be': 'ru', 'bg': 'ru', 'mk': 'ru', 'sr': 'ru', 'hr': 'ru', 'sk': 'ru', 'cs': 'ru', 'pl': 'ru',
+            // Chinese variants -> Chinese
+            'zh-hans': 'zh', 'zh-hant': 'zh',
+            // Portuguese variants -> Portuguese
+            'pt-br': 'pt',
+            // Arabic variants -> Arabic
+            'ar-sa': 'ar', 'ar-eg': 'ar', 'ar-ma': 'ar',
+            // Hindi variants -> Hindi
+            'hi-in': 'hi'
+        };
+        
+        if (languageMapping[langCode]) {
+            return languageMapping[langCode];
         }
         
+        // Default to English
         return 'en';
     }
 
@@ -113,21 +127,37 @@ class I18nManager {
     async loadTranslations() {
         try {
             let translations;
+            let translationModule;
             
-            if (this.currentLanguage === 'ru') {
-                const ruModule = await import('../locales/ru.js');
-                translations = ruModule.default;
+            // Import the appropriate translation file
+            const localeMap = {
+                'en': () => import('../locales/en.js'),
+                'ru': () => import('../locales/ru.js'),
+                'zh': () => import('../locales/zh.js'),
+                'ar': () => import('../locales/ar.js'),
+                'pt': () => import('../locales/pt.js'),
+                'hi': () => import('../locales/hi.js')
+            };
+            
+            if (localeMap[this.currentLanguage]) {
+                translationModule = await localeMap[this.currentLanguage]();
+                translations = translationModule.default;
             } else {
-                const enModule = await import('../locales/en.js');
-                translations = enModule.default;
+                // Fallback to English
+                translationModule = await import('../locales/en.js');
+                translations = translationModule.default;
             }
             
             this.translations = translations;
             
+            // Update document direction for RTL languages
+            this.updateDocumentDirection();
+            
             if (typeof logger !== 'undefined' && logger.debug) {
                 logger.debug('Translations loaded', { 
                     language: this.currentLanguage,
-                    keysCount: Object.keys(this.translations).length
+                    keysCount: Object.keys(this.translations).length,
+                    isRTL: this.isRTL()
                 });
             }
         } catch (error) {
@@ -138,28 +168,42 @@ class I18nManager {
                 });
             }
             
-            // Load fallback language
-            if (this.currentLanguage !== this.fallbackLanguage) {
-                try {
-                    let fallbackTranslations;
-                    if (this.fallbackLanguage === 'ru') {
-                        const ruModule = await import('../locales/ru.js');
-                        fallbackTranslations = ruModule.default;
-                    } else {
-                        const enModule = await import('../locales/en.js');
-                        fallbackTranslations = enModule.default;
-                    }
-                    this.translations = fallbackTranslations;
-                } catch (fallbackError) {
-                    if (typeof logger !== 'undefined' && logger.error) {
-                        logger.error('Failed to load fallback translations', { 
-                            error: fallbackError.message 
-                        });
-                    }
-                    this.translations = {};
+            // Load fallback language (English)
+            try {
+                const enModule = await import('../locales/en.js');
+                this.translations = enModule.default;
+            } catch (fallbackError) {
+                if (typeof logger !== 'undefined' && logger.error) {
+                    logger.error('Failed to load fallback translations', { 
+                        error: fallbackError.message 
+                    });
                 }
+                this.translations = {};
             }
         }
+    }
+    
+    /**
+     * Update document direction based on current language
+     */
+    updateDocumentDirection() {
+        const htmlElement = document.documentElement;
+        const bodyElement = document.body;
+        
+        if (this.isRTL()) {
+            htmlElement.setAttribute('dir', 'rtl');
+            bodyElement.classList.add('rtl');
+        } else {
+            htmlElement.setAttribute('dir', 'ltr');
+            bodyElement.classList.remove('rtl');
+        }
+    }
+    
+    /**
+     * Check if current language is RTL
+     */
+    isRTL() {
+        return this.rtlLanguages.includes(this.currentLanguage);
     }
 
     /**
@@ -173,6 +217,21 @@ class I18nManager {
             let translation = this.getNestedValue(this.translations, key);
             
             if (!translation) {
+                // Try to get partial translation (e.g., if key is "settings.labels.showWeather" but "labels" doesn't exist)
+                const parts = key.split('.');
+                if (parts.length > 1) {
+                    // Try without the last part
+                    const fallbackKey = parts.slice(0, -1).join('.');
+                    const fallbackTranslation = this.getNestedValue(this.translations, fallbackKey);
+                    if (fallbackTranslation && typeof fallbackTranslation === 'object') {
+                        // If it's an object, return the original key
+                        if (typeof logger !== 'undefined' && logger.debug) {
+                            logger.debug('Translation structure issue', { key, language: this.currentLanguage });
+                        }
+                        return key; // Return key if translation not found
+                    }
+                }
+                
                 if (typeof logger !== 'undefined' && logger.warn) {
                     logger.warn('Translation not found', { key, language: this.currentLanguage });
                 }
@@ -233,8 +292,12 @@ class I18nManager {
      */
     getAvailableLanguages() {
         return [
-            { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-            { code: 'en', name: 'English', flag: '🇺🇸' }
+            { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
+            { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺' },
+            { code: 'zh', name: 'Chinese', nativeName: '简体中文', flag: '🇨🇳' },
+            { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦' },
+            { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹' },
+            { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳' }
         ];
     }
 

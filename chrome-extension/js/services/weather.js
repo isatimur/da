@@ -1,5 +1,7 @@
 // Weather Service Module
 import stateManager from '../modules/state.js';
+import i18n from '../utils/i18n.js';
+import storage from '../utils/storage.js';
 
 class WeatherError extends Error {
     constructor(message, code, details = {}) {
@@ -78,8 +80,11 @@ class WeatherService {
             }
 
             const endpoint = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${this.API_KEY}&units=metric`;
-            
-            const response = await fetch(endpoint, { timeout: 5000 });
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            const response = await fetch(endpoint, { signal: controller.signal });
+            clearTimeout(timeoutId);
             
             if (!response.ok) {
                 throw new WeatherError(
@@ -110,7 +115,7 @@ class WeatherService {
                 timestamp: Date.now(),
                 expiresAt: Date.now() + this.CACHE_DURATION
             };
-            await chrome.storage.local.set({ [this.CACHE_KEY]: cache });
+            await storage.setSafe({ [this.CACHE_KEY]: cache }, ['background_', 'background_data', 'weather_data']);
         } catch (error) {
             console.error('Failed to cache weather data:', error);
         }
@@ -167,7 +172,10 @@ class WeatherService {
         if (elements.icon) elements.icon.textContent = formatted.icon;
         if (elements.humidity) elements.humidity.textContent = `${formatted.humidity}%`;
         if (elements.wind) elements.wind.textContent = `${formatted.windSpeed}km/h`;
-        if (elements.feelsLike) elements.feelsLike.textContent = `Feels like ${formatted.feelsLike}°C`;
+        if (elements.feelsLike) {
+            const feelsLikeText = i18n.t('weather.feelsLike');
+            elements.feelsLike.textContent = `${feelsLikeText} ${formatted.feelsLike}°C`;
+        }
     }
 
     // Handle weather errors
@@ -182,11 +190,14 @@ class WeatherService {
         };
 
         if (elements.temp) elements.temp.textContent = '--°C';
-        if (elements.city) elements.city.textContent = 'Weather Unavailable';
+        if (elements.city) elements.city.textContent = i18n.t('weather.noData');
         if (elements.icon) elements.icon.textContent = 'cloud_off';
         if (elements.humidity) elements.humidity.textContent = '--%';
         if (elements.wind) elements.wind.textContent = '-- km/h';
-        if (elements.feelsLike) elements.feelsLike.textContent = 'Feels like --°C';
+        if (elements.feelsLike) {
+            const feelsLikeText = i18n.t('weather.feelsLike');
+            elements.feelsLike.textContent = `${feelsLikeText} --°C`;
+        }
     }
 
     // Main update function

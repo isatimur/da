@@ -46,12 +46,12 @@ class BreathingCircle {
         // Create phase text
         this.phaseText = document.createElement('div');
         this.phaseText.className = 'breathing-phase-text';
-        this.phaseText.textContent = 'Ready to breathe';
+        this.phaseText.textContent = i18n.t('breathing.ready');
         
         // Create instruction text
         this.instructionText = document.createElement('div');
         this.instructionText.className = 'breathing-instruction';
-        this.instructionText.textContent = 'Click start to begin';
+        this.instructionText.textContent = i18n.t('breathing.clickStart');
         
         // Assemble the circle
         this.circle.appendChild(this.phaseText);
@@ -184,11 +184,38 @@ class BreathingCircle {
         this.circle.classList.remove('breathing-active', 'breathing-inhale', 'breathing-exhale', 'breathing-hold');
         this.circle.style.transform = 'scale(1)';
         
-        // Reset to idle state
-        this.phaseText.textContent = 'Session Complete';
-        this.instructionText.textContent = 'Great job! You\'ve completed your breathing session.';
+        // Reset to idle state with translations
+        if (this.phaseText) {
+            this.phaseText.textContent = i18n.t('breathing.sessionComplete');
+        }
+        
+        if (this.instructionText) {
+            this.instructionText.textContent = i18n.t('breathing.sessionCompleteMessage');
+        }
         
         logger.debug('Breathing animation stopped');
+    }
+    
+    /**
+     * Show completion message
+     */
+    showCompletion() {
+        this.isAnimating = false;
+        this.circle.classList.remove('breathing-active', 'breathing-inhale', 'breathing-exhale', 'breathing-hold');
+        this.circle.classList.add('breathing-complete');
+        this.circle.style.transform = 'scale(1.1)';
+        this.circle.style.opacity = '0.95';
+        
+        // Show completion message with translations
+        if (this.phaseText) {
+            this.phaseText.textContent = i18n.t('breathing.completeMessage');
+        }
+        
+        if (this.instructionText) {
+            this.instructionText.textContent = i18n.t('breathing.wellDoneMessage');
+        }
+        
+        logger.debug('Breathing circle showing completion');
     }
 
     /**
@@ -198,8 +225,13 @@ class BreathingCircle {
         this.isAnimating = false;
         this.circle.classList.remove('breathing-inhale', 'breathing-exhale', 'breathing-hold');
         
-        this.phaseText.textContent = 'Paused';
-        this.instructionText.textContent = 'Session paused. Click resume to continue.';
+        if (this.phaseText) {
+            this.phaseText.textContent = i18n.t('common.pause');
+        }
+        
+        if (this.instructionText) {
+            this.instructionText.textContent = i18n.t('common.resume');
+        }
         
         logger.debug('Breathing animation paused');
     }
@@ -224,14 +256,15 @@ class BreathingCircle {
         if (this.circle) {
             this.circle.className = 'breathing-circle';
             this.circle.style.transform = 'scale(1)';
+            this.circle.style.opacity = '1';
         }
         
         if (this.phaseText) {
-            this.phaseText.textContent = 'Ready to breathe';
+            this.phaseText.textContent = i18n.t('breathing.ready');
         }
         
         if (this.instructionText) {
-            this.instructionText.textContent = 'Click start to begin';
+            this.instructionText.textContent = i18n.t('breathing.clickStart');
         }
         
         logger.debug('Breathing circle reset');

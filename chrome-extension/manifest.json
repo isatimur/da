@@ -1,9 +1,10 @@
 {
     "manifest_version": 3,
-    "name": "Daily Affirmations",
+    "name": "__MSG_extensionName__",
     "short_name": "Affirmations",
-    "version": "1.0",
-    "description": "Transform your new tab into a daily source of inspiration with personalized affirmations, beautiful backgrounds, and mindful reminders",
+    "version": "1.2.3",
+    "description": "__MSG_extensionDescription__",
+    "default_locale": "en",
     "icons": {
         "16": "images/icon-16.png",
         "32": "images/icon-32.png",
@@ -27,7 +28,8 @@
         "notifications",
         "alarms",
         "geolocation",
-        "tabs"
+        "tabs",
+        "unlimitedStorage"
     ],
     "host_permissions": [
         "https://api.unsplash.com/*",

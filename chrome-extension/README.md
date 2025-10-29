@@ -2,6 +2,69 @@
 
 A mindful new tab experience that transforms your daily browsing with inspirational affirmations, beautiful backgrounds, and productivity features.
 
+## 📋 Version 1.2.3
+
+### Storage & Performance Fixes
+- 🔧 **Storage quota management** with LRU eviction system
+- 🔧 **Fixed service worker** headers immutable error
+- 🎯 **Improved background image loading** with proper extension URL resolution
+- ⚡ **Weather API timeout** handling with AbortController
+- 🚫 **Disabled text selection** on page (except form inputs)
+- 📦 **unlimitedStorage permission** added for better quota management
+
+### Previous Version: 1.2.2
+
+### Critical Storage Fix
+- 🔧 **Complete storage quota solution**
+- Moved ALL large data to local storage
+- Background images and weather now load correctly
+- Sync storage freed up completely
+
+## Version 1.2.0
+
+### What's New
+
+🎯 **Complete Task Management System**
+- Full-featured task manager with priorities, categories, due dates, and tags
+- "Today's Focus" widget showing top 5 priority tasks
+- Integrated Pomodoro timer for productivity
+- Productivity dashboard with statistics and insights
+- Task completion motivators with inspirational affirmations
+- Reliable dual-storage system (sync + local backup)
+
+⌨️ **Keyboard Shortcuts Reference**
+- New visible shortcuts dialog accessible from menu
+- Shows all available keyboard shortcuts
+- Complete help system for productivity features
+
+🎨 **UI/UX Improvements**
+- Renamed "Top 5 Priority" to "Today's Focus"
+- Enhanced z-index management for proper layering
+- Motivational message card design
+- Improved settings panel layout
+- Better action menu visibility (3 items visible with scroll)
+
+🐛 **Bug Fixes**
+- Fixed task persistence on refresh
+- Fixed keyboard shortcuts triggering while typing
+- Fixed task editing functionality
+- Fixed settings menu overflow and positioning
+- Fixed z-index conflicts between components
+
+🗺️ **Supported Languages**
+- 🇬🇧 English
+- 🇷🇺 Russian (Русский)
+- 🇨🇳 Chinese Simplified (中文)
+- 🇸🇦 Arabic (العربية) - with RTL support
+- 🇵🇹 Portuguese (Português)
+- 🇮🇳 Hindi (हिन्दी)
+
+**Previous Version: 1.1.0**
+- Full Internationalization Support (6 languages)
+- Breathing Exercises
+- Weather Information
+- Custom Affirmations
+
 ## 🚀 Quick Start
 
 1. **Development Setup**

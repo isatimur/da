@@ -18,8 +18,16 @@ import loadingManager from './utils/loading.js';
 import keyboardShortcuts from './utils/keyboard.js';
 import logger from './utils/logger.js';
 import i18n from './utils/i18n.js';
+import ChromeI18n from './utils/chromeI18n.js';
 import breathingModal from './components/breathingModal.js';
 import breathingSettings from './components/breathing-settings.js';
+import todoService from './services/todoService.js';
+import todoWidget from './components/todoWidget.js';
+import todoManager from './components/todoManager.js';
+import top5Tasks from './components/top5Tasks.js';
+import pomodoroTimer from './components/pomodoroTimer.js';
+import productivityDashboard from './components/productivityDashboard.js';
+import onboardingModal from './components/onboarding.js';
 
 // API Keys management
 async function getApiKeys() {
@@ -86,7 +94,8 @@ class App {
             customAffirmations: false,
             dailyReminder: false,
             backup: false,
-            breathing: false
+            breathing: false,
+            todo: false
         };
 
         try {
@@ -164,6 +173,22 @@ class App {
                     .catch(error => {
                         console.error('Breathing settings initialization failed:', error);
                         return false;
+                    }),
+
+                // Initialize TODO widget
+                Promise.resolve(todoWidget.init())
+                    .then(() => serviceStatus.todo = true)
+                    .catch(error => {
+                        console.error('TODO widget initialization failed:', error);
+                        return false;
+                    }),
+
+                // Initialize Top 5 Tasks widget
+                Promise.resolve(top5Tasks.init())
+                    .then(() => serviceStatus.top5Tasks = true)
+                    .catch(error => {
+                        console.error('Top 5 Tasks initialization failed:', error);
+                        return false;
                     })
             ]);
 
@@ -223,10 +248,353 @@ class App {
             this.setupPanelInteractions();
             setupAffirmationActions();
             this.setupKeyboardShortcuts();
+            this.initializeHTMLTranslations();
+            this.setupLanguageChangeListener();
+            this.setupTaskCompletionAffirmations();
         } catch (error) {
             console.error('UI initialization failed:', error);
             this.handleInitializationError(error);
         }
+    }
+    
+    // Initialize HTML translations
+    initializeHTMLTranslations() {
+        // Initialize Chrome i18n for HTML attributes
+        if (typeof ChromeI18n !== 'undefined') {
+            ChromeI18n.initializeHTMLTranslations();
+        }
+        
+        // Update all text content that should be translated
+        this.updateTranslatableElements();
+    }
+    
+    // Update translatable elements in the DOM
+    updateTranslatableElements() {
+        // Settings panel title
+        const settingsTitle = document.getElementById('settings-title');
+        if (settingsTitle) {
+            settingsTitle.textContent = i18n.t('settings.title');
+        }
+        
+        // Menu title
+        const menuTitle = document.getElementById('menu-title');
+        if (menuTitle) {
+            menuTitle.textContent = i18n.t('app.title');
+        }
+        
+        // Affirmation loading text
+        const affirmationText = document.getElementById('affirmation');
+        if (affirmationText && affirmationText.textContent.includes('Loading')) {
+            affirmationText.textContent = i18n.t('affirmations.loading');
+        }
+        
+        // Action buttons in affirmation menu
+        this.updateAffirmationActionButtons();
+        
+        // Menu group headings
+        const menuGroups = document.querySelectorAll('.menu-group h4');
+        menuGroups.forEach(h4 => {
+            const text = h4.textContent.trim();
+            if (text === 'My Collections') {
+                h4.textContent = i18n.t('menu.myCollections');
+            } else if (text === 'Settings') {
+                h4.textContent = i18n.t('settings.title');
+            }
+        });
+        
+        // Group headings
+        const groups = document.querySelectorAll('.settings-group h4');
+        groups.forEach(group => {
+            const text = group.textContent.trim();
+            if (text === 'Language') {
+                group.textContent = i18n.t('settings.language');
+            } else if (text === 'Display') {
+                group.textContent = i18n.t('common.display');
+            } else if (text === 'Theme') {
+                group.textContent = i18n.t('settings.theme');
+            } else if (text === 'Breathing Exercise') {
+                group.textContent = i18n.t('breathing.title');
+            }
+        });
+        
+        // Setting item labels
+        this.updateSettingLabels();
+        
+        // Menu items
+        this.updateMenuItems();
+        
+        logger.debug('HTML translations updated');
+    }
+    
+    // Update affirmation action buttons
+    updateAffirmationActionButtons() {
+        const actionButtons = document.querySelectorAll('.affirmation-actions .action-button span');
+        actionButtons.forEach(span => {
+            const text = span.textContent.trim();
+            const button = span.closest('.action-button');
+            
+            if (text === 'New Affirmation') {
+                span.textContent = i18n.t('affirmations.new');
+            } else if (text === 'Copy') {
+                span.textContent = i18n.t('affirmations.copy');
+            } else if (text === 'Add to Favorites') {
+                span.textContent = i18n.t('affirmations.addToFavorites');
+            } else if (text === 'Manage Favorites') {
+                span.textContent = i18n.t('affirmations.manageFavorites');
+            } else if (text === 'Share') {
+                span.textContent = i18n.t('affirmations.share');
+            }
+        });
+    }
+    
+    // Update setting item labels
+    updateSettingLabels() {
+        const settingItems = document.querySelectorAll('.setting-item span');
+        settingItems.forEach(span => {
+            const text = span.textContent.trim();
+            
+            // Map of hardcoded texts to translation keys
+            const translationMap = {
+                'Language': 'settings.labels.language',
+                'Show Weather': 'settings.labels.showWeather',
+                'Show Clock': 'settings.labels.showClock',
+                'Show Today\'s Focus': 'settings.labels.showTodaysFocus',
+                'Background Theme': 'settings.labels.backgroundTheme',
+                'Card Style': 'settings.labels.cardStyle',
+                'Font Style': 'settings.labels.fontStyle',
+                'Text Color': 'settings.labels.textColor',
+                'Default Pattern': 'settings.labels.defaultPattern',
+                'Default Duration': 'settings.labels.defaultDuration',
+                'Auto-start on new tab': 'settings.labels.autoStartNewTab',
+                'Breathing theme': 'settings.labels.breathingTheme',
+                'Keyboard Shortcuts': 'settings.labels.keyboardShortcuts',
+                'Help & FAQ': 'settings.labels.helpFaq'
+            };
+            
+            if (translationMap[text]) {
+                span.textContent = i18n.t(translationMap[text]);
+            }
+        });
+        
+        // Update setting group headers
+        this.updateSettingGroupHeaders();
+        
+        // Update select options
+        this.updateSelectOptions();
+    }
+    
+    // Update setting group headers
+    updateSettingGroupHeaders() {
+        const groups = document.querySelectorAll('.settings-group h4');
+        groups.forEach(group => {
+            const text = group.textContent.trim();
+            const translationMap = {
+                'Language': 'settings.sections.language',
+                'Display': 'settings.sections.display',
+                'Theme': 'settings.sections.theme',
+                'Breathing Exercise': 'settings.sections.breathingExercise',
+                'Help & Shortcuts': 'settings.sections.helpShortcuts'
+            };
+            
+            if (translationMap[text]) {
+                group.textContent = i18n.t(translationMap[text]);
+            }
+        });
+    }
+    
+    // Update select options
+    updateSelectOptions() {
+        // Update background theme options
+        const bgThemeSelect = document.getElementById('backgroundTheme');
+        if (bgThemeSelect) {
+            const options = {
+                'nature': 'settings.values.nature',
+                'minimal': 'settings.values.minimal',
+                'architecture': 'settings.values.architecture',
+                'abstract': 'settings.values.abstract'
+            };
+            bgThemeSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+        
+        // Update card style options
+        const cardStyleSelect = document.getElementById('cardStyle');
+        if (cardStyleSelect) {
+            const options = {
+                'glass': 'settings.values.glass',
+                'solid': 'settings.values.solid',
+                'minimal': 'settings.values.minimal'
+            };
+            cardStyleSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+        
+        // Update font style options
+        const fontStyleSelect = document.getElementById('fontStyle');
+        if (fontStyleSelect) {
+            const options = {
+                'default': 'settings.values.default',
+                'serif': 'settings.values.serif',
+                'monospace': 'settings.values.monospace'
+            };
+            fontStyleSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+        
+        // Update breathing pattern options
+        const breathingPatternSelect = document.getElementById('breathingDefaultPattern');
+        if (breathingPatternSelect) {
+            const options = {
+                'box': 'settings.values.box',
+                '4-7-8': 'settings.values.4-7-8',
+                'triangle': 'settings.values.triangle',
+                'relaxing': 'settings.values.relaxing',
+                'energizing': 'settings.values.energizing',
+                'mindful': 'settings.values.mindful'
+            };
+            breathingPatternSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+        
+        // Update breathing duration options
+        const breathingDurationSelect = document.getElementById('breathingDefaultDuration');
+        if (breathingDurationSelect) {
+            const options = {
+                '1': 'settings.values.oneMinute',
+                '3': 'settings.values.threeMinutes',
+                '5': 'settings.values.fiveMinutes',
+                '10': 'settings.values.tenMinutes',
+                '15': 'settings.values.fifteenMinutes'
+            };
+            breathingDurationSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+        
+        // Update breathing theme options
+        const breathingThemeSelect = document.getElementById('breathingTheme');
+        if (breathingThemeSelect) {
+            const options = {
+                'default': 'settings.values.default',
+                'calm': 'settings.values.calm',
+                'energizing': 'settings.values.energizingTheme'
+            };
+            breathingThemeSelect.querySelectorAll('option').forEach(option => {
+                if (options[option.value]) {
+                    option.textContent = i18n.t(options[option.value]);
+                }
+            });
+        }
+    }
+    
+    // Update menu items
+    updateMenuItems() {
+        // Use IDs and classes for reliable translation
+        const favoritesBtn = document.getElementById('favoritesButton');
+        if (favoritesBtn) {
+            const premiumTag = favoritesBtn.querySelector('.premium-tag');
+            const premiumTagHTML = premiumTag ? '<span class="premium-tag">Pro</span>' : '';
+            favoritesBtn.innerHTML = `<i class="material-icons-round">favorite</i>${i18n.t('menu.favoriteAffirmations')}${premiumTagHTML}`;
+        }
+        
+        const customBtn = document.getElementById('customAffirmationsButton');
+        if (customBtn) {
+            const premiumTag = customBtn.querySelector('.premium-tag');
+            const premiumTagHTML = premiumTag ? '<span class="premium-tag">Pro</span>' : '';
+            customBtn.innerHTML = `<i class="material-icons-round">format_quote</i>${i18n.t('menu.customAffirmations')}${premiumTagHTML}`;
+        }
+        
+        const backgroundsBtn = document.getElementById('backgroundsButton');
+        if (backgroundsBtn) {
+            backgroundsBtn.innerHTML = `<i class="material-icons-round">photo_library</i>${i18n.t('menu.savedBackgrounds')}`;
+        }
+        
+        const breathingBtn = document.getElementById('breathingExerciseButton');
+        if (breathingBtn) {
+            breathingBtn.innerHTML = `<i class="material-icons-round">air</i>${i18n.t('breathing.title')}`;
+        }
+        
+        const remindersBtn = document.querySelector('.daily-reminders-item');
+        if (remindersBtn) {
+            const premiumTag = remindersBtn.querySelector('.premium-tag');
+            const premiumTagHTML = premiumTag ? '<span class="premium-tag">Pro</span>' : '';
+            remindersBtn.innerHTML = `<i class="material-icons-round">notifications</i>${i18n.t('menu.dailyReminders')}${premiumTagHTML}`;
+        }
+        
+        // Settings section items - find by specific structure
+        const menuLists = document.querySelectorAll('#menuPanel .menu-group ul');
+        menuLists.forEach(ul => {
+            const settingsUl = Array.from(ul.children).find(li => 
+                li.querySelector('i.palette') || li.querySelector('i.backup')
+            );
+            if (!settingsUl) return;
+            
+            ul.querySelectorAll('li').forEach(li => {
+                const iconElement = li.querySelector('i');
+                if (!iconElement) return;
+                
+                const iconClass = iconElement.className;
+                const premiumTag = li.querySelector('.premium-tag');
+                const premiumTagHTML = premiumTag ? '<span class="premium-tag">Pro</span>' : '';
+                
+                if (iconClass.includes('palette') && !li.id) {
+                    li.innerHTML = `<i class="material-icons-round">palette</i>${i18n.t('menu.themeSettings')}`;
+                } else if (iconClass.includes('backup') && !li.id) {
+                    li.innerHTML = `<i class="material-icons-round">backup</i>${i18n.t('menu.backup')}${premiumTagHTML}`;
+                }
+            });
+        });
+        
+        // Update menu footer buttons
+        const menuFooterBtns = document.querySelectorAll('.menu-footer-btn');
+        menuFooterBtns.forEach(btn => {
+            const span = btn.querySelector('span');
+            if (span) {
+                const text = span.textContent.trim();
+                if (text === 'Help') span.textContent = i18n.t('menu.help');
+                if (text === 'Feedback') span.textContent = i18n.t('menu.feedback');
+                if (text === 'About') span.textContent = i18n.t('menu.about');
+            }
+        });
+        
+        // Update reset button
+        const resetButton = document.getElementById('resetSettings');
+        if (resetButton) {
+            resetButton.textContent = i18n.t('settings.resetToDefaults');
+        }
+        
+        // Update premium badge
+        const premiumBadge = document.querySelector('.premium-badge');
+        if (premiumBadge) {
+            premiumBadge.textContent = i18n.t('premium.free');
+        }
+    }
+    
+    // Setup language change listener
+    setupLanguageChangeListener() {
+        document.addEventListener('languageChanged', () => {
+            logger.info('Language changed, updating UI');
+            this.updateTranslatableElements();
+            
+            // Update breathing modal if it's visible
+            if (breathingModal && typeof breathingModal.updateTranslations === 'function') {
+                breathingModal.updateTranslations();
+            }
+        });
     }
 
     // Initialize draggable widgets
@@ -309,10 +677,10 @@ class App {
                 });
             } catch (error) {
                 if (error.message === 'Premium feature not available') {
-                    showNotification('Premium Required', 'Upgrade to Pro to use favorite affirmations');
+                    showNotification(i18n.t('notifications.premiumRequired'), i18n.t('notifications.upgradeToPro'));
                 } else {
                     console.error('Failed to show favorites manager:', error);
-                    showNotification('Error', 'Failed to open favorites manager');
+                    showNotification(i18n.t('common.error'), i18n.t('errors.unknown'));
                 }
             }
         });
@@ -325,10 +693,10 @@ class App {
                 });
             } catch (error) {
                 if (error.message === 'Premium feature not available') {
-                    showNotification('Premium Required', 'Upgrade to Pro to access saved backgrounds');
+                    showNotification(i18n.t('notifications.premiumRequired'), i18n.t('notifications.upgradeToPro'));
                 } else {
                     console.error('Failed to show saved backgrounds:', error);
-                    showNotification('Error', 'Failed to show saved backgrounds');
+                    showNotification(i18n.t('common.error'), i18n.t('errors.unknown'));
                 }
             }
         });
@@ -341,10 +709,10 @@ class App {
                 });
             } catch (error) {
                 if (error.message === 'Premium feature not available') {
-                    showNotification('Premium Required', 'Upgrade to Pro to save backgrounds');
+                    showNotification(i18n.t('notifications.premiumRequired'), i18n.t('notifications.upgradeToPro'));
                 } else {
                     console.error('Failed to toggle background:', error);
-                    showNotification('Error', error.message || 'Failed to update background');
+                    showNotification(i18n.t('common.error'), error.message || i18n.t('errors.unknown'));
                 }
             }
         });
@@ -357,10 +725,10 @@ class App {
                 });
             } catch (error) {
                 if (error.message === 'Premium feature not available') {
-                    showNotification('Premium Required', 'Upgrade to Pro to use daily reminders');
+                    showNotification(i18n.t('notifications.premiumRequired'), i18n.t('notifications.upgradeToPro'));
                 } else {
                     console.error('Failed to show reminder settings:', error);
-                    showNotification('Error', 'Failed to open reminder settings');
+                    showNotification(i18n.t('common.error'), i18n.t('errors.unknown'));
                 }
             }
         });
@@ -379,10 +747,10 @@ class App {
                     });
                 } catch (error) {
                     if (error.message === 'Premium feature not available') {
-                        showNotification('Premium Required', 'Upgrade to Pro to use backup & sync');
+                        showNotification(i18n.t('notifications.premiumRequired'), i18n.t('notifications.upgradeToPro'));
                     } else {
                         console.error('Failed to show backup dialog:', error);
-                        showNotification('Error', 'Failed to open backup dialog');
+                        showNotification(i18n.t('common.error'), i18n.t('errors.unknown'));
                     }
                 }
             });
@@ -397,10 +765,40 @@ class App {
         document.getElementById('breathingExerciseButton')?.addEventListener('click', () => {
             breathingModal.show();
         });
+
+        // Task Manager menu item
+        document.getElementById('taskManagerButton')?.addEventListener('click', () => {
+            todoManager.show();
+        });
+
+        // Keyboard Shortcuts menu item
+        document.getElementById('keyboardShortcutsButton')?.addEventListener('click', () => {
+            const dialog = document.getElementById('keyboardShortcutsDialog');
+            if (dialog) {
+                dialog.classList.remove('hidden');
+                dialog.classList.add('show');
+                dialog.setAttribute('aria-hidden', 'false');
+                // Close menu panel
+                const menuPanel = document.getElementById('menuPanel');
+                if (menuPanel) {
+                    menuPanel.classList.add('hidden');
+                }
+            }
+        });
+
+        // Close keyboard shortcuts dialog
+        document.getElementById('closeShortcutsDialog')?.addEventListener('click', () => {
+            const dialog = document.getElementById('keyboardShortcutsDialog');
+            if (dialog) {
+                dialog.classList.remove('show');
+                dialog.classList.add('hidden');
+                dialog.setAttribute('aria-hidden', 'true');
+            }
+        });
     }
 
     // Setup panel interactions
-    setupPanelInteractions() {
+    async setupPanelInteractions() {
         const settingsButton = document.getElementById('settingsButton');
         const settingsPanel = document.getElementById('settingsPanel');
         const menuButton = document.getElementById('menuButton');
@@ -414,6 +812,7 @@ class App {
         // Settings controls
         const showWeatherCheckbox = document.getElementById('showWeather');
         const showClockCheckbox = document.getElementById('showClock');
+        const showTop5TasksCheckbox = document.getElementById('showTop5Tasks');
         const backgroundThemeSelect = document.getElementById('backgroundTheme');
         const cardStyleSelect = document.getElementById('cardStyle');
         const fontStyleSelect = document.getElementById('fontStyle');
@@ -423,6 +822,7 @@ class App {
         const settings = stateManager.getSettings();
         if (showWeatherCheckbox) showWeatherCheckbox.checked = settings.showWeather;
         if (showClockCheckbox) showClockCheckbox.checked = settings.showClock;
+        if (showTop5TasksCheckbox) showTop5TasksCheckbox.checked = settings.showTop5Tasks;
         if (backgroundThemeSelect) backgroundThemeSelect.value = settings.backgroundTheme;
         if (cardStyleSelect) cardStyleSelect.value = settings.cardStyle;
         if (fontStyleSelect) fontStyleSelect.value = settings.fontStyle;
@@ -430,6 +830,12 @@ class App {
 
         // Apply initial styles
         this.applyThemeSettings(settings);
+        
+        // Apply initial display settings
+        const top5TasksWidget = document.getElementById('top5TasksContainer');
+        if (top5TasksWidget && typeof settings.showTop5Tasks !== 'undefined') {
+            top5TasksWidget.style.display = settings.showTop5Tasks ? 'block' : 'none';
+        }
 
         // Add event listeners for settings changes
         showWeatherCheckbox?.addEventListener('change', (e) => {
@@ -448,6 +854,14 @@ class App {
             }
         });
 
+        showTop5TasksCheckbox?.addEventListener('change', (e) => {
+            stateManager.updateSettings({ showTop5Tasks: e.target.checked });
+            const top5TasksWidget = document.getElementById('top5TasksContainer');
+            if (top5TasksWidget) {
+                top5TasksWidget.style.display = e.target.checked ? 'block' : 'none';
+            }
+        });
+
         backgroundThemeSelect?.addEventListener('change', async (e) => {
             const newTheme = e.target.value;
             await stateManager.updateSettings({ backgroundTheme: newTheme });
@@ -459,7 +873,7 @@ class App {
             await backgroundService.update();
             
             // Show notification
-            showNotification('Theme Updated', 'Background theme has been changed');
+            showNotification(i18n.t('notifications.themeUpdated'), i18n.t('notifications.themeChanged', { theme: newTheme }));
         });
 
         cardStyleSelect?.addEventListener('change', (e) => {
@@ -486,6 +900,104 @@ class App {
             stateManager.updateSettings({ textColor: newColor });
             document.documentElement.style.setProperty('--color-text-primary', newColor);
             document.documentElement.style.setProperty('--color-text-secondary', this.adjustColorOpacity(newColor, 0.7));
+        });
+
+        // Language switcher
+        const languageSelect = document.getElementById('languageSelect');
+        
+        languageSelect?.addEventListener('change', async (e) => {
+            const language = e.target.value;
+            await chrome.storage.sync.set({ language });
+            await i18n.setLanguage(language);
+            
+            // Emit language change event to update all components
+            document.dispatchEvent(new CustomEvent('languageChanged', {
+                detail: { language }
+            }));
+        });
+        
+        // Load and set current language
+        const savedLanguage = await chrome.storage.sync.get('language');
+        const language = savedLanguage.language || 'en';
+        
+        if (languageSelect) {
+            languageSelect.value = language;
+        }
+        
+        // Load initial language
+        await i18n.setLanguage(language);
+        
+        // Help & Shortcuts buttons
+        const kbShortcutsBtn = document.getElementById('showKeyboardShortcutsSettings');
+        if (kbShortcutsBtn) {
+            kbShortcutsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Keyboard Shortcuts button clicked');
+                const dialog = document.getElementById('keyboardShortcutsDialog');
+                if (dialog) {
+                    dialog.classList.remove('hidden');
+                    dialog.classList.add('show');
+                    dialog.setAttribute('aria-hidden', 'false');
+                    // Close settings panel
+                    const settingsPanel = document.getElementById('settingsPanel');
+                    if (settingsPanel) {
+                        settingsPanel.classList.add('hidden');
+                        settingsPanel.setAttribute('aria-hidden', 'true');
+                    }
+                    console.log('Keyboard Shortcuts dialog opened');
+                } else {
+                    console.error('Keyboard Shortcuts dialog not found');
+                }
+            });
+        }
+
+        const helpBtn = document.getElementById('showHelpSettings');
+        if (helpBtn) {
+            helpBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Help button clicked');
+                const helpDialog = document.getElementById('helpDialog');
+                if (helpDialog) {
+                    helpDialog.classList.remove('hidden');
+                    // Close settings panel
+                    const settingsPanel = document.getElementById('settingsPanel');
+                    if (settingsPanel) {
+                        settingsPanel.classList.add('hidden');
+                        settingsPanel.setAttribute('aria-hidden', 'true');
+                    }
+                    console.log('Help dialog opened');
+                } else {
+                    console.error('Help dialog not found');
+                }
+            });
+        }
+
+        // Breathing exercise settings
+        const breathingDefaultPattern = document.getElementById('breathingDefaultPattern');
+        const breathingDefaultDuration = document.getElementById('breathingDefaultDuration');
+        
+        breathingDefaultPattern?.addEventListener('change', async (e) => {
+            const pattern = e.target.value;
+            await chrome.storage.local.set({
+                breathingSettings: {
+                    pattern: pattern,
+                    duration: parseInt(breathingDefaultDuration?.value || '5')
+                }
+            });
+            showNotification(i18n.t('notifications.settingsUpdated'), i18n.t('breathing.settings.patternChanged'));
+        });
+
+        breathingDefaultDuration?.addEventListener('change', async (e) => {
+            const duration = parseInt(e.target.value);
+            await chrome.storage.local.set({
+                breathingSettings: {
+                    pattern: breathingDefaultPattern?.value || 'box',
+                    duration: duration
+                }
+            });
+            showNotification(i18n.t('notifications.settingsUpdated'), i18n.t('breathing.settings.durationChanged'));
         });
 
         // Settings panel toggle
@@ -551,6 +1063,13 @@ class App {
             breathingModal.show();
         }, { 
             description: 'Start breathing exercise' 
+        });
+
+        // T - Task Manager
+        keyboardShortcuts.register('t', () => {
+            todoManager.show();
+        }, { 
+            description: 'Open Task Manager' 
         });
 
         // F - Focus mode
@@ -676,10 +1195,40 @@ class App {
             // Initialize services
             await this.initializeServices();
             await this.initializeUI();
+            
+            // Show onboarding for new users (after a small delay to let page render)
+            setTimeout(() => {
+                onboardingModal.show();
+            }, 1500);
+            
             this.initialized = true;
         } catch (error) {
             this.handleInitializationError(error);
         }
+    }
+
+    // Setup task completion affirmations
+    setupTaskCompletionAffirmations() {
+        document.addEventListener('showCompletionAffirmation', async (e) => {
+            const { message, task } = e.detail;
+            
+            // Show notification
+            showNotification('Task Completed! 🎉', message);
+            
+            // Update main affirmation display with motivational message
+            const affirmationElement = document.getElementById('affirmation');
+            if (affirmationElement) {
+                // Add fade animation
+                affirmationElement.style.opacity = '0';
+                affirmationElement.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    affirmationElement.textContent = message;
+                    affirmationElement.style.opacity = '1';
+                    affirmationElement.style.transform = 'translateY(0)';
+                }, 300);
+            }
+        });
     }
 
     // Cleanup resources
@@ -697,6 +1246,15 @@ class App {
 
         // Clean up daily reminder service
         dailyReminderService.cleanup();
+        
+        // Clean up TODO components
+        if (todoWidget && typeof todoWidget.cleanup === 'function') {
+            todoWidget.cleanup();
+        }
+        
+        if (pomodoroTimer && typeof pomodoroTimer.cleanup === 'function') {
+            pomodoroTimer.cleanup();
+        }
     }
 }
 

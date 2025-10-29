@@ -328,8 +328,13 @@ class SessionManager {
         
         // Find favorite pattern
         const patternUsage = this.getPatternUsage();
-        this.statistics.favoritePattern = Object.keys(patternUsage).reduce((a, b) => 
-            patternUsage[a].count > patternUsage[b].count ? a : b, null);
+        const patternKeys = Object.keys(patternUsage);
+        if (patternKeys.length === 0) {
+            this.statistics.favoritePattern = null;
+        } else {
+            this.statistics.favoritePattern = patternKeys.reduce((a, b) => 
+                patternUsage[a].count > patternUsage[b].count ? a : b);
+        }
         
         // Calculate sessions this week/month
         const now = new Date();
@@ -401,24 +406,49 @@ class SessionManager {
      */
     async saveData() {
         try {
-            await chrome.storage.sync.set({
+            // Save to local storage only (to avoid quota issues)
+            await chrome.storage.local.set({
                 breathingSessionHistory: this.sessionHistory,
                 breathingStreakData: this.streakData,
                 breathingStatistics: this.statistics
             });
             
-            logger.debug('Session data saved to sync storage');
+            logger.debug('Session data saved to local storage');
             
         } catch (error) {
-            logger.error('Failed to save session data to sync storage', { error: error.message });
-            // Fallback to local storage
-            await this.saveToLocalStorage();
+            logger.error('Failed to save session data', { error: error.message });
         }
     }
 
     /**
      * Load data from local storage (fallback)
      */
+    async loadData() {
+        try {
+            // Load from local storage
+            const result = await chrome.storage.local.get([
+                'breathingSessionHistory',
+                'breathingStreakData',
+                'breathingStatistics'
+            ]);
+
+            this.sessionHistory = result.breathingSessionHistory || [];
+            this.streakData = result.breathingStreakData || this.defaultStreakData();
+            this.statistics = result.breathingStatistics || this.defaultStatistics();
+
+            logger.debug('Session data loaded from local storage', {
+                sessions: this.sessionHistory.length,
+                streak: this.streakData.current,
+                stats: this.statistics
+            });
+        } catch (error) {
+            logger.error('Failed to load session data from local storage', { error: error.message });
+            this.sessionHistory = [];
+            this.streakData = this.defaultStreakData();
+            this.statistics = this.defaultStatistics();
+        }
+    }
+
     async loadFromLocalStorage() {
         try {
             const result = await chrome.storage.local.get([

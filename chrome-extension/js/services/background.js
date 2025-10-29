@@ -4,6 +4,7 @@ import { requirePremium } from '../utils/premium.js';
 import { showNotification } from '../utils/common.js';
 import { authService } from './auth.js';
 import { initializeConfig } from '../config.js';
+import storage from '../utils/storage.js';
 
 class BackgroundError extends Error {
     constructor(message, code, details = {}) {
@@ -30,27 +31,27 @@ class BackgroundService {
         this.defaultBackgrounds = [
             {
                 id: 'default_1',
-                url: '../images/backgrounds/default-1.jpeg',
+                url: chrome.runtime.getURL('images/backgrounds/default-1.jpeg'),
                 credit: 'Default Background 1'
             },
             {
                 id: 'default_2',
-                url: '../images/backgrounds/default-2.jpeg',
+                url: chrome.runtime.getURL('images/backgrounds/default-2.jpeg'),
                 credit: 'Default Background 2'
             },
             {
                 id: 'default_3',
-                url: '../images/backgrounds/default-3.jpeg',
+                url: chrome.runtime.getURL('images/backgrounds/default-3.jpeg'),
                 credit: 'Default Background 3'
             },
             {
                 id: 'default_4',
-                url: '../images/backgrounds/default-4.jpeg',
+                url: chrome.runtime.getURL('images/backgrounds/default-4.jpeg'),
                 credit: 'Default Background 4'
             },
             {
                 id: 'default_5',
-                url: '../images/backgrounds/default-5.jpeg',
+                url: chrome.runtime.getURL('images/backgrounds/default-5.jpeg'),
                 credit: 'Default Background 5'
             }
         ];
@@ -194,13 +195,27 @@ class BackgroundService {
     // Cache background data
     async cacheData(data) {
         try {
-            const cache = {
-                data,
-                timestamp: Date.now(),
-                expiresAt: Date.now() + this.CACHE_DURATION,
+            // Minimize cached payload to essential fields
+            const minimal = {
+                id: data.id,
+                urls: {
+                    regular: data.urls?.regular
+                },
+                user: {
+                    name: data.user?.name,
+                    links: { html: data.user?.links?.html }
+                },
+                location: data.location || null,
                 theme: data.theme || stateManager.getSettings().backgroundTheme
             };
-            await chrome.storage.local.set({ [this.CACHE_KEY]: cache });
+
+            const cache = {
+                data: minimal,
+                timestamp: Date.now(),
+                expiresAt: Date.now() + this.CACHE_DURATION,
+                theme: minimal.theme
+            };
+            await storage.setSafe({ [this.CACHE_KEY]: cache }, ['background_', 'background_data']);
         } catch (error) {
             console.error('Failed to cache background data:', error);
         }
@@ -216,8 +231,25 @@ class BackgroundService {
             // Return cache only if it's valid and matches current theme
             if (cache &&
                 cache.expiresAt > Date.now() &&
-                cache.theme === currentTheme) {
-                return cache.data;
+                (cache.theme === currentTheme || !cache.theme)) {
+                // Migration: minimize oversized cache and ensure theme
+                const d = cache.data || {};
+                const minimal = {
+                    id: d.id,
+                    urls: { regular: d.urls?.regular },
+                    user: { name: d.user?.name, links: { html: d.user?.links?.html } },
+                    location: d.location || null,
+                    theme: cache.theme || currentTheme
+                };
+                const newCache = {
+                    data: minimal,
+                    timestamp: cache.timestamp || Date.now(),
+                    expiresAt: cache.expiresAt,
+                    theme: minimal.theme
+                };
+                // If structure differs, write back minimized cache (best-effort)
+                try { await storage.setSafe({ [this.CACHE_KEY]: newCache }, ['background_', 'background_data']); } catch {}
+                return newCache.data;
             }
             return null;
         } catch (error) {

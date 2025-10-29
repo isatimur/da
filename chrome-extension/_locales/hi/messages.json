@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "दैनिक पुष्टिकरण",
+    "description": "एक्सटेंशन नाम"
+  },
+  "extensionDescription": {
+    "message": "व्यक्तिगत पुष्टिकरण, सुंदर पृष्ठभूमि और मननशील अनुस्मारक के साथ अपने नए टैब को दैनिक प्रेरणा के स्रोत में बदलें।",
+    "description": "एक्सटेंशन विवरण"
+  },
+  "settingsTitle": {
+    "message": "सेटिंग्स",
+    "description": "सेटिंग्स पैनल शीर्षक"
+  },
+  "languageLabel": {
+    "message": "भाषा / Language",
+    "description": "भाषा चयन लेबल"
+  },
+  "showWeatherLabel": {
+    "message": "मौसम दिखाएं",
+    "description": "मौसम विजेट दिखाएं लेबल"
+  },
+  "showClockLabel": {
+    "message": "घड़ी दिखाएं",
+    "description": "घड़ी विजेट दिखाएं लेबल"
+  },
+  "backgroundThemeLabel": {
+    "message": "पृष्ठभूमि थीम",
+    "description": "पृष्ठभूमि थीम चयन लेबल"
+  },
+  "cardStyleLabel": {
+    "message": "कार्ड शैली",
+    "description": "कार्ड शैली चयन लेबल"
+  },
+  "fontStyleLabel": {
+    "message": "फ़ॉन्ट शैली",
+    "description": "फ़ॉन्ट शैली चयन लेबल"
+  },
+  "textColorLabel": {
+    "message": "टेक्स्ट रंग",
+    "description": "टेक्स्ट रंग चयन लेबल"
+  },
+  "resetDefaults": {
+    "message": "डिफ़ॉल्ट रीसेट करें",
+    "description": "सेटिंग्स रीसेट बटन"
+  }
+}

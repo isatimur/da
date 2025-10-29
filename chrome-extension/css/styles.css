@@ -3,6 +3,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* CSS Variables - Consolidated theme values */
@@ -215,6 +219,16 @@ body {
     color: var(--color-text-primary);
 }
 
+/* Allow text selection in form inputs */
+input,
+textarea,
+[contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
 /* Focus Styles for Accessibility */
 button:focus-visible,
 input:focus-visible,
@@ -334,57 +348,143 @@ select:focus-visible {
     position: absolute;
     top: var(--space-lg);
     left: var(--space-lg);
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-    border: none !important;
-    transition: transform 0.2s ease;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.2));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(79, 70, 229, 0.3);
+    box-shadow: 
+        0 6px 24px rgba(79, 70, 229, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .settings-button:hover {
-    background: none !important;
-    transform: scale(1.1);
+    opacity: 1;
+    transform: translateY(-3px) scale(1.05);
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(124, 58, 237, 0.3));
+    box-shadow: 
+        0 10px 32px rgba(79, 70, 229, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+.settings-button:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 
+        0 4px 16px rgba(79, 70, 229, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .menu-button {
     position: absolute;
     top: var(--space-lg);
     right: var(--space-lg);
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-    border: none !important;
-    transition: transform 0.2s ease;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.2));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(79, 70, 229, 0.3);
+    box-shadow: 
+        0 6px 24px rgba(79, 70, 229, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .menu-button:hover {
-    background: none !important;
-    transform: scale(1.1);
+    opacity: 1;
+    transform: translateY(-3px) scale(1.05);
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(124, 58, 237, 0.3));
+    box-shadow: 
+        0 10px 32px rgba(79, 70, 229, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+.menu-button:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 
+        0 4px 16px rgba(79, 70, 229, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .focus-mode-button {
     position: absolute;
     bottom: var(--space-lg);
     left: var(--space-lg);
-    width: 42px;
-    height: 42px;
-    border-radius: var(--radius-md);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 100;
-    border: none;
-    opacity: 0.85;
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-    border: none !important;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-    overflow: hidden;
+    opacity: 0.9;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.2));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 
+        0 6px 24px rgba(139, 92, 246, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Breathing button - FLOATING RIGHT BOTTOM */
+.breathing-button {
+    position: fixed;
+    bottom: 4.25rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0.95;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.25));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    box-shadow: 
+        0 8px 32px rgba(16, 185, 129, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: breatheButtonPulse 3s ease-in-out infinite;
+}
+
+@keyframes breatheButtonPulse {
+    0%, 100% {
+        box-shadow: 
+            0 8px 32px rgba(16, 185, 129, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 
+            0 8px 40px rgba(16, 185, 129, 0.5),
+            0 0 0 2px rgba(16, 185, 129, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        transform: scale(1.02);
+    }
 }
 
 .focus-mode-button i {
@@ -417,12 +517,53 @@ body.focus-mode .focus-mode-button .unfocus-icon {
 
 .focus-mode-button:hover {
     opacity: 1;
-    transform: scale(1.1);
+    transform: translateY(-3px) scale(1.05);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(124, 58, 237, 0.3));
+    box-shadow: 
+        0 10px 32px rgba(139, 92, 246, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
 }
 
 .focus-mode-button:active {
-    transform: scale(0.95);
-    transition: transform 0.1s ease;
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 
+        0 4px 16px rgba(139, 92, 246, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-button:hover {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.08);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.35));
+    box-shadow: 
+        0 16px 48px rgba(16, 185, 129, 0.5),
+        0 0 0 2px rgba(255, 255, 255, 0.25),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4),
+        0 0 60px rgba(16, 185, 129, 0.4);
+    animation: none;
+}
+
+.breathing-button:active {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+        0 6px 24px rgba(16, 185, 129, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.breathing-button i {
+    font-size: 28px;
+    color: white;
+    text-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
+}
+
+.breathing-button:hover i {
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6));
+    transform: scale(1.1) rotate(5deg);
 }
 
 /* Focus Mode State Animation */
@@ -515,7 +656,8 @@ body.focus-mode .fullscreen-container {
 .affirmation-card,
 .settings-button,
 .menu-button,
-.focus-mode-button {
+.focus-mode-button,
+.breathing-button {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -529,12 +671,32 @@ body.focus-mode .fullscreen-container {
 .affirmation-card:hover,
 .settings-button:hover,
 .menu-button:hover,
-.focus-mode-button:hover {
+.focus-mode-button:hover,
+.breathing-button:hover {
     background: var(--glass-bg-hover);
     box-shadow: var(--shadow-hover);
 }
 
-/* Affirmation Card */
+/* Motivational Message Card */
+.motivational-message-card {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: var(--space-xl) var(--space-xl);
+    border-radius: var(--radius-lg);
+    max-width: min(650px, 90vw);
+    text-align: center;
+}
+
+.motivational-text {
+    font-size: 2rem;
+    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
+/* Compatibility: Keep affirmation-card styles for backward compatibility */
 .affirmation-card {
     position: fixed;
     left: 50%;
@@ -553,7 +715,7 @@ body.focus-mode .fullscreen-container {
     letter-spacing: -0.01em;
 }
 
-/* Main Affirmation Card Menu */
+/* Main Motivational Card Menu */
 .affirmation-menu-button {
     position: absolute;
     top: var(--space-sm);
@@ -574,6 +736,7 @@ body.focus-mode .fullscreen-container {
     opacity: 0;
 }
 
+.motivational-message-card:hover .affirmation-menu-button,
 .affirmation-card:hover .affirmation-menu-button {
     opacity: 0.8;
 }
@@ -583,7 +746,8 @@ body.focus-mode .fullscreen-container {
     background: var(--glass-bg-hover);
 }
 
-/* Main Card Dropdown Menu */
+/* Main Card Dropdown Menu - Higher z-index */
+.motivational-message-card .affirmation-actions,
 .affirmation-card .affirmation-actions {
     position: absolute;
     top: calc(var(--space-sm) + 36px);
@@ -595,22 +759,26 @@ body.focus-mode .fullscreen-container {
     border-radius: var(--radius-sm);
     padding: var(--space-xs);
     min-width: 180px;
+    max-height: 140px; /* Limit to 3 items (approx 40px each + gaps) */
+    overflow-y: auto;
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
     transition: var(--transition-fast);
-    z-index: 25;
+    z-index: 20000 !important; /* Very high to be above Top 5 Tasks */
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
 }
 
+.motivational-message-card .affirmation-actions.show,
 .affirmation-card .affirmation-actions.show {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
 }
 
+.motivational-message-card .action-button,
 .affirmation-card .action-button {
     display: flex;
     align-items: center;
@@ -627,18 +795,20 @@ body.focus-mode .fullscreen-container {
     transition: var(--transition-fast);
 }
 
+.motivational-message-card .action-button:hover,
 .affirmation-card .action-button:hover {
     background: var(--glass-bg-hover);
     transform: translateX(2px);
 }
 
+.motivational-message-card .action-button i,
 .affirmation-card .action-button i {
     font-size: 18px;
     opacity: 0.9;
 }
 
 /* Custom Affirmations List */
-.affirmation-item {
+.motivational-message-card .affirmation-item {
     display: flex;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
@@ -649,11 +819,11 @@ body.focus-mode .fullscreen-container {
     transition: var(--transition-default);
 }
 
-.affirmation-item:hover {
+.motivational-message-card .affirmation-item:hover {
     background: rgba(255, 255, 255, 0.04);
 }
 
-.affirmation-item .affirmation-text {
+.motivational-message-card .affirmation-item .affirmation-text {
     flex: 1;
     margin: 0;
     font-size: 0.9375rem;
@@ -661,13 +831,13 @@ body.focus-mode .fullscreen-container {
     color: var(--color-text-primary);
 }
 
-.affirmation-item .affirmation-actions {
+.motivational-message-card .affirmation-item .affirmation-actions {
     display: flex;
     gap: var(--space-sm);
     margin-left: var(--space-sm);
 }
 
-.affirmation-item .action-icon {
+.motivational-message-card .affirmation-item .action-icon {
     width: 32px;
     height: 32px;
     display: flex;
@@ -681,23 +851,23 @@ body.focus-mode .fullscreen-container {
     transition: var(--transition-default);
 }
 
-.affirmation-item .action-icon:hover {
+.motivational-message-card .affirmation-item .action-icon:hover {
     background: rgba(255, 255, 255, 0.04);
     transform: scale(1.1);
 }
 
-.affirmation-item .action-icon.play:hover {
+.motivational-message-card .affirmation-item .action-icon.play:hover {
     color: #22c55e;
     background: rgba(34, 197, 94, 0.1);
 }
 
-.affirmation-item .action-icon.delete:hover {
+.motivational-message-card .affirmation-item .action-icon.delete:hover {
     color: #ef4444;
     background: rgba(239, 68, 68, 0.1);
 }
 
 /* Affirmation Menu */
-.affirmation-menu-button {
+.motivational-message-card .affirmation-menu-button {
     position: absolute;
     top: var(--space-sm);
     right: var(--space-sm);
@@ -717,17 +887,17 @@ body.focus-mode .fullscreen-container {
     opacity: 0;
 }
 
-.affirmation-card:hover .affirmation-menu-button {
+.motivational-message-card .affirmation-card:hover .affirmation-menu-button {
     opacity: 0.8;
 }
 
-.affirmation-menu-button:hover {
+.motivational-message-card .affirmation-menu-button:hover {
     opacity: 1;
     background: var(--glass-bg-hover);
     transform: translateY(-1px);
 }
 
-.affirmation-menu-button i {
+.motivational-message-card .affirmation-menu-button i {
     font-size: 18px;
     color: var(--color-text-primary);
 }
@@ -938,6 +1108,20 @@ body.focus-mode .action-button {
     transform: translateX(-50%) !important;
 }
 
+body.focus-mode .breathing-button,
+body.focus-mode .affirmation-menu-button {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+body.focus-mode .top5-tasks-container,
+body.focus-mode #top5TasksContainer {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease;
+}
+
 body.focus-mode .affirmation-card {
     background: none;
     backdrop-filter: none;
@@ -1039,6 +1223,17 @@ body.focus-mode .time-widget {
     .action-button i {
         font-size: 16px;
     }
+    
+    .breathing-button {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 48px;
+        height: 48px;
+    }
+    
+    .breathing-button i {
+        font-size: 24px;
+    }
 }
 
 /* Dark Mode */
@@ -1070,12 +1265,80 @@ body.focus-mode .time-widget {
         background: var(--glass-bg-dark-hover);
     }
 }
+/* Keyboard Shortcuts Dialog Styles */
+.shortcuts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.shortcut-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.shortcut-key {
+    min-width: 60px;
+    text-align: center;
+}
+
+.shortcut-key kbd {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.shortcut-desc {
+    flex: 1;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+.shortcuts-tip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3b82f6;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.shortcuts-tip i {
+    color: #3b82f6;
+}
+
+.shortcuts-tip p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
 /* Settings Panel */
 .settings-panel {
     position: absolute;
     top: 5rem;
     left: var(--space-lg);
     width: min(320px, 90vw);
+    max-height: calc(100vh - 7rem);
     padding: var(--space-lg);
     border-radius: var(--radius-lg);
     z-index: 1000;
@@ -1084,6 +1347,9 @@ body.focus-mode .time-widget {
     backdrop-filter: var(--glass-blur) !important;
     -webkit-backdrop-filter: var(--glass-blur) !important;
     border: var(--glass-border) !important;
+    display: block !important;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .settings-panel.hidden {
@@ -1093,7 +1359,7 @@ body.focus-mode .time-widget {
 }
 
 .settings-panel h3 {
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 500;
     margin-bottom: var(--space-lg);
     color: var(--color-text-primary);
@@ -1101,31 +1367,48 @@ body.focus-mode .time-widget {
 }
 
 .settings-group {
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 .settings-group h4 {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    margin-bottom: var(--space-sm);
+    margin-bottom: 0.5rem;
+    margin-top: 0;
     color: var(--color-text-secondary);
     opacity: 0.9;
 }
 
 .setting-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-sm);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 0.375rem !important;
     color: var(--color-text-primary);
+    width: 100%;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    flex-direction: row !important;
+}
+
+.setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.settings-group label.setting-item {
+    margin-bottom: 0.375rem;
 }
 
 .setting-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: var(--space-sm);
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+    order: 2;
+    display: inline-block !important;
 }
 
 .setting-item select,
@@ -1136,7 +1419,30 @@ body.focus-mode .time-widget {
     border-radius: 8px;
     color: var(--color-text-primary);
     cursor: pointer;
-    min-width: 120px;
+    flex: 0 0 auto !important;
+    min-width: 120px !important;
+    max-width: 200px !important;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    order: 2;
+    display: inline-block !important;
+}
+
+.setting-item span {
+    font-size: 0.875rem !important;
+    flex: 0 1 auto !important;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    order: 1 !important;
+    display: inline-block !important;
+}
+
+.setting-item i.material-icons-round {
+    font-size: 20px !important;
+    margin-left: var(--space-sm);
+    order: 2 !important;
+    opacity: 0.8;
 }
 
 .setting-item select:hover,

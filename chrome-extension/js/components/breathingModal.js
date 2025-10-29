@@ -101,24 +101,17 @@ class BreathingModal {
     }
 
     /**
-     * Create modal header
+     * Create modal header with close button
      */
     createModalHeader() {
-        const header = document.createElement('div');
-        header.className = 'breathing-modal-header';
-        
-        const title = document.createElement('h2');
-        title.id = 'breathing-modal-title';
-        title.textContent = i18n.t('breathing.title');
-        
+        // Don't create header at all - just create close button directly
         const closeBtn = document.createElement('button');
         closeBtn.className = 'breathing-close-btn';
         closeBtn.setAttribute('aria-label', 'Close breathing exercise');
         closeBtn.innerHTML = '<i class="material-icons-round" aria-hidden="true">close</i>';
         
-        header.appendChild(title);
-        header.appendChild(closeBtn);
-        this.modalContent.appendChild(header);
+        // Add close button directly to modal, not through header
+        this.modal.appendChild(closeBtn);
     }
 
     /**
@@ -267,16 +260,13 @@ class BreathingModal {
      * Setup event listeners
      */
     setupEventListeners() {
-        // Close button
-        const closeBtn = this.modalContent.querySelector('.breathing-close-btn');
-        closeBtn.addEventListener('click', this.hide.bind(this));
-        
-        // Modal backdrop click
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) {
-                this.hide();
+        // Close button - now it's directly in modal
+        setTimeout(() => {
+            const closeBtn = this.modal.querySelector('.breathing-close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', this.hide.bind(this));
             }
-        });
+        }, 100);
         
         // Escape key
         document.addEventListener('keydown', (e) => {
@@ -286,17 +276,7 @@ class BreathingModal {
         });
         
         // Controls events are now attached directly to controls container in createControlsContainer()
-        
-        // Summary events
-        const summaryContainer = this.modalContent.querySelector('#breathing-summary');
-        const restartBtn = summaryContainer.querySelector('.breathing-control-btn.primary');
-        const summaryCloseBtn = summaryContainer.querySelector('.breathing-control-btn:not(.primary)');
-        
-        restartBtn.addEventListener('click', () => {
-            this.showSessionSetup();
-        });
-        
-        summaryCloseBtn.addEventListener('click', this.hide.bind(this));
+        // No summary screen needed - session auto-closes
     }
 
     /**
@@ -313,9 +293,9 @@ class BreathingModal {
     }
 
     /**
-     * Show the modal
+     * Show the modal - simplified version without setup
      */
-    show() {
+    async show() {
         if (this.isVisible) return;
         
         this.isVisible = true;
@@ -325,10 +305,80 @@ class BreathingModal {
         // Focus trap
         this.setupFocusTrap();
         
-        // Show session setup by default
-        this.showSessionSetup();
+        // Hide all setup/control elements
+        this.hideAllSetupElements();
+        
+        // Ensure clean full-screen experience
+        this.modal.style.backdropFilter = 'blur(20px)';
+        this.modal.style.webkitBackdropFilter = 'blur(20px)';
+        this.modal.style.background = 'rgba(0, 0, 0, 0.1)';
+        this.modalContent.style.background = 'transparent';
+        this.modalContent.style.border = 'none';
+        this.modalContent.style.boxShadow = 'none';
+        this.modalContent.style.backdropFilter = 'none';
+        
+        // Remove all backgrounds from children
+        const circleWrapper = this.modalContent.querySelector('.breathing-circle-wrapper');
+        if (circleWrapper) {
+            circleWrapper.style.background = 'transparent';
+            circleWrapper.style.border = 'none';
+            circleWrapper.style.boxShadow = 'none';
+        }
+        
+        // Ensure close button is visible (it's now in modal, not modalContent)
+        const closeBtn = this.modal.querySelector('.breathing-close-btn');
+        if (closeBtn) {
+            closeBtn.style.display = 'flex';
+        }
+        
+        // Get settings from storage
+        const settings = await this.getBreathingSettings();
+        const defaultPattern = settings.pattern || 'box';
+        const defaultDuration = settings.duration || 5;
+        
+        logger.debug('Breathing modal shown, auto-starting with settings', { defaultPattern, defaultDuration });
+        
+        // Start session automatically
+        setTimeout(() => {
+            this.startSession(defaultPattern, defaultDuration);
+        }, 500);
         
         logger.debug('Breathing modal shown');
+    }
+    
+    /**
+     * Get breathing settings from storage
+     */
+    async getBreathingSettings() {
+        try {
+            const result = await chrome.storage.local.get(['breathingSettings']);
+            if (result.breathingSettings) {
+                return result.breathingSettings;
+            }
+        } catch (error) {
+            logger.error('Failed to get breathing settings', { error: error.message });
+        }
+        
+        // Return defaults
+        return {
+            pattern: 'box',
+            duration: 5
+        };
+    }
+    
+    /**
+     * Hide all setup elements
+     */
+    hideAllSetupElements() {
+        const controlsContainer = this.modalContent.querySelector('#breathing-controls-container');
+        const progress = this.modalContent.querySelector('#breathing-progress');
+        const reports = this.modalContent.querySelector('#breathing-reports');
+        const summary = this.modalContent.querySelector('#breathing-summary');
+        
+        if (controlsContainer) controlsContainer.style.display = 'none';
+        if (progress) progress.style.display = 'none';
+        if (reports) reports.style.display = 'none';
+        if (summary) summary.style.display = 'none';
     }
 
     /**
@@ -356,13 +406,20 @@ class BreathingModal {
      * Show session setup interface
      */
     showSessionSetup() {
-        // Hide progress, reports and summary
-        this.modalContent.querySelector('#breathing-progress').style.display = 'none';
-        this.modalContent.querySelector('#breathing-reports').style.display = 'none';
-        this.modalContent.querySelector('#breathing-summary').style.display = 'none';
+        // Hide all UI elements for setup - only show controls
+        const progress = this.modalContent.querySelector('#breathing-progress');
+        const reports = this.modalContent.querySelector('#breathing-reports');
+        const summary = this.modalContent.querySelector('#breathing-summary');
+        
+        if (progress) progress.style.display = 'none';
+        if (reports) reports.style.display = 'none';
+        if (summary) summary.style.display = 'none';
         
         // Show controls
-        this.modalContent.querySelector('#breathing-controls-container').style.display = 'block';
+        const controlsContainer = this.modalContent.querySelector('#breathing-controls-container');
+        if (controlsContainer) {
+            controlsContainer.style.display = 'block';
+        }
         
         // Reset circle
         this.breathingCircle.reset();
@@ -377,19 +434,22 @@ class BreathingModal {
     }
 
     /**
-     * Show session in progress
+     * Show session in progress - only circle visible
      */
     showSessionInProgress() {
-        // Hide controls and summary
-        this.modalContent.querySelector('#breathing-controls-container').style.display = 'none';
-        this.modalContent.querySelector('#breathing-summary').style.display = 'none';
+        // Hide all setup elements - only show breathing circle
+        this.hideAllSetupElements();
         
-        // Show progress and reports
-        this.modalContent.querySelector('#breathing-progress').style.display = 'block';
-        this.modalContent.querySelector('#breathing-reports').style.display = 'block';
+        // Make sure circle is visible
+        const circleWrapper = this.modalContent.querySelector('.breathing-circle-wrapper');
+        if (circleWrapper) {
+            circleWrapper.style.display = 'flex';
+        }
         
         // Start circle animation
         this.breathingCircle.startAnimation();
+        
+        logger.debug('Session in progress - only circle visible');
     }
 
     /**
@@ -659,10 +719,23 @@ class BreathingModal {
     /**
      * Stop the current session
      */
-    stopSession() {
+    async stopSession() {
         const sessionData = breathingService.stopSession();
+        
         if (sessionData) {
-            this.showSessionSummary(sessionData);
+            // Save session to history silently
+            try {
+                await sessionManager.saveSession(sessionData);
+            } catch (error) {
+                logger.error('Failed to save session', { error: error.message });
+            }
+            
+            // Show completion and auto-close
+            this.breathingCircle.showCompletion();
+            
+            setTimeout(() => {
+                this.hide();
+            }, 3000);
         }
     }
 
@@ -691,14 +764,19 @@ class BreathingModal {
         this.currentSession = null;
         this.breathingControls.updateState('idle');
         
-        // Save session to history
+        // Save session to history silently
         try {
             await sessionManager.saveSession(data);
         } catch (error) {
             logger.error('Failed to save session', { error: error.message });
         }
         
-        this.showSessionSummary(data);
+        // Show simple completion and auto-close after 3 seconds
+        this.breathingCircle.showCompletion();
+        
+        setTimeout(() => {
+            this.hide();
+        }, 3000);
         
         logger.debug('Session stopped in modal', data);
     }
@@ -731,9 +809,6 @@ class BreathingModal {
      */
     handlePhaseChanged(data) {
         this.breathingCircle.updatePhase(data.phase, 0);
-        
-        // Add breathing report
-        this.addBreathingReport(data.phase, data.duration);
         
         // Play phase sound
         breathingSoundsService.playPhaseSound(data.phase.type);

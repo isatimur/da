@@ -1,8 +1,20 @@
 # Daily Affirmations Chrome Extension
 
+**Version 1.2.3**
+
 Transform your new tab experience with daily affirmations, beautiful backgrounds, breathing exercises, and mindfulness features.
 
 ![Daily Affirmations Interface](public/affirmations.png)
+
+## 📋 Latest Version: 1.2.3
+
+### What's New in 1.2.3
+- 🔧 **Storage quota management** with intelligent LRU eviction system
+- 🔧 **Fixed service worker** handling for better API key management
+- 🎯 **Improved background image loading** with proper extension URL resolution
+- ⚡ **Weather API timeout** handling with proper AbortController
+- 🚫 **Disabled text selection** on page (except form inputs)
+- 📦 **unlimitedStorage permission** added for better quota management
 
 ## 🌟 Special Early Access
 

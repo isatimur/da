@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-interface BackgroundBeamsProps extends React.HTMLProps<HTMLDivElement> {}
+type BackgroundBeamsProps = React.HTMLProps<HTMLDivElement>;
 
 export function BackgroundBeams({ className = "", ...props }: BackgroundBeamsProps) {
     const beamsRef = useRef<HTMLCanvasElement>(null);

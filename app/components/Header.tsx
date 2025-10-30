@@ -55,20 +55,20 @@ export function Header() {
                         >
                             Blog
                         </Link>
-                        <a 
+                        <Link 
                             href="/#features" 
                             onClick={handleAnchorClick}
                             className="text-neutral-400 hover:text-neutral-200 transition-colors"
                         >
                             Features
-                        </a>
-                        <a 
+                        </Link>
+                        <Link 
                             href="/#pricing" 
                             onClick={handleAnchorClick}
                             className="text-neutral-400 hover:text-neutral-200 transition-colors"
                         >
                             Pricing
-                        </a>
+                        </Link>
                         <a
                             href="https://chrome.google.com/webstore/detail/daily-affirmations/jjlljkopglnlfdkfhbefhemgldkfgpic"
                             target="_blank"

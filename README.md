@@ -83,7 +83,7 @@ Our latest feature includes comprehensive breathing exercises designed to help y
 ### Installation
 
 1. **For Users:**
-   - Visit our [Chrome Web Store page](https://chrome.google.com/webstore)
+   - Visit our [Chrome Web Store page](https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle)
    - Click "Add to Chrome"
    - Open a new tab to start your mindfulness journey
 

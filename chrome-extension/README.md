@@ -70,13 +70,13 @@ A mindful new tab experience that transforms your daily browsing with inspiratio
 1. **Development Setup**
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Build the extension
-npm run build
+bun run build
 
 # Watch for changes during development
-npm run watch
+bun run watch
 ```
 
 2. **Load in Chrome**

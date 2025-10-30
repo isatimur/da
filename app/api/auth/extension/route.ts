@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
 // This should be a secure, randomly generated string stored in environment variables
 const EXTENSION_SECRET_KEY = process.env.EXTENSION_SECRET_KEY;
 
-export async function POST(request: NextRequest) {
+export async function POST() {
     try {
         // Verify the request is coming from our Chrome extension
-        const extensionId = headers().get('X-Extension-Id');
-        const extensionKey = headers().get('X-Extension-Key');
+        const headersList = await headers();
+        const extensionId = headersList.get('X-Extension-Id');
+        const extensionKey = headersList.get('X-Extension-Key');
 
         if (!EXTENSION_SECRET_KEY) {
             console.error('EXTENSION_SECRET_KEY not configured');

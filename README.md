@@ -90,18 +90,17 @@ Our latest feature includes comprehensive breathing exercises designed to help y
 2. **For Developers:**
 
 ```bash
+# Install Bun (if not already installed)
+curl -fsSL https://bun.sh/install | bash
+
 # Clone the repository
 git clone https://github.com/yourusername/daily-affirmations.git
 
 # Install dependencies
-npm install
+bun install
 
 # Run development server
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+bun run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to see the landing page.
@@ -117,7 +116,8 @@ RESEND_API_KEY=your_resend_api_key_here
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Next.js 14, React, TypeScript
+- **Frontend:** Next.js 15, React 19, TypeScript
+- **Package Manager:** Bun
 - **Styling:** Tailwind CSS
 - **Email Service:** Resend
 - **State Management:** Custom state manager
@@ -140,8 +140,8 @@ RESEND_API_KEY=your_resend_api_key_here
 ## 🔄 Development Workflow
 
 1. Make changes to the codebase
-2. Run tests: `npm test`
-3. Build extension: `npm run build:extension`
+2. Run tests: `bun test`
+3. Build extension: `bun run build:extension`
 4. Load unpacked extension in Chrome for testing
 
 ## 🤝 Contributing

@@ -175,8 +175,17 @@ async function handleAPIRequest(request) {
         if (networkResponse.ok) {
             // Create a new Response with augmented headers since Response headers are immutable
             const responseClone = networkResponse.clone();
-            const cacheHeaders = new Headers(responseClone.headers);
+            // Create new headers object and copy existing headers
+            const cacheHeaders = new Headers();
+            
+            // Copy all existing headers
+            responseClone.headers.forEach((value, key) => {
+                cacheHeaders.append(key, value);
+            });
+            
+            // Add cache date header
             cacheHeaders.set('sw-cache-date', new Date().toISOString());
+            
             const responseToCache = new Response(await responseClone.blob(), {
                 status: responseClone.status,
                 statusText: responseClone.statusText,

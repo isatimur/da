@@ -232,8 +232,16 @@ class I18nManager {
                     }
                 }
                 
-                if (typeof logger !== 'undefined' && logger.warn) {
-                    logger.warn('Translation not found', { key, language: this.currentLanguage });
+                // Only log missing translations in development mode or for critical keys
+                if (typeof logger !== 'undefined') {
+                    // Only warn for keys that start with common UI elements, debug for others
+                    if (key.startsWith('common.') || key.startsWith('ui.') || key.startsWith('button.')) {
+                        if (logger.warn) {
+                            logger.warn('Translation not found', { key, language: this.currentLanguage });
+                        }
+                    } else if (logger.debug) {
+                        logger.debug('Translation not found', { key, language: this.currentLanguage });
+                    }
                 }
                 return key; // Return key if translation not found
             }

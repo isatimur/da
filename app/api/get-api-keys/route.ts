@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-export async function POST(request: Request) {
-    const headersList = headers();
+export async function POST() {
+    const headersList = await headers();
     const origin = headersList.get('origin');
     
     // These should be in your .env.local file
@@ -38,8 +38,8 @@ export async function POST(request: Request) {
     );
 }
 
-export async function OPTIONS(request: Request) {
-    const headersList = headers();
+export async function OPTIONS() {
+    const headersList = await headers();
     const origin = headersList.get('origin');
 
     return new NextResponse(null, {

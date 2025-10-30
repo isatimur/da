@@ -77,9 +77,15 @@ function optimizeImages() {
 
 // Generate build manifest
 function generateBuildManifest() {
+    // Read version from manifest.json
+    const manifestPath = path.join(__dirname, 'manifest.json');
+    const manifestContent = fs.readFileSync(manifestPath, 'utf8');
+    const manifestJson = JSON.parse(manifestContent);
+    const extensionVersion = manifestJson.version || '1.2.3';
+    
     const manifest = {
         buildTime: new Date().toISOString(),
-        version: '1.0.0',
+        version: extensionVersion,
         files: {
             css: ['bundle.css', 'bundle.min.css'],
             js: ['app.js', 'init.js'],

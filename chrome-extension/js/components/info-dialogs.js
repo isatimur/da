@@ -115,7 +115,7 @@ class InfoDialogs {
             title: i18n.t('about.title'),
             content: `
                 <div class="about-header">
-                    <h4>${i18n.t('about.version')} 1.0.0</h4>
+                    <h4>${i18n.t('about.version')} 1.2.3</h4>
                     <p>${i18n.t('about.description')}</p>
                 </div>
                 <div class="about-features">

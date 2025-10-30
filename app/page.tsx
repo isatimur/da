@@ -334,7 +334,7 @@ export default function DailyAffirmationsPage() {
                                             className="w-full justify-center font-medium"
                                             asChild
                                         >
-                                            <Link href={plan.popular ? "/checkout" : "https://chrome.google.com/webstore"}>
+                                            <Link href={plan.popular ? "/checkout" : "https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle"}>
                                                 {plan.cta}
                                             </Link>
                                         </Button>
@@ -446,7 +446,7 @@ export default function DailyAffirmationsPage() {
                         </p>
                         <div className="flex items-center justify-center gap-4">
                             <a
-                                href="https://chrome.google.com/webstore"
+                                href="https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-brand text-neutral-950 font-semibold hover:opacity-90 transition-opacity"

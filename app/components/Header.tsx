@@ -70,7 +70,7 @@ export function Header() {
                             Pricing
                         </Link>
                         <a
-                            href="https://chrome.google.com/webstore/detail/daily-affirmations/jjlljkopglnlfdkfhbefhemgldkfgpic"
+                            href="https://chromewebstore.google.com/detail/daily-affirmations/nhhicimcipdgjckacooendaikhjhenle"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-4 py-2 rounded-full bg-yellow-500 hover:bg-yellow-400 text-neutral-900 font-medium transition-colors"

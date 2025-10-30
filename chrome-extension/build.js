@@ -78,8 +78,8 @@ function optimizeImages() {
 // Generate build manifest
 function generateBuildManifest() {
     // Read version from manifest.json
-    const manifestPath = path.join(__dirname, 'manifest.json');
-    const manifestContent = fs.readFileSync(manifestPath, 'utf8');
+    const extensionManifestPath = path.join(__dirname, 'manifest.json');
+    const manifestContent = fs.readFileSync(extensionManifestPath, 'utf8');
     const manifestJson = JSON.parse(manifestContent);
     const extensionVersion = manifestJson.version || '1.2.3';
     
@@ -93,9 +93,9 @@ function generateBuildManifest() {
         }
     };
     
-    const manifestPath = path.join(__dirname, 'build-manifest.json');
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-    console.log(`Build manifest created: ${manifestPath}`);
+    const buildManifestPath = path.join(__dirname, 'build-manifest.json');
+    fs.writeFileSync(buildManifestPath, JSON.stringify(manifest, null, 2));
+    console.log(`Build manifest created: ${buildManifestPath}`);
     
     return manifest;
 }

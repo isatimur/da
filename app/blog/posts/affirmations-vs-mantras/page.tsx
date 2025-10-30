@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Understand the key differences between affirmations and mantras. Learn when to use each, how they work differently, and how to choose the right practice for your goals.';
     const date = '2024-09-05';
     const category = 'Guides';
-    const image = '/blog/affirmations-vs-mantras.jpg';
+    const image = 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Comparison between affirmations and mantras - meditation and positive thinking practices"
+                            alt="Person in peaceful meditation pose, representing mindfulness practices and mantras"
                             fill
                             className="object-cover"
                             priority

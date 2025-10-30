@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'The 7-Day Affirmation Reset: Your Quick Start Guide',
         description: 'Transform your mindset in just 7 days with this comprehensive affirmation program.',
-        images: ['/blog/7-day-reset.jpg'],
+        images: ['https://images.unsplash.com/photo-1532622785990-d2c36a76f5a6?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-05-21T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'The 7-Day Affirmation Reset: Your Quick Start Guide',
         description: 'Transform your mindset in just 7 days with this affirmation program.',
-        images: ['/blog/7-day-reset.jpg'],
+        images: ['https://images.unsplash.com/photo-1532622785990-d2c36a76f5a6?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/7-day-affirmation-reset',

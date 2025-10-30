@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Digital Wellness: Using Technology for Positive Mindset',
         description: 'Learn how to use technology mindfully for positive mental health and wellness.',
-        images: ['/blog/digital-wellness.jpg'],
+        images: ['https://images.unsplash.com/photo-1521185496955-15094b47c44a?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2026-01-15T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Digital Wellness: Using Technology for Positive Mindset',
         description: 'Learn how to use technology mindfully for positive mental health.',
-        images: ['/blog/digital-wellness.jpg'],
+        images: ['https://images.unsplash.com/photo-1521185496955-15094b47c44a?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/digital-wellness-affirmations',

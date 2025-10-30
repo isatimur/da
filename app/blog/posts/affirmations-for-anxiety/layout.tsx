@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Anxiety: Calming Your Mind with Words',
         description: 'Powerful affirmations and techniques to calm anxiety and reduce stress naturally.',
-        images: ['/blog/anxiety-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-07-25T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Anxiety: Calming Your Mind with Words',
         description: 'Powerful affirmations and techniques to calm anxiety naturally.',
-        images: ['/blog/anxiety-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-anxiety',

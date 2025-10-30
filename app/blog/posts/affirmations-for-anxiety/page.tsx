@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover powerful affirmations specifically designed to calm anxiety and reduce stress. Learn science-backed techniques for using affirmations to manage anxious thoughts and find inner peace.';
     const date = '2024-07-25';
     const category = 'Mental Health';
-    const image = '/blog/anxiety-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Calming peaceful scene representing anxiety relief and mental peace"
+                            alt="Peaceful natural landscape with calm water and mountains, representing anxiety relief and mental peace"
                             fill
                             className="object-cover"
                             priority

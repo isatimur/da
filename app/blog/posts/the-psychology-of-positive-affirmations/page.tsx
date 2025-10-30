@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Explore the psychological research and scientific evidence behind positive affirmations. Learn how they work, why they\'re effective, and how to maximize their impact.';
     const date = '2024-05-10';
     const category = 'Mindfulness';
-    const image = '/blog/psychology-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Psychological and neuroscience research on positive affirmations - brain diagram with positive thoughts"
+                            alt="Abstract representation of brain neurons and neural pathways, representing psychology and neuroscience"
                             fill
                             className="object-cover"
                             priority

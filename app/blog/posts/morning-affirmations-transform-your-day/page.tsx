@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover powerful morning affirmation routines that set a positive tone for your entire day. Learn proven techniques and specific affirmations for morning success.';
     const date = '2024-04-22';
     const category = 'Guides';
-    const image = '/blog/morning-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Peaceful morning scene with sunlight and meditation, representing morning affirmations"
+                            alt="Beautiful sunrise over mountains with morning light, representing peaceful morning affirmations"
                             fill
                             className="object-cover"
                             priority

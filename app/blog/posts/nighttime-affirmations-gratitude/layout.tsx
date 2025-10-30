@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Nighttime Affirmations: Ending Your Day with Gratitude',
         description: 'Evening affirmation routines that promote gratitude and improve sleep quality.',
-        images: ['/blog/nighttime-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1534274988757-a28bf1d57a17?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-08-14T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Nighttime Affirmations: Ending Your Day with Gratitude',
         description: 'Evening affirmation routines that promote gratitude and improve sleep.',
-        images: ['/blog/nighttime-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1534274988757-a28bf1d57a17?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/nighttime-affirmations-gratitude',

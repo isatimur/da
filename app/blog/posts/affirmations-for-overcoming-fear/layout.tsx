@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Overcoming Fear and Self-Doubt',
         description: 'Powerful affirmations and techniques to overcome fear and build courage.',
-        images: ['/blog/fear-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-04-09T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Overcoming Fear and Self-Doubt',
         description: 'Powerful affirmations to overcome fear and build courage.',
-        images: ['/blog/fear-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-overcoming-fear',

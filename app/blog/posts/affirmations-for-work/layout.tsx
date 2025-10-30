@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Work: Boosting Professional Success',
         description: 'Powerful affirmations to enhance your career and achieve professional success.',
-        images: ['/blog/work-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-11-08T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Work: Boosting Professional Success',
         description: 'Powerful affirmations to enhance your career and professional success.',
-        images: ['/blog/work-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-work',

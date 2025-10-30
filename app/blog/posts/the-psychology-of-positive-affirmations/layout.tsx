@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'The Psychology of Positive Affirmations: What Science Tells Us',
         description: 'Scientific research reveals how positive affirmations create real psychological and neurological changes.',
-        images: ['/blog/psychology-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-05-10T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'The Psychology of Positive Affirmations: What Science Tells Us',
         description: 'Scientific research reveals how positive affirmations create real psychological changes.',
-        images: ['/blog/psychology-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/the-psychology-of-positive-affirmations',

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Morning Affirmations: Transform Your Day in 5 Minutes',
         description: 'Powerful morning affirmation routines that create lasting positive change.',
-        images: ['/blog/morning-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-04-22T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Morning Affirmations: Transform Your Day in 5 Minutes',
         description: 'Powerful morning affirmation routines that create lasting positive change.',
-        images: ['/blog/morning-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/morning-affirmations-transform-your-day',

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Creatives: Unlocking Your Artistic Potential',
         description: 'Powerful affirmations designed for artists and creatives to unlock their potential.',
-        images: ['/blog/creative-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-11-05T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Creatives: Unlocking Your Artistic Potential',
         description: 'Powerful affirmations for creatives to unlock their artistic potential.',
-        images: ['/blog/creative-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-creatives',

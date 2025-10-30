@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'The Best Time to Practice Affirmations: Timing Your Positivity',
         description: 'Discover optimal timing and frequency for practicing affirmations effectively.',
-        images: ['/blog/affirmation-timing.jpg'],
+        images: ['https://images.unsplash.com/photo-1516414447565-b14be0adf13e?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-10-08T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'The Best Time to Practice Affirmations: Timing Your Positivity',
         description: 'Discover optimal timing for practicing affirmations effectively.',
-        images: ['/blog/affirmation-timing.jpg'],
+        images: ['https://images.unsplash.com/photo-1516414447565-b14be0adf13e?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/best-time-to-practice-affirmations',

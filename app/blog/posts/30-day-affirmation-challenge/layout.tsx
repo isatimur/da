@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: '30 Day Affirmation Challenge: A Complete Guide',
         description: 'Transform your mindset in 30 days with our comprehensive affirmation challenge program.',
-        images: ['/blog/30-day-challenge.jpg'],
+        images: ['https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-06-18T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: '30 Day Affirmation Challenge: A Complete Guide',
         description: 'Transform your mindset in 30 days with our comprehensive affirmation challenge.',
-        images: ['/blog/30-day-challenge.jpg'],
+        images: ['https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/30-day-affirmation-challenge',

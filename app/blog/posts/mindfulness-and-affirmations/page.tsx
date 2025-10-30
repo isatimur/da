@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover how mindfulness and affirmations work together to create deeper transformation. Learn techniques for combining these powerful practices for enhanced well-being and personal growth.';
     const date = '2024-12-03';
     const category = 'Mindfulness';
-    const image = '/blog/mindfulness-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Mindful meditation scene representing the combination of mindfulness and affirmations"
+                            alt="Person in peaceful meditation pose in natural setting, representing mindfulness and affirmations"
                             fill
                             className="object-cover"
                             priority

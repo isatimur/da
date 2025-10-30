@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Learn how nighttime affirmations improve sleep quality and promote gratitude. Discover evening affirmation routines that help you reflect, release, and prepare for restful sleep.';
     const date = '2024-08-14';
     const category = 'Mindfulness';
-    const image = '/blog/nighttime-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1534274988757-a28bf1d57a17?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Peaceful nighttime scene with stars and moon, representing nighttime affirmations and restful sleep"
+                            alt="Beautiful night sky with stars and moon, representing peaceful nighttime affirmations and restful sleep"
                             fill
                             className="object-cover"
                             priority

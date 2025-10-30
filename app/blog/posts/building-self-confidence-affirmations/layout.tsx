@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Building Self-Confidence Through Daily Affirmations',
         description: 'Transform your self-confidence with proven affirmation techniques and practices.',
-        images: ['/blog/self-confidence-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-10-11T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Building Self-Confidence Through Daily Affirmations',
         description: 'Transform your self-confidence with proven affirmation techniques.',
-        images: ['/blog/self-confidence-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/building-self-confidence-affirmations',

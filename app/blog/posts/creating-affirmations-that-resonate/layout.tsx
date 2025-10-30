@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Creating Affirmations That Resonate: The Personal Touch',
         description: 'Learn to create deeply personal affirmations that truly resonate with you.',
-        images: ['/blog/personal-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-03-12T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Creating Affirmations That Resonate: The Personal Touch',
         description: 'Learn to create deeply personal affirmations that truly resonate.',
-        images: ['/blog/personal-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/creating-affirmations-that-resonate',

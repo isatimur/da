@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Mindfulness and Affirmations: A Perfect Pair',
         description: 'Combine mindfulness and affirmations for deeper transformation and well-being.',
-        images: ['/blog/mindfulness-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-12-03T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Mindfulness and Affirmations: A Perfect Pair',
         description: 'Combine mindfulness and affirmations for deeper transformation.',
-        images: ['/blog/mindfulness-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/mindfulness-and-affirmations',

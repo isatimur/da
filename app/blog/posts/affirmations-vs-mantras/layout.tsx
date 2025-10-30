@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations vs. Mantras: What\'s the Difference?',
         description: 'Understanding the differences between affirmations and mantras to choose the right practice.',
-        images: ['/blog/affirmations-vs-mantras.jpg'],
+        images: ['https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-09-05T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations vs. Mantras: What\'s the Difference?',
         description: 'Understanding the differences between affirmations and mantras.',
-        images: ['/blog/affirmations-vs-mantras.jpg'],
+        images: ['https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-vs-mantras',

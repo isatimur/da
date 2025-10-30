@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover powerful workplace affirmations to enhance your career, boost productivity, and achieve professional success. Learn how to use affirmations for confidence, leadership, and work-life balance.';
     const date = '2024-11-08';
     const category = 'Guides';
-    const image = '/blog/work-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Professional workspace scene representing work affirmations and career success"
+                            alt="Modern professional workspace with laptop and office setup, representing work affirmations and career success"
                             fill
                             className="object-cover"
                             priority

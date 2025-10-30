@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Students: Enhancing Focus and Learning',
         description: 'Powerful affirmations designed specifically for student success and academic performance.',
-        images: ['/blog/student-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-07-24T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Students: Enhancing Focus and Learning',
         description: 'Powerful affirmations for student success and academic performance.',
-        images: ['/blog/student-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-students',

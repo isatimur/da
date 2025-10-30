@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Manifestation vs. Affirmations: Separating Fact from Fiction',
         description: 'Understand the real differences between manifestation and affirmations.',
-        images: ['/blog/manifestation-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-08-13T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Manifestation vs. Affirmations: Separating Fact from Fiction',
         description: 'Understand the differences between manifestation and affirmations.',
-        images: ['/blog/manifestation-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/manifestation-vs-affirmations',

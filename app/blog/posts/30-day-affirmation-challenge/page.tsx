@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Join our comprehensive 30-day affirmation challenge. Get daily affirmations, track your progress, and transform your mindset with this proven month-long program.';
     const date = '2024-06-18';
     const category = 'Guides';
-    const image = '/blog/30-day-challenge.jpg';
+    const image = 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="30 day affirmation challenge calendar and progress tracking visualization"
+                            alt="Calendar with dates marked, representing 30-day challenge and daily tracking"
                             fill
                             className="object-cover"
                             priority

@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Learn how daily affirmations can transform your self-confidence. Discover powerful confidence-building affirmations and proven techniques for overcoming self-doubt and building genuine self-belief.';
     const date = '2024-10-11';
     const category = 'Guides';
-    const image = '/blog/self-confidence-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Person standing confidently, representing self-confidence and self-belief building"
+                            alt="Confident person with arms raised in victory pose, representing self-confidence and empowerment"
                             fill
                             className="object-cover"
                             priority

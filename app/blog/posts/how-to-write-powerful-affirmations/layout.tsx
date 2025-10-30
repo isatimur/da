@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'How to Write Powerful Daily Affirmations That Actually Work',
         description: 'Master the art of writing effective daily affirmations with proven techniques and examples.',
-        images: ['/blog/powerful-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-03-15T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'How to Write Powerful Daily Affirmations That Actually Work',
         description: 'Master the art of writing effective daily affirmations with proven techniques.',
-        images: ['/blog/powerful-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/how-to-write-powerful-affirmations',

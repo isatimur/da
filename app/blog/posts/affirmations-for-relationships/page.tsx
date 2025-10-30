@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover powerful affirmations to strengthen relationships, improve communication, and deepen connections with partners, family, and friends. Learn relationship-focused affirmation practices.';
     const date = '2025-01-14';
     const category = 'Guides';
-    const image = '/blog/relationship-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Happy couple and family representing healthy relationships and connection"
+                            alt="Happy couple holding hands and walking together, representing healthy relationships and connection"
                             fill
                             className="object-cover"
                             priority

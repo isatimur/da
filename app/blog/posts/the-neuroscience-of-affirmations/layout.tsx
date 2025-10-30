@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'The Neuroscience of Affirmations: How They Rewire Your Brain',
         description: 'Discover how affirmations physically rewire your brain through neuroplasticity.',
-        images: ['/blog/neuroscience-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-02-18T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'The Neuroscience of Affirmations: How They Rewire Your Brain',
         description: 'Discover how affirmations physically rewire your brain.',
-        images: ['/blog/neuroscience-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/the-neuroscience-of-affirmations',

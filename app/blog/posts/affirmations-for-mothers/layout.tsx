@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Mothers: Self-Care Through Positive Thinking',
         description: 'Powerful affirmations designed specifically for mothers to promote self-care and balance.',
-        images: ['/blog/mother-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1543269664-7eef42226a21?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-09-19T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Mothers: Self-Care Through Positive Thinking',
         description: 'Powerful affirmations for mothers to promote self-care and balance.',
-        images: ['/blog/mother-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1543269664-7eef42226a21?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-mothers',

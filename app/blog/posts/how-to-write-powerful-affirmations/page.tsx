@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Learn the proven techniques for crafting effective daily affirmations that create real change. Discover writing strategies, examples, and practices that make affirmations work.';
     const date = '2024-03-15';
     const category = 'Guides';
-    const image = '/blog/powerful-affirmations.jpg';
+    const image = 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&h=630&fit=crop';
 
     return (
         <>
@@ -46,7 +46,7 @@ export default function BlogPost() {
                     <figure className="relative aspect-video rounded-2xl overflow-hidden mb-12">
                         <Image
                             src={image}
-                            alt="Writing powerful daily affirmations with pen and paper showing positive statements"
+                            alt="Person writing in journal with pen and paper, representing powerful daily affirmations"
                             fill
                             className="object-cover"
                             priority

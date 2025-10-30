@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Affirmations for Athletes: Mental Training for Peak Performance',
         description: 'Mental training affirmations designed specifically for athletic performance.',
-        images: ['/blog/athlete-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2025-06-17T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Affirmations for Athletes: Mental Training for Peak Performance',
         description: 'Mental training affirmations for peak athletic performance.',
-        images: ['/blog/athlete-affirmations.jpg'],
+        images: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/affirmations-for-athletes',

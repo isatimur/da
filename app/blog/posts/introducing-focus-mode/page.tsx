@@ -12,7 +12,7 @@ export default function BlogPost() {
     const description = 'Discover how our new Focus Mode helps you create a distraction-free environment for your daily affirmations practice.';
     const date = '2024-01-23';
     const category = 'Feature Update';
-    const image = '/blog/focus-mode.jpg';
+    const image = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop';
 
     return (
         <>

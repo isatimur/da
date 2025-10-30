@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Introducing Focus Mode - A New Way to Practice Mindfulness',
         description: 'Create a distraction-free environment for your daily affirmations.',
-        images: ['/blog/focus-mode.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
         type: 'article',
         publishedTime: '2024-01-23T00:00:00.000Z',
         authors: ['Daily Affirmations Team'],
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'Introducing Focus Mode - A New Way to Practice Mindfulness',
         description: 'Create a distraction-free environment for your daily affirmations.',
-        images: ['/blog/focus-mode.jpg'],
+        images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop'],
     },
     alternates: {
         canonical: 'https://daily-affirmation.today/blog/posts/introducing-focus-mode',

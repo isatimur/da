@@ -1,6 +1,13 @@
 # Release Notes - Version 1.1.0
 
-## 🌍 Major Update: Full Multi-Language Support
+> **📌 Note:** This is a historical release notes document. For the latest version and complete product overview, please see [RELEASE_NOTES_v1.2.3.md](./RELEASE_NOTES_v1.2.3.md)
+
+**Current Version:** 1.2.3  
+**Latest Release Notes:** [RELEASE_NOTES_v1.2.3.md](./RELEASE_NOTES_v1.2.3.md)
+
+---
+
+## 🌍 Major Update: Full Multi-Language Support (Version 1.1.0)
 
 ### New Features
 

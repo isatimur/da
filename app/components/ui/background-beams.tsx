@@ -73,10 +73,10 @@ export function BackgroundBeams({ className = "", ...props }: BackgroundBeamsPro
     }, []);
 
     return (
-        <div className={`fixed inset-0 z-0 ${className}`} {...props}>
+        <div className={`fixed inset-0 z-0 pointer-events-none ${className}`} {...props}>
             <canvas
                 ref={beamsRef}
-                className="h-full w-full"
+                className="h-full w-full pointer-events-none"
                 style={{ mixBlendMode: "plus-lighter" }}
             />
         </div>

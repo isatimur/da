@@ -178,10 +178,10 @@ async function handleAPIRequest(request) {
             // Create new headers object and copy existing headers
             const cacheHeaders = new Headers();
             
-            // Copy all existing headers
-            responseClone.headers.forEach((value, key) => {
-                cacheHeaders.append(key, value);
-            });
+            // Copy all existing headers using entries() to avoid forEach on immutable headers
+            for (const [key, value] of responseClone.headers.entries()) {
+                cacheHeaders.set(key, value);
+            }
             
             // Add cache date header
             cacheHeaders.set('sw-cache-date', new Date().toISOString());

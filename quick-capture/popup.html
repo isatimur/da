@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Capture</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <svg width="20" height="20" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle cx="64" cy="64" r="54" fill="url(#logoGrad)"/>
+            <path d="M 32 24 L 52 56 L 44 56 L 68 104 L 52 72 L 60 72 L 40 40 Z" fill="#ffffff"/>
+          </svg>
+        </div>
+        <h1 class="title" data-i18n="appName">Quick Capture</h1>
+      </div>
+      <div class="header-actions">
+        <button id="settingsBtn" class="icon-btn" data-i18n-title="settings">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13.6569 6.34315C13.7668 6.45311 13.8443 6.5919 13.8799 6.74346C13.9155 6.89501 13.9077 7.05351 13.8575 7.20075L13.1425 9.37179C13.0923 9.51903 13.0845 9.67753 13.1201 9.82908C13.1557 9.98064 13.2332 10.1194 13.3431 10.2294L14.7071 11.5934C14.8946 11.7809 15 12.0352 15 12.3003C15 12.5654 14.8946 12.8197 14.7071 13.0072L13.0072 14.7071C12.8197 14.8946 12.5654 15 12.3003 15C12.0352 15 11.7809 14.8946 11.5934 14.7071L10.2294 13.3431C10.1194 13.2332 9.98064 13.1557 9.82908 13.1201C9.67753 13.0845 9.51903 13.0923 9.37179 13.1425L7.20075 13.8575C7.05351 13.9077 6.89501 13.9155 6.74346 13.8799C6.5919 13.8443 6.45311 13.7668 6.34315 13.6569L3.68629 11L1.02843 8.34315C0.918471 8.23319 0.841001 8.0944 0.805414 7.94285C0.769827 7.79129 0.777567 7.63279 0.827774 7.48555L1.54279 5.31451C1.593 5.16727 1.60074 5.00877 1.56515 4.85722C1.52957 4.70566 1.4521 4.56687 1.34214 4.45691L0.292893 3.40766C0.105357 3.22013 0 2.96584 0 2.70073C0 2.43561 0.105357 2.18132 0.292893 1.99379L1.99379 0.292893C2.18132 0.105357 2.43561 0 2.70073 0C2.96584 0 3.22013 0.105357 3.40766 0.292893L4.45691 1.34214C4.56687 1.4521 4.70566 1.52957 4.85722 1.56515C5.00877 1.60074 5.16727 1.593 5.31451 1.54279L7.48555 0.827774C7.63279 0.777567 7.79129 0.769827 7.94285 0.805414C8.0944 0.841001 8.23319 0.918471 8.34315 1.02843L11 3.68629L13.6569 6.34315Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button id="exportBtn" class="icon-btn" data-i18n-title="export">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2V10M8 10L5 7M8 10L11 7M3 10V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Settings Panel (hidden by default) -->
+    <div id="settingsPanel" class="settings-panel" style="display: none;">
+      <div class="settings-content">
+        <div class="settings-header">
+          <h2 data-i18n="settings">Settings</h2>
+          <button id="closeSettings" class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="settings-item">
+          <label data-i18n="selectLanguage">Select Language</label>
+          <select id="languageSelect" class="language-select">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="ja">日本語</option>
+            <option value="zh">中文</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Section -->
+    <div class="input-section">
+      <div class="input-wrapper">
+        <textarea 
+          id="captureInput" 
+          class="capture-input" 
+          data-i18n-placeholder="placeholder"
+          rows="3"
+          maxlength="500"
+        ></textarea>
+        <div class="input-footer">
+          <label class="checkbox-label">
+            <input type="checkbox" id="includeUrl" checked>
+            <span data-i18n="includeUrl">Add page link</span>
+          </label>
+          <span class="char-count"><span id="charCount">0</span>/500</span>
+        </div>
+      </div>
+      <button id="saveBtn" class="save-btn">
+        <span data-i18n="save">Save</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8L6 11L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          data-i18n-placeholder="search"
+        />
+        <button id="clearSearch" class="clear-search" style="display: none;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Notes List -->
+    <div class="notes-section">
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <path d="M16 12H48C50.2091 12 52 13.7909 52 16V48C52 50.2091 50.2091 52 48 52H16C13.7909 52 12 50.2091 12 48V16C12 13.7909 13.7909 12 16 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+            <path d="M20 24H44M20 32H36" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+            <circle cx="32" cy="32" r="8" fill="currentColor" opacity="0.1"/>
+            <path d="M 32 20 L 36 28 L 44 28 L 38 34 L 40 42 L 32 36 L 24 42 L 26 34 L 20 28 L 28 28 Z" fill="currentColor" opacity="0.2"/>
+          </svg>
+        </div>
+        <p data-i18n="emptyTitle">No notes yet</p>
+        <span data-i18n="emptySubtitle">Start capturing your thoughts</span>
+      </div>
+      <div id="noResults" class="empty-state" style="display: none;">
+        <p data-i18n="noResults">No results found</p>
+      </div>
+      <div id="notesList" class="notes-list"></div>
+    </div>
+  </div>
+
+  <script src="js/utils/i18n.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/popup.js"></script>
+</body>
+</html>

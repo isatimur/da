@@ -160,12 +160,8 @@ async function handleAPIRequest(request) {
         const cachedResponse = await caches.match(request);
         if (cachedResponse) {
             console.log('Serving API response from cache:', request.url);
-            
-            // Check if cache is still fresh (5 minutes for API responses)
-            const cacheDate = cachedResponse.headers.get('sw-cache-date');
-            if (cacheDate && Date.now() - new Date(cacheDate).getTime() < 5 * 60 * 1000) {
-                return cachedResponse;
-            }
+            // Always return cached response if available (stale-while-revalidate pattern)
+            return cachedResponse;
         }
         
         // Fetch from network without mutating request headers
@@ -173,27 +169,13 @@ async function handleAPIRequest(request) {
         
         // Cache successful responses
         if (networkResponse.ok) {
-            // Create a new Response with augmented headers since Response headers are immutable
-            const responseClone = networkResponse.clone();
-            // Create new headers object and copy existing headers
-            const cacheHeaders = new Headers();
-            
-            // Copy all existing headers using entries() to avoid forEach on immutable headers
-            for (const [key, value] of responseClone.headers.entries()) {
-                cacheHeaders.set(key, value);
-            }
-            
-            // Add cache date header
-            cacheHeaders.set('sw-cache-date', new Date().toISOString());
-            
-            const responseToCache = new Response(await responseClone.blob(), {
-                status: responseClone.status,
-                statusText: responseClone.statusText,
-                headers: cacheHeaders
-            });
-
+            // Cache the response as-is without modifying headers
+            // Headers are immutable, so we cache the original response
             const cache = await caches.open(DYNAMIC_CACHE_NAME);
-            cache.put(request, responseToCache);
+            
+            // Clone the response before caching (we can't modify headers)
+            const responseClone = networkResponse.clone();
+            cache.put(request, responseClone);
         }
         
         return networkResponse;

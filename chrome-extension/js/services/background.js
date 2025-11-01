@@ -413,16 +413,29 @@ class BackgroundService {
             const cached = await this.loadCachedData();
             if (cached) {
                 await this.updateDisplay(cached);
-                return;
             }
 
-            // Get fresh data
-            const data = await this.fetchBackground();
-            await this.updateDisplay(data);
+            // Try to get fresh data in the background
+            try {
+                const data = await this.fetchBackground();
+                await this.updateDisplay(data);
+            } catch (fetchError) {
+                console.warn('Failed to fetch fresh background, using cached data:', fetchError);
+                // If we have cached data, use it; otherwise show error
+                if (!cached) {
+                    this.handleError();
+                }
+            }
 
         } catch (error) {
             console.error('Background update failed:', error);
-            this.handleError();
+            // Try to use cached data as last resort
+            const cached = await this.loadCachedData();
+            if (cached) {
+                await this.updateDisplay(cached);
+            } else {
+                this.handleError();
+            }
         }
     }
 

@@ -215,17 +215,30 @@ class WeatherService {
             const cached = await this.loadCachedData();
             if (cached) {
                 this.updateDisplay(cached);
-                return;
             }
 
-            // Get fresh data
-            const position = await this.getCurrentPosition();
-            const data = await this.fetchWeatherData(position);
-            this.updateDisplay(data);
+            // Try to get fresh data in the background
+            try {
+                const position = await this.getCurrentPosition();
+                const data = await this.fetchWeatherData(position);
+                this.updateDisplay(data);
+            } catch (fetchError) {
+                console.warn('Failed to fetch fresh weather data, using cached data:', fetchError);
+                // If we have cached data, use it; otherwise show error
+                if (!cached) {
+                    this.handleError();
+                }
+            }
 
         } catch (error) {
             console.error('Weather update failed:', error);
-            this.handleError();
+            // Try to use cached data as last resort
+            const cached = await this.loadCachedData();
+            if (cached) {
+                this.updateDisplay(cached);
+            } else {
+                this.handleError();
+            }
         }
     }
 }

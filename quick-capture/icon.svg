@@ -1,0 +1,33 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="54" fill="url(#grad)" filter="url(#shadow)"/>
+  
+  <!-- Lightning bolt for "quick capture" -->
+  <path d="M 32 24 L 52 56 L 44 56 L 68 104 L 52 72 L 60 72 L 40 40 Z" 
+        fill="#ffffff" 
+        stroke="#ffffff" 
+        stroke-width="2" 
+        stroke-linejoin="round"/>
+  
+  <!-- Small accent dot -->
+  <circle cx="96" cy="96" r="8" fill="rgba(255,255,255,0.3)"/>
+</svg>
+
